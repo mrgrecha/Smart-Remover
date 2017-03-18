@@ -4,6 +4,7 @@
 import shutil, argparse, sys, os
 import remove
 import show
+import file_object
 
 def main():
 
@@ -14,15 +15,19 @@ def main():
     parser.add_argument('-l', '--list', action = 'store_true', help = 'List of files in the bin')
     parser.add_argument('-d', '--delete', nargs='+', help = 'Delete a file/files')
     parser.add_argument('--rec', nargs = '+', help = 'Recover a file/files')
+    parser.add_argument('-c', '--clear', action='store_true', help='Clear files in the bin')
 
     args = parser.parse_args()
 
+
+    if args.clear:
+        remove.bin_clear()
 
     if args.list:
        show.full_show()
 
     if args.delete:
-       remove.delete_files(args.delete)
+        remove.delete_files(args.delete)
 
     if args.rec:
         print 'recc'
