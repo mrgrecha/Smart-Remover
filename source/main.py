@@ -6,13 +6,9 @@ import remove
 import bin
 import file_object
 
-def eze():
-    print '123'
-
 def main():
 
     TRASH = '/Users/Dima/.MyTrash'
-
 
     parser = argparse.ArgumentParser(description='Smart remove/recover utility' )
     parser.add_argument('-l', '--list', action = 'store_true', help = 'List of files in the bin')
@@ -21,7 +17,6 @@ def main():
     parser.add_argument('-c', '--clear', action='store_true', help='Clear files in the bin')
 
     args = parser.parse_args()
-
 
     if args.clear:
         remove.bin_clear()

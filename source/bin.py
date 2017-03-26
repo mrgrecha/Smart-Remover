@@ -1,5 +1,6 @@
 import os, argparse
 import file_object
+import json
 
 def bin_show():
 	for ind, file in enumerate(os.listdir('/Users/Dima/.MyTrash')):
@@ -14,11 +15,31 @@ def update():
 		arr_of_files[index].add_name(files)
 		index += 1
 
+def full_show():
+	pass
+
+def load_json():
+	with open('DB.txt', 'r') as db:
+		print json.loads(db.read())
+
+
+
+
 def main():
 	parser = argparse.ArgumentParser(description='Bin utility')
 	parser.add_argument('-l', '--list', action = 'store_true', help = 'A list of files in trash')
 	parser.add_argument('-c', '--clear', action = 'store_true', help = 'Clear all files in trash')
 	parser.add_argument('--full', action = 'store_true', help = 'Full list of files')
+
+	args = parser.parse_args()
+
+	load_json()
+	if args.list:
+		bin_show()
+
+	if args.clear:
+		pass
+
 
 if __name__ == '__main__':
 	main()
