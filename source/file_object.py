@@ -8,15 +8,20 @@ class FileObject(object):
         self.name = ''
         self.type = ''
         self.hash = 0
+        self.size = 0
         self.IsInBin = False      #if bin has this file = true. else = false
 
-    def make_from_json(self, path, time, name, type, hash, state):
+    def make_from_json(self, path, time, name, type, hash, state, size):
         self.path = path
         self.time_of_life = time
         self.name = name
         self.type = type
         self.hash = hash
         self.IsInBin = state
+        self.size = size
+
+    def add_size(self, size):
+        self.size = size
 
     def add_path(self, path):
         self.path = path
@@ -42,6 +47,7 @@ class FileObject(object):
         print 'Time:', self.time_of_life
         print 'Type:', self.type
         print 'IsInBin:', self.state
+        print 'Size: ', self.size
 
     def make_from_dict(self, some_dict):
         self.path = some_dict['path']
@@ -50,6 +56,7 @@ class FileObject(object):
         self.type = some_dict['type']
         self.hash = some_dict['hash']
         self.IsInBin = some_dict['IsInBin']
+        self.size = some_dict['size']
 
         #ini-file ;для читаемости
 

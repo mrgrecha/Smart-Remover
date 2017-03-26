@@ -27,6 +27,7 @@ def delete_files(list_of_files):
 
                 arr_files[index].add_name(each_file)
                 arr_files[index].add_path(os.path.abspath(each_file))
+                arr_files[index].add_size(os.path.getsize(each_file))
                 arr_files[index].add_time_of_life(os.path.getctime(each_file))
                 arr_files[index].add_hash(arr_files[index].__hash__()  + arr_files[index].time_of_life.__hash__())
                 os.rename(each_file, str(arr_files[index].hash + arr_files[index].time_of_life.__hash__()))

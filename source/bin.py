@@ -1,6 +1,11 @@
 import os, argparse
 import file_object
-import json
+import serialization
+import datetime
+if serialization.num_of_dicts() == 0:
+    arr_json_files = []
+else:
+    arr_json_files = serialization.load_json()
 
 def bin_show():
 	for ind, file in enumerate(os.listdir('/Users/Dima/.MyTrash')):
@@ -16,13 +21,28 @@ def update():
 		index += 1
 
 def full_show():
+	for index, each_file in enumerate(arr_json_files):
+		print index + 1, each_file['name'], datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),  each_file['size'], 'Bytes'
+
+
+def clear():
+	with open('DB.txt', 'w') as db:
+		files_in_trash = os.listdir('/Users/Dima/.MyTrash')
+		for files in files_in_trash:
+			os.remove('/Users/Dima/.MyTrash/' + files)
+
+		for file in arr_json_files:
+			arr_json_files.remove(file)
+
+		serialization.push_json(arr_json_files, db)
+
+def delete(list): #to do: delete from bin and delete from DataBase full dict
 	pass
-
-def load_json():
-	with open('DB.txt', 'r') as db:
-		print json.loads(db.read())
-
-
+	# with open('DB.txt', 'w') as db:
+	# 	for delete_elem in list:
+	# 		arr_json_files.remove(arr_json_files[])
+	# 		os.remove('/Users/Dima/.MyTrash/' + delete_elem)
+	# 	serialization.push_json(arr_json_files, db)
 
 
 def main():
@@ -30,15 +50,21 @@ def main():
 	parser.add_argument('-l', '--list', action = 'store_true', help = 'A list of files in trash')
 	parser.add_argument('-c', '--clear', action = 'store_true', help = 'Clear all files in trash')
 	parser.add_argument('--full', action = 'store_true', help = 'Full list of files')
+	parser.add_argument('-d', '--delete',nargs='+', help = 'Delete a file/files from bin')
 
 	args = parser.parse_args()
 
-	load_json()
 	if args.list:
 		bin_show()
 
 	if args.clear:
-		pass
+		clear()
+
+	if args.full:
+		full_show()
+
+	if args.delete:
+		delete(args.delete)
 
 
 if __name__ == '__main__':
