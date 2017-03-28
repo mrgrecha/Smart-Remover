@@ -3,13 +3,12 @@
 
 import shutil, argparse, sys, os
 import remove
-import show
+import bin
 import file_object
 
 def main():
 
     TRASH = '/Users/Dima/.MyTrash'
-
 
     parser = argparse.ArgumentParser(description='Smart remove/recover utility' )
     parser.add_argument('-l', '--list', action = 'store_true', help = 'List of files in the bin')
@@ -19,12 +18,11 @@ def main():
 
     args = parser.parse_args()
 
-
     if args.clear:
         remove.bin_clear()
 
     if args.list:
-       show.full_show()
+       bin.bin_show()
 
     if args.delete:
         remove.delete_files(args.delete)

@@ -2,6 +2,7 @@ import argparse, sys, os.path, shutil
 import test
 import file_object
 import serialization
+import random
 
 #global const:
 if serialization.num_of_dicts() == 0:
@@ -29,10 +30,11 @@ def delete_files(list_of_files):
                 arr_files[index].add_path(os.path.abspath(each_file))
                 arr_files[index].add_size(os.path.getsize(each_file))
                 arr_files[index].add_time_of_life(os.path.getctime(each_file))
+                #ran = random.randint(0, 2132132)
                 arr_files[index].add_hash(arr_files[index].__hash__()  + arr_files[index].time_of_life.__hash__())
-                os.rename(each_file, str(arr_files[index].hash + arr_files[index].time_of_life.__hash__()))
+                os.rename(each_file, str(arr_files[index].__hash__() + arr_files[index].time_of_life.__hash__()))
                 arr_files[index].set_state(True)
-                shutil.move(str(arr_files[index].hash + arr_files[index].time_of_life.__hash__()), TRASH)
+                shutil.move(str(arr_files[index].__hash__() + arr_files[index].time_of_life.__hash__()), TRASH) #random for deleting files with the same cache of name that are deleting at the same time
                 print 'Removing',arr_files[index].name, 'to trash'
                 index += 1
 

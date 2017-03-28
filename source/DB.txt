@@ -1,19 +1,64 @@
 [
     {
-        "hash": 1765882082, 
-        "name": "qa", 
+        "hash": 1762880852, 
+        "name": "qas", 
         "IsInBin": true, 
-        "time_of_life": 1490699305.0, 
-        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/qa", 
+        "time_of_life": 1490708851.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/qas", 
+        "type": "", 
+        "size": 2
+    }, 
+    {
+        "hash": 1765420181, 
+        "name": "1775299477", 
+        "IsInBin": true, 
+        "time_of_life": 1490708148.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/1775299477", 
         "type": "", 
         "size": 0
     }, 
     {
-        "hash": 1764911333, 
-        "name": "qaw", 
+        "hash": 1765418972, 
+        "name": "3251750682", 
         "IsInBin": true, 
-        "time_of_life": 1490699308.0, 
-        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/qaw", 
+        "time_of_life": 1490706935.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/3251750682", 
+        "type": "", 
+        "size": 0
+    }, 
+    {
+        "hash": 1765419040, 
+        "name": "3255274891", 
+        "IsInBin": true, 
+        "time_of_life": 1490706999.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/3255274891", 
+        "type": "", 
+        "size": 0
+    }, 
+    {
+        "hash": 1765419100, 
+        "name": "3262820614", 
+        "IsInBin": true, 
+        "time_of_life": 1490707055.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/3262820614", 
+        "type": "", 
+        "size": 0
+    }, 
+    {
+        "hash": 1765418953, 
+        "name": "3268893545", 
+        "IsInBin": true, 
+        "time_of_life": 1490706904.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/3268893545", 
+        "type": "", 
+        "size": 0
+    }, 
+    {
+        "hash": 1765421065, 
+        "name": "aaa", 
+        "IsInBin": true, 
+        "time_of_life": 1490709012.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/aaa", 
         "type": "", 
         "size": 0
     }
