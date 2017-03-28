@@ -2,6 +2,9 @@ import os, argparse
 import file_object
 import serialization
 import datetime
+import pydoc
+import constants
+
 if serialization.num_of_dicts() == 0:
     arr_json_files = []
 else:
@@ -25,8 +28,16 @@ def update():
 def full_show():
 	if serialization.num_of_dicts() == 0:
 		print 'No files in trash'
+	full_show_string = ''
 	for index, each_file in enumerate(arr_json_files):
-		print index + 1, each_file['name'], datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),  each_file['size'], 'Bytes'
+		full_show_string +=	'%d %s %d %s %d Bytes \n' % (index + 1, each_file['name'], each_file['hash'],datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),each_file['size'])
+
+	if len(arr_json_files) >  constants.MAX_LIST_HEIGHT:
+		pydoc.pager(full_show_string)
+	else:
+		print full_show_string
+
+
 
 
 def clear():
