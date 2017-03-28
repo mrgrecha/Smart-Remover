@@ -1,6 +1,7 @@
 import json, file_object
 
 def num_of_dicts():
+    """Returns a number of dicts in file"""
     with open ('DB.txt', 'r') as some_file:
         i = 0
         for each_data in json.load(some_file):
@@ -21,6 +22,7 @@ def num_of_dicts():
 #         print e
 
 def load_json():
+    """Return a list of dicts in JSON-file"""
     with open('DB.txt', 'r') as db:
         arr_json_files = []
         for each_data in json.load(db):
@@ -29,4 +31,5 @@ def load_json():
 
 
 def push_json(list, file):
+    """Push a list of dicts to JSON-file"""
     json.dump(list, file, indent = 4)

@@ -8,6 +8,8 @@ else:
     arr_json_files = serialization.load_json()
 
 def bin_show():
+	if serialization.num_of_dicts() == 0:
+		print 'No files in trash'
 	for ind, file in enumerate(os.listdir('/Users/Dima/.MyTrash')):
 		print("{0}. {1}".format(ind + 1, file))
 
@@ -21,6 +23,8 @@ def update():
 		index += 1
 
 def full_show():
+	if serialization.num_of_dicts() == 0:
+		print 'No files in trash'
 	for index, each_file in enumerate(arr_json_files):
 		print index + 1, each_file['name'], datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),  each_file['size'], 'Bytes'
 
@@ -35,6 +39,7 @@ def clear():
 			arr_json_files.remove(file)
 
 		serialization.push_json(arr_json_files, db)
+		print 'Clearing a bin from files'
 
 def delete(list): #to do: delete from bin and delete from DataBase full dict
 	pass

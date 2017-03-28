@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
 class FileObject(object):
-
+    """A class of file in Smart RM """
     def __init__(self):
         self.path = ''
         self.time_of_life = 0

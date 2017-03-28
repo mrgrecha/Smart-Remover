@@ -33,6 +33,7 @@ def delete_files(list_of_files):
                 os.rename(each_file, str(arr_files[index].hash + arr_files[index].time_of_life.__hash__()))
                 arr_files[index].set_state(True)
                 shutil.move(str(arr_files[index].hash + arr_files[index].time_of_life.__hash__()), TRASH)
+                print 'Removing',arr_files[index].name, 'to trash'
                 index += 1
 
             for i in xrange(0, n):
@@ -52,7 +53,7 @@ def bin_clear():
      for each in files_to_delete:
         delete_path = '/Users/Dima/.MyTrash/' + each
         os.remove(delete_path)
-
+     print 'Clearing a bin'
 
 def main():
     parser = argparse.ArgumentParser(description='Smart remove' )
