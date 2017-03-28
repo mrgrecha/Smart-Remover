@@ -16,7 +16,7 @@ def bin_show():
 	for ind, file in enumerate(os.listdir('/Users/Dima/.MyTrash')):
 		print("{0}. {1}".format(ind + 1, file))
 
-def update():
+def update(): #to do automatic update, maybe do it in another file
 	files_in_trash = os.listdir('/Users/Dima/.MyTrash')
 	n = files_in_trash.__len__()
 	index = 0

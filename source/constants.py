@@ -1,2 +1,3 @@
 MAX_SIZE_OF_BIN = 500
 MAX_LIST_HEIGHT = 25
+TRASH = '/Users/Dima/.MyTrash'
