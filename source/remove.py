@@ -4,6 +4,10 @@ import file_object
 import serialization
 import random
 
+#TO DO: make one func in remove to add files, and other in file of class
+#TO DO: make removing without flags for files
+
+
 #global const:
 if serialization.num_of_dicts() == 0:
     arr_json_files = []
@@ -17,13 +21,14 @@ def delete_files(list_of_files):
 
  #TO DO : Add catch of exception if file doesn't exist, problems with '[]' in DB.txt
 
-    checked_list = verification.check_for_files_and_links(list_of_files)
-    n = checked_list.__len__()
-    arr_files = [file_object.FileObject() for i in xrange(1, n + 2)]
-    index = 0
+
 
     with open('DB.txt', 'w') as db:
         try:
+            checked_list = verification.check_for_files_and_links(list_of_files)
+            n = checked_list.__len__()
+            arr_files = [file_object.FileObject() for i in xrange(1, n + 2)]
+            index = 0
             for each_file in checked_list:
 
                 arr_files[index].add_name(each_file)
@@ -46,19 +51,22 @@ def delete_files(list_of_files):
                 arr_json_files.append(arr_files[i].__dict__)
 
 
-
+        except TypeError as e:
+            print 'Error:',e
         except Exception as e:
             print 'Error:', e
 
-        serialization.push_json(arr_json_files, db)
+        finally:
+            serialization.push_json(arr_json_files, db)
+
 def delete_dir(list_of_dirs):
-    checked_list_of_dirs = verification.check_for_dir(list_of_dirs)
-    n = checked_list_of_dirs.__len__()
-    arr_dirs = [file_object.FileObject() for i in xrange(1, n + 2)]
-    index = 0
 
     with open('DB.txt', 'w') as db:
         try:
+            checked_list_of_dirs = verification.check_for_dir(list_of_dirs)
+            n = checked_list_of_dirs.__len__()
+            arr_dirs = [file_object.FileObject() for i in xrange(1, n + 2)]
+            index = 0
             for each_dir in checked_list_of_dirs:
 
                 arr_dirs[index].add_name(each_dir)
@@ -80,8 +88,12 @@ def delete_dir(list_of_dirs):
 
             serialization.push_json(arr_json_files, db)
 
+        except TypeError as e:
+            print e
         except Exception as e:
             print 'Error:', e
+        finally:
+            serialization.push_json(arr_json_files, db)
 
 def bin_clear():
      """Full clearing of trash"""

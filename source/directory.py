@@ -11,8 +11,6 @@ class Folder(FileObject):
         super(Folder, self).make_from_json(path, time, name, type, hash, state, size)
         self.num_of_obj = num
 
-    def add_number_of_objects(self, num):
-        self.num_of_obj = num
 
     def add_hash(self, hash):
         super(Folder, self).add_hash(hash)
@@ -30,6 +28,29 @@ class Folder(FileObject):
     def make_from_dict(self, some_dict):
         super(Folder, self).make_from_json(some_dict)
         self.num_of_obj = some_dict['num_of_obj']
+
+    def set_state(self, state):
+        super(Folder, self).set_state(state)
+
+    def set_type(self, type):
+        super(Folder, self).set_type(type)
+
+    def add_path(self, path):
+        super(Folder, self).add_path(path)
+
+    def add_size(self, path):
+        size = os.path.getsize(path)
+        if os.path.isdir(path):
+            for item in os.listdir(path):
+                subpath = os.path.join(path, item)
+                size += Folder.get_size(subpath)
+        self.size = size
+
+    def add_number_of_objects(self, path):
+        num = 0
+        for abs_path, sub_path, files in os.walk(path):
+            num += len(files)
+        self.num_of_obj = num
 
 
 f = Folder()
