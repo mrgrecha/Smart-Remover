@@ -46,8 +46,9 @@ class FileObject(object):
         print 'Path:', self.path
         print 'Time:', self.time_of_life
         print 'Type:', self.type
-        print 'IsInBin:', self.state
+        print 'IsInBin:',  self.IsInBin
         print 'Size: ', self.size
+        print 'Hash: ', self.hash
 
     def make_from_dict(self, some_dict):
         self.path = some_dict['path']

@@ -44,10 +44,13 @@ def clear():
 	with open('DB.txt', 'w') as db:
 		files_in_trash = os.listdir('/Users/Dima/.MyTrash')
 		for files in files_in_trash:
-			os.remove('/Users/Dima/.MyTrash/' + files)
+			os.remove(files)
 
-		for file in arr_json_files:
-			arr_json_files.remove(file)
+		arr_json_files = []
+		print 'Clearing a bin'
+		# for file in arr_json_files:
+		# 	arr_json_files.remove(file)
+
 
 		serialization.push_json(arr_json_files, db)
 		print 'Clearing a bin from files'

@@ -17,7 +17,7 @@ def delete_files(list_of_files):
 
  #TO DO : Add catch of exception if file doesn't exist, problems with '[]' in DB.txt
 
-    checked_list = verification.check_for_files(list_of_files)
+    checked_list = verification.check_for_files_and_links(list_of_files)
     n = checked_list.__len__()
     arr_files = [file_object.FileObject() for i in xrange(1, n + 2)]
     index = 0
@@ -30,7 +30,7 @@ def delete_files(list_of_files):
                 arr_files[index].add_path(os.path.abspath(each_file))
                 arr_files[index].add_size(os.path.getsize(each_file))
                 arr_files[index].add_time_of_life(os.path.getctime(each_file))
-                if os.path.islink(arr_files[index]):
+                if os.path.islink(each_file[index]):
                     arr_files[index].set_type('Link')
                 else:
                     arr_files[index].set_type('File')
@@ -45,11 +45,12 @@ def delete_files(list_of_files):
             for i in xrange(0, n):
                 arr_json_files.append(arr_files[i].__dict__)
 
-            serialization.push_json(arr_json_files, db)
+
 
         except Exception as e:
             print 'Error:', e
 
+        serialization.push_json(arr_json_files, db)
 def delete_dir(list_of_dirs):
     checked_list_of_dirs = verification.check_for_dir(list_of_dirs)
     n = checked_list_of_dirs.__len__()
@@ -62,7 +63,7 @@ def delete_dir(list_of_dirs):
 
                 arr_dirs[index].add_name(each_dir)
                 arr_dirs[index].add_path(os.path.abspath(each_dir))
-                #arr_dirs[index].add_size(os.path.getsize(each_dir))
+                arr_dirs[index].add_size(os.path.getsize(each_dir))
                 arr_dirs[index].add_time_of_life(os.path.getctime(each_dir))
                 arr_dirs[index].set_type('Directory')
                 # ran = random.randint(0, 2132132)
