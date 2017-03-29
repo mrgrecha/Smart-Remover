@@ -30,7 +30,7 @@ def full_show():
 		print 'No files in trash'
 	full_show_string = ''
 	for index, each_file in enumerate(arr_json_files):
-		full_show_string +=	'%d %s %d %s %d Bytes \n' % (index + 1, each_file['name'], each_file['hash'],datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),each_file['size'])
+		full_show_string +=	'%d %s %s %d %s %d Bytes \n' % (index + 1, each_file['name'],each_file['type'], each_file['hash'],datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),each_file['size'])
 
 	if len(arr_json_files) >  constants.MAX_LIST_HEIGHT:
 		pydoc.pager(full_show_string)

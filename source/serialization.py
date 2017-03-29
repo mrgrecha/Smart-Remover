@@ -1,4 +1,4 @@
-import json, file_object
+import json
 
 def num_of_dicts():
     """Returns a number of dicts in file"""
