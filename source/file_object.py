@@ -1,5 +1,7 @@
 
 # -*- coding: utf-8 -*-
+
+import os
 class FileObject(object):
     """A class of file in Smart RM """
     def __init__(self):
@@ -11,6 +13,15 @@ class FileObject(object):
         self.size = 0
         self.IsInBin = False      #if bin has this file = true. else = false
 
+    def make_object(self, name):
+        self.name = name
+        self.path = os.path.abspath(name)
+        self.time_of_life = os.path.getctime(name)
+        self.size = os.path.getsize(name)
+        self.hash = self.__hash__()  + self.time_of_life.__hash__()
+        self.IsInBin = True
+
+
     def make_from_json(self, path, time, name, type, hash, state, size):
         self.path = path
         self.time_of_life = time
@@ -20,26 +31,7 @@ class FileObject(object):
         self.IsInBin = state
         self.size = size
 
-    def add_size(self, size):
-        self.size = size
-
-    def add_path(self, path):
-        self.path = path
-
-    def add_time_of_life(self, time):
-        self.time_of_life = time
-
-    def add_name(self, name):
-        self.name = name
-
-    def set_state(self, state):
-        self.IsInBin = state
-
-    def set_type(self, type):
-        self.type = type
-
-    def add_hash(self, hash):
-        self.hash = hash
+    # random for deleting files with the same cache of name that are deleting at the same time
 
     def show_all(self):
         print 'Name:', self.name
