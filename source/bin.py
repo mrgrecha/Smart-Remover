@@ -3,18 +3,8 @@ import file_object
 import serialization
 import datetime
 import pydoc, shutil
-import constants
+import trash
 
-if serialization.num_of_dicts() == 0:
-    arr_json_files = []
-else:
-    arr_json_files = serialization.load_json()
-
-def bin_show():
-	if serialization.num_of_dicts() == 0:
-		print 'No files in trash'
-	for ind, file in enumerate(os.listdir('/Users/Dima/.MyTrash')):
-		print("{0}. {1}".format(ind + 1, file))
 
 def update(): #to do automatic update, maybe do it in another file
 	files_in_trash = os.listdir('/Users/Dima/.MyTrash')
@@ -25,17 +15,7 @@ def update(): #to do automatic update, maybe do it in another file
 		arr_of_files[index].add_name(files)
 		index += 1
 
-def full_show():
-	if serialization.num_of_dicts() == 0:
-		print 'No files in trash'
-	full_show_string = ''
-	for index, each_file in enumerate(arr_json_files):
-		full_show_string +=	'%d %s %s %d %s %d Bytes \n' % (index + 1, each_file['name'],each_file['type'], each_file['hash'],datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'),each_file['size'])
 
-	if len(arr_json_files) >  constants.MAX_LIST_HEIGHT:
-		pydoc.pager(full_show_string)
-	else:
-		print full_show_string
 
 
 
@@ -55,13 +35,7 @@ def clear():
 		serialization.push_json(arr_json_files, db)
 		print 'Clearing a bin from files'
 
-def delete(list): #to do: delete from bin and delete from DataBase full dict
-	with open('DB.txt', 'w') as db:
-		for delete_elem in list:
-			arr_json_files.remove(arr_json_files)
-			os.remove('/Users/Dima/.MyTrash/' + delete_elem)
-			print 'Removing' + str(delete_elem)
-		serialization.push_json(arr_json_files, db)
+
 
 
 def main():
@@ -71,19 +45,20 @@ def main():
 	parser.add_argument('--full', action = 'store_true', help = 'Full list of files')
 	parser.add_argument('-d', '--delete',nargs='+', help = 'Delete a file/files from bin')
 
+	my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 1000, 300)
 	args = parser.parse_args()
 
 	if args.list:
-		bin_show()
+		my_trash.bin_show()
 
 	if args.clear:
 		clear()
 
 	if args.full:
-		full_show()
+		my_trash.full_show()
 
-	if args.delete:
-		delete(args.delete)
+	# if args.delete:
+	# 	my_trash.remove_from_trash(args.delete)
 
 
 if __name__ == '__main__':
