@@ -87,3 +87,16 @@ class Trash:
 
     def remove_from_trash(self, list_of_files):
         pass
+
+    def delete_for_regex(self, regex):
+        pass
+
+    def recover(self, list_of_files):
+        for each_file in list_of_files:
+            for each_json_file in self.arr_json_files:
+                if each_file == each_json_file['name']:
+                    path_of_file = self.path_of_trash +  '/' + str(each_json_file['hash'])
+                    shutil.move(path_of_file, each_json_file['path'])
+                    self.arr_json_files.remove(each_json_file)
+                    print 'Recovering', each_json_file['name'], 'from bin'
+        serialization.push_json(self.arr_json_files, self.database)

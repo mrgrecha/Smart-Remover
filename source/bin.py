@@ -44,6 +44,7 @@ def main():
 	parser.add_argument('-c', '--clear', action = 'store_true', help = 'Clear all files in trash')
 	parser.add_argument('--full', action = 'store_true', help = 'Full list of files')
 	parser.add_argument('-d', '--delete',nargs='+', help = 'Delete a file/files from bin')
+	parser.add_argument('-r', '--recover', nargs = '+', help = 'Recover files from a trash bin')
 
 	my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 1000, 300)
 	args = parser.parse_args()
@@ -56,6 +57,9 @@ def main():
 
 	if args.full:
 		my_trash.full_show()
+
+	if args.recover:
+		my_trash.recover(args.recover)
 
 	# if args.delete:
 	# 	my_trash.remove_from_trash(args.delete)

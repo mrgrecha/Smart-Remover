@@ -32,4 +32,5 @@ def load_json():
 
 def push_json(list, file):
     """Push a list of dicts to JSON-file"""
-    json.dump(list, file, indent = 4)
+    with open(file,'w') as db:
+        json.dump(list, db, indent = 4)
