@@ -2,7 +2,7 @@ import os, argparse
 import file_object
 import serialization
 import datetime
-import pydoc
+import pydoc, shutil
 import constants
 
 if serialization.num_of_dicts() == 0:
@@ -42,26 +42,26 @@ def full_show():
 
 def clear():
 	with open('DB.txt', 'w') as db:
-		files_in_trash = os.listdir('/Users/Dima/.MyTrash')
+		files_in_trash = os.listdir('/Users/Dima/.MyTrash/')
 		for files in files_in_trash:
-			os.remove(files)
+			if os.path.isdir(files):
+				shutil.rmtree(files)
+			else:
+				os.remove(files)
 
 		arr_json_files = []
 		print 'Clearing a bin'
-		# for file in arr_json_files:
-		# 	arr_json_files.remove(file)
-
 
 		serialization.push_json(arr_json_files, db)
 		print 'Clearing a bin from files'
 
 def delete(list): #to do: delete from bin and delete from DataBase full dict
-	pass
-	# with open('DB.txt', 'w') as db:
-	# 	for delete_elem in list:
-	# 		arr_json_files.remove(arr_json_files[])
-	# 		os.remove('/Users/Dima/.MyTrash/' + delete_elem)
-	# 	serialization.push_json(arr_json_files, db)
+	with open('DB.txt', 'w') as db:
+		for delete_elem in list:
+			arr_json_files.remove(arr_json_files)
+			os.remove('/Users/Dima/.MyTrash/' + delete_elem)
+			print 'Removing' + str(delete_elem)
+		serialization.push_json(arr_json_files, db)
 
 
 def main():

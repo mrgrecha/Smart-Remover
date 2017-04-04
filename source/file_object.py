@@ -1,7 +1,7 @@
 
 # -*- coding: utf-8 -*-
 
-import os
+import os, random
 class FileObject(object):
     """A class of file in Smart RM """
     def __init__(self):
@@ -18,7 +18,7 @@ class FileObject(object):
         self.path = os.path.abspath(name)
         self.time_of_life = os.path.getctime(name)
         self.size = os.path.getsize(name)
-        self.hash = self.__hash__()  + self.time_of_life.__hash__()
+        self.hash = self.__hash__()  + self.time_of_life.__hash__() + random.randint(0, 2312314)
         self.IsInBin = True
 
 
@@ -30,6 +30,9 @@ class FileObject(object):
         self.hash = hash
         self.IsInBin = state
         self.size = size
+
+    def set_type(self, type):
+        self.type = type
 
     # random for deleting files with the same cache of name that are deleting at the same time
 

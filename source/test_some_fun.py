@@ -1,3 +1,10 @@
-import random
+import os
+import stat
+import verification
 
-print random.randint(0, 2132132)
+#os.chmod('/Users/Dima/.MyTrash', stat.ST_MODE)
+#print os.access('/Users/Dima/.MyTrash', os.W_OK)
+
+#print verification.check_for_removing('111')
+
+print verification.yes_or_no()

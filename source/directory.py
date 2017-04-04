@@ -14,10 +14,6 @@ class Folder(FileObject):
 
 
     def make_objects(self, name):
-        # self.name = name
-        # self.path = os.path.abspath(name)
-        # self.time_of_life = os.path.getctime(name)
-        # self.hash = self.__hash__() + self.time_of_life.__hash__()
         super(Folder, self).make_object(name)
         self.num_of_obj = self.add_number_of_objects(self.path)
         self.size = self.add_size(self.path)

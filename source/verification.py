@@ -22,3 +22,25 @@ def check_for_dir(list_of_dir):
             raise TypeError(msg)
     return list
 
+def check_for_removing(path): #TO DO: refactor it
+
+     x = False
+    # for abs_path, subfolders, files in os.walk(path):
+    #     for abs in abs_path:
+    #         if os.access(abs, os.W_OK):
+    #             for subs in subfolders:
+    #                 if os.access(subs, os.W_OK):
+    #                     for file in files:
+    #                         if os.access(file, os.W_OK):
+    #                             x = True
+    # return x
+
+def yes_or_no():
+    answer = str(raw_input('Y/N ?'))
+    if answer == 'Y' or answer =='y':
+        return True
+    elif answer == 'N' or answer == 'n':
+        return False
+    else:
+        print 'Error. Try again!'
+        yes_or_no()
