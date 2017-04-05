@@ -1,6 +1,7 @@
-import verification, file_object, os, shutil, serialization, directory, pydoc, datetime
+import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton
 
 class Trash:
+    __metaclass__ = singleton.Singleton()
     def __init__(self, path_of_trash, database, max_size, max_number):
         self.path_of_trash = path_of_trash
         self.arr_json_files = serialization.load_json()
@@ -66,6 +67,10 @@ class Trash:
         serialization.push_json(self.arr_json_files, self.database)
 
     def full_show(self):
+        """
+        Demonstrating a list of files with full discription
+        :return:
+        """
         if serialization.num_of_dicts() == 0:
             print 'No files in trash'
         full_show_string = ''
@@ -80,18 +85,37 @@ class Trash:
             print full_show_string
 
     def bin_show(self):
+        """
+        Demonstrating a list of files in trash bin
+        :return:
+        """
         if serialization.num_of_dicts() == 0:
             print 'No files in trash'
         for ind, file in enumerate(self.arr_json_files):
             print("{0}. {1}".format(ind + 1, file))
 
     def remove_from_trash(self, list_of_files):
+        """
+        Remove a file from trash
+        :param list_of_files:
+        :return:
+        """
         pass
 
     def delete_for_regex(self, regex):
+        """
+        Removing for regular expression
+        :param regex:
+        :return:
+        """
         pass
 
     def recover(self, list_of_files):
+        """
+        Recover files from trash bin to their locations
+        :param list_of_files:
+        :return:
+        """
         for each_file in list_of_files:
             for each_json_file in self.arr_json_files:
                 if each_file == each_json_file['name']:
