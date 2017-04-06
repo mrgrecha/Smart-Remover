@@ -2,13 +2,13 @@ import argparse
 import trash
 import os
 
-#TO DO: make one func in remove to add files, and other in file of class
-#TO DO: make removing without flags for files
+#TODO: make one func in remove to add files, and other in file of class
+#TODO: make removing without flags for files
 
 
 
 
- #TO DO : Add catch of exception if file doesn't exist, problems with '[]' in DB.txt
+ #TODO : Add catch of exception if file doesn't exist, problems with '[]' in DB.txt
 
 
 

@@ -14,7 +14,7 @@ class FileObject(object):
         self.IsInBin = False      #if bin has this file = true. else = false
 
     def make_object(self, name):
-        self.name = name
+        self.name = name.split('/')[-1]
         self.path = os.path.abspath(name)
         self.time_of_life = os.path.getctime(name)
         self.size = os.path.getsize(name)

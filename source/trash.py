@@ -34,6 +34,8 @@ class Trash:
 
         except TypeError as e:
             print 'Error:', e
+        except SystemError as e:
+            print 'Error:', e
         except Exception as e:
             print 'Error:', e
 
@@ -70,7 +72,7 @@ class Trash:
 
     def full_show(self):
         """
-        Demonstrating a list of files with full discription
+        Demonstrating a list of files with full description
         :return:
         """
         if serialization.num_of_dicts() == 0:
@@ -112,7 +114,6 @@ class Trash:
         :param regex:
         :return:
          """
-        print dir, regex
         for name in os.listdir(dir):
             path = os.path.join(dir, name)
             print name
@@ -125,7 +126,7 @@ class Trash:
 
 
 
-    def recover(self, list_of_files):
+    def recover(self, list_of_files, force = True):
         """
         Recover files from trash bin to their locations
         :param list_of_files:
@@ -135,7 +136,25 @@ class Trash:
             for each_json_file in self.arr_json_files:
                 if each_file == each_json_file['name']:
                     path_of_file = self.path_of_trash +  '/' + str(each_json_file['hash'])
-                    shutil.move(path_of_file, each_json_file['path'])
-                    self.arr_json_files.remove(each_json_file)
-                    print 'Recovering', each_json_file['name'], 'from bin'
+                    if force:
+                        try:
+                            os.renames(path_of_file, each_json_file['path'])
+                            self.arr_json_files.remove(each_json_file)
+                            print 'Recovering', each_json_file['name'], 'from bin'
+                        except Exception as e:
+                             print 'Error: ', e
+                    else:
+                        try:
+                            if os.path.exists(each_json_file['path']):
+                                print 'This file is exist. Would you like to replace it?'
+                                if verification.yes_or_no():
+                                    os.rename(path_of_file, each_json_file['path'])
+                                    self.arr_json_files.remove(each_json_file)
+                                    print 'Recovering', each_json_file['name'], 'from bin'
+                                else:
+                                    pass
+
+                        except OSError as e:
+                            print 'Error: ', e
+
         serialization.push_json(self.arr_json_files, self.database)
