@@ -9,6 +9,9 @@ def check_for_files_and_links(list_of_files):
         else:
             msg = str(file) + ' is not a file or link'
             raise TypeError(msg)
+        if not os.access(file, os.W_OK):
+            msg = 'You have not such permissions for ' + str(file)
+            raise SystemError(msg)
     return list
 
 def check_for_dir(list_of_dir):
@@ -44,3 +47,5 @@ def yes_or_no():
     else:
         print 'Error. Try again!'
         yes_or_no()
+
+
