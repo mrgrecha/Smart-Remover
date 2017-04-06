@@ -1,14 +1,16 @@
-import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton
+import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton, re
 
 class Trash:
-    __metaclass__ = singleton.Singleton()
+    __metaclass__ = singleton.Singleton
+
     def __init__(self, path_of_trash, database, max_size, max_number):
         self.path_of_trash = path_of_trash
-        self.arr_json_files = serialization.load_json()
+        self.arr_json_files = serialization.load_json(database)
         self.database = database
         self.max_size = max_size
         self.max_number = max_number
         self.max_list_height = 50
+
 
     def delete_files(self, list_of_files):
         """Delete a list of files with checking for folders"""
@@ -102,13 +104,26 @@ class Trash:
         """
         pass
 
-    def delete_for_regex(self, regex):
+    def delete_for_regex(self, dir, regex):
+
+        #TODO add recursive
         """
         Removing for regular expression
         :param regex:
         :return:
-        """
-        pass
+         """
+        print dir, regex
+        for name in os.listdir(dir):
+            path = os.path.join(dir, name)
+            print name
+            if re.search(regex, name) and os.path.isfile(path):
+                self.delete_files([path])
+            elif os.path.isdir(path) and re.search(regex, name):
+                self.delete_dir([path])
+            elif os.path.isdir(path) and not re.search(regex, name):
+                self.delete_for_regex(path, regex)
+
+
 
     def recover(self, list_of_files):
         """

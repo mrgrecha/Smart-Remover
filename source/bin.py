@@ -1,8 +1,6 @@
 import os, argparse
 import file_object
-import serialization
-import datetime
-import pydoc, shutil
+import serialization, shutil
 import trash
 
 
