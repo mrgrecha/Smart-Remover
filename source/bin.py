@@ -3,37 +3,6 @@ import file_object
 import serialization, shutil
 import trash
 
-
-def update(): #TODO: automatic update, maybe do it in another file
-	files_in_trash = os.listdir('/Users/Dima/.MyTrash')
-	n = files_in_trash.__len__()
-	index = 0
-	for files in files_in_trash:
-		arr_of_files = [file_object.FileObject() for i in xrange(n)]
-		arr_of_files[index].add_name(files)
-		index += 1
-
-
-
-
-
-
-def clear():
-	with open('DB.txt', 'w') as db:
-		files_in_trash = os.listdir('/Users/Dima/.MyTrash/')
-		for files in files_in_trash:
-			if os.path.isdir(files):
-				shutil.rmtree(files)
-			else:
-				os.remove(files)
-		arr_json_files = []
-		print 'Clearing a bin'
-		serialization.push_json(arr_json_files, db)
-		print 'Clearing a bin from files'
-
-
-
-
 def main():
 	parser = argparse.ArgumentParser(description='Bin utility')
 	parser.add_argument('-l', '--list', action = 'store_true', help = 'A list of files in trash')
@@ -51,7 +20,7 @@ def main():
 		my_trash.bin_show()
 
 	if args.clear:
-		clear()
+		my_trash.remove_from_trash(os.listdir(my_trash.path_of_trash))
 
 	if args.full:
 		my_trash.full_show()

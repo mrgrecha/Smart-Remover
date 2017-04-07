@@ -8,7 +8,7 @@ import os
 
 
 
- #TODO : Add catch of exception if file doesn't exist, problems with '[]' in DB.txt
+ #TODO : Add catch of exception if file doesn't exist, problems with '[]' in DB.json
 
 
 

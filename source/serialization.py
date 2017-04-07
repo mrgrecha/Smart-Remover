@@ -1,8 +1,9 @@
 import json
-
+import logging
+logging.basicConfig(level=logging.DEBUG, filename = 'log.py')
 def num_of_dicts():
     """Returns a number of dicts in file"""
-    with open ('DB.txt', 'r') as some_file:
+    with open ('DB.json', 'r') as some_file:
         i = 0
         for each_data in json.load(some_file):
             i += 1
@@ -20,7 +21,7 @@ def load_json(file):
                arr_json_files.append(each_data)
             return arr_json_files
     except:
-        print 'Error with database. Database is cleared.'
+        logging.error('Error with database. Database is cleared.')
         return []
 
 

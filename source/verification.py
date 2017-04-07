@@ -1,5 +1,6 @@
 import os, datetime, time, directory
-
+import logging
+logging.basicConfig(level=logging.DEBUG, filename = 'log.py')
 def check_for_files_and_links(list_of_files):
     """Return a list of only files in list that was given"""
     list = []
@@ -56,17 +57,17 @@ def check_for_trash_files(datebase, path_of_trash):
 
 def check_time(datebase, times):
     my_list = []
-    print 'These files are staying in the bin > %s' % datetime.datetime.fromtimestamp(times).strftime('%m month %d days %H hours %M minutes %S seconds')
+    logging.info('These files are staying in the bin > %s' % datetime.datetime.fromtimestamp(times).strftime('%m month %d days %H hours %M minutes %S seconds'))
     for index, json_dicts in enumerate(datebase):
         if time.time() - json_dicts['time_of_life'] >= times:
-            print json_dicts['name']
+            logging.info(json_dicts['name'])
             my_list.append(json_dicts)
     return my_list
 
 
 def check_memory(path_of_trash, size):
     if directory.Folder.add_size(path_of_trash) > size:
-        print 'The size of folder is much than size in config. Please delete files.'
+        logging.info('The size of folder is much than size in config. Please delete files.')
     else:
         return True
 
@@ -78,7 +79,7 @@ def yes_or_no():
     elif answer == 'N' or answer == 'n':
         return False
     else:
-        print 'Error. Try again!'
+        logging.error('Error. Try again!')
         yes_or_no()
 
 

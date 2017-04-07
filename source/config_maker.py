@@ -1,4 +1,4 @@
-import ConfigParser, argparse, json
+import ConfigParser, argparse, json, logging
 
 config = ConfigParser.RawConfigParser()
 parser = argparse.ArgumentParser(description='An utility for making configure files')
@@ -22,7 +22,7 @@ if args.default:
     json_dict['max_time'] = 999999999
     config.set('Section_Custom', 'policy', 'default')
     json_dict['policy'] = 'default'
-    print 'Default config is made'
+    logging.info('Default config is made')
 
 if args.custom:
     json_dict = {}
@@ -45,7 +45,7 @@ if args.custom:
     policy = raw_input('Enter a policy for your trash bin (Number, Memory, Time, Combo, Default, Force): ')
     config.set('Section_Custom', 'policy', policy)
     json_dict['policy'] = policy
-    print 'Custom config is made'
+    logging.info('Custom config is made')
 
 with open('config.cfg', 'wb') as configfile:
     config.write(configfile)
