@@ -8,12 +8,13 @@ parser.add_argument('-c', '--custom', action = 'store_true', help = 'Make a cust
 args = parser.parse_args()
 
 if args.default:
-    config.add_section('Section_Default')
-    config.set('Section_Default', 'path', '/Users/Dima/.MyTrash')
-    config.set('Section_Default', 'database', 'DB.txt')
-    config.set('Section_Default', 'max_size', 500000000)
-    config.set('Section_Default', 'max_num', 1000)
-    config.set('Section_Default', 'max_time', 999999999)
+    config.add_section('Section_Custom')
+    config.set('Section_Custom', 'path', '/Users/Dima/.MyTrash')
+    config.set('Section_Custom', 'database', 'DB.txt')
+    config.set('Section_Custom', 'max_size', 500000000)
+    config.set('Section_Custom', 'max_num', 1000)
+    config.set('Section_Custom', 'max_time', 999999999)
+    config.set('Section_Custom', 'policy', 'default')
     print 'Default config is made'
 
 if args.custom:
@@ -28,6 +29,8 @@ if args.custom:
     config.set('Section_Custom', 'max_time', max_time)
     max_num = raw_input('Enter a maximal number of trash bin files: ')
     config.set('Section_Custom', 'max_num', max_num)
+    policy = raw_input('Enter a policy for your trash bin (Number, Memory, Time, Combo, Default): ')
+    config.set('Section_Custom', 'policy', policy)
     print 'Custom config is made'
 
 with open('config.cfg', 'wb') as configfile:

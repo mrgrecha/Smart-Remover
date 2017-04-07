@@ -1,20 +1,24 @@
-import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton, re
+import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton, re, ConfigParser
 
 class Trash:
     __metaclass__ = singleton.Singleton
 
     #TODO add max time to init
     #TODO add checking for parent folders
+    #TODO add checking for the same names in dict
+    #TODO add checkong for number of files
 
-
-    def __init__(self, path_of_trash, database, max_size, max_number):
-        self.path_of_trash = path_of_trash
-        self.arr_json_files = serialization.load_json(database)
-        self.database = database
-        self.max_size = max_size
-        self.max_number = max_number
+    def __init__(self, path_of_config):
+        config = ConfigParser.RawConfigParser()
+        config.read(path_of_config)
+        self.path_of_trash = config.get('Section_Custom', 'path')
+        self.database = config.get('Section_Custom', 'database')
+        self.max_size = config.get('Section_Custom', 'max_size')
+        self.max_number = config.get('Section_Custom', 'max_num')
         self.max_list_height = 50
-        self.max_time = 100
+        self.max_time = config.getint('Section_Custom', 'max_time')
+        self.arr_json_files = serialization.load_json(self.database)
+        self.policy = config.get('Section_Custom', 'policy')
 
 
 

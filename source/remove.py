@@ -19,7 +19,7 @@ def main():
     parser.add_argument('-f', '--files', nargs='+', help = 'Remove files')
     parser.add_argument('--regular', help = 'Remove files for a regular expression')
 
-    my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 1000, 300)
+    my_trash = trash.Trash('config.cfg')
     args = parser.parse_args()
 
     if args.files:
