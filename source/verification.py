@@ -35,6 +35,24 @@ def check_for_dir(list_of_dir):
             raise SystemError(msg)
     return list
 
+def check_for_trash_files(datebase, path_of_trash):
+    """
+    For files that are named in list_of_files checking if they are in trash bin and in database
+    """
+    trash_set = set()
+    datebase_set = set()
+
+    for data in datebase:
+        datebase_set.add(str(data['hash']))
+    for file in os.listdir(path_of_trash):
+        trash_set.add(file)
+    trash_set.remove('.DS_Store')
+    if trash_set == datebase_set:
+        return True
+    elif trash_set > datebase_set:
+        raise ValueError(list(trash_set - datebase_set))
+    elif trash_set < datebase_set:
+        raise StandardError(list(datebase_set - trash_set))
 
 def yes_or_no():
     answer = str(raw_input('Y/N?'))

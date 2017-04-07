@@ -115,11 +115,10 @@ class Trash:
                         os.remove(os.path.join(self.path_of_trash, str(each_dict['hash'])))
                     self.arr_json_files.remove(self.arr_json_files[index])
                     print 'Removing from trash %s' % each_dict['name']
-                    
-                else:
-                    count += 1
+
         serialization.push_json(self.arr_json_files, self.database)
 
+        print length, count
         if length == count:
             print 'There are no such files'
 
@@ -141,6 +140,29 @@ class Trash:
                 self.delete_for_regex(path, regex)
 
 
+
+    def update(self):
+        try:
+            verification.check_for_trash_files(self.arr_json_files, self.path_of_trash)
+        except ValueError as e:
+            print '''Error: Unknown %s
+        Keep them there?
+        Y - keep them
+        N - delete them''' % (e)
+            if not verification.yes_or_no():
+                    for n in e[0]:
+                        path_of_n = os.path.join(self.path_of_trash, n)
+                        if os.path.isdir(path_of_n):
+                            shutil.rmtree(path_of_n)
+                        else:
+                            os.remove(path_of_n)
+
+        except StandardError as e:
+            for elem in e[0]:
+                for index, json_dict in enumerate(self.arr_json_files):
+                    if elem == str(json_dict['hash']):
+                        self.arr_json_files.remove(self.arr_json_files[index])
+        serialization.push_json(self.arr_json_files, self.database)
 
     def recover(self, list_of_files, force = True):
         """

@@ -26,10 +26,8 @@ def clear():
 				shutil.rmtree(files)
 			else:
 				os.remove(files)
-
 		arr_json_files = []
 		print 'Clearing a bin'
-
 		serialization.push_json(arr_json_files, db)
 		print 'Clearing a bin from files'
 
@@ -43,6 +41,8 @@ def main():
 	parser.add_argument('--full', action = 'store_true', help = 'Full list of files')
 	parser.add_argument('-d', '--delete',nargs='+', help = 'Delete a file/files from bin')
 	parser.add_argument('-r', '--recover', nargs = '+', help = 'Recover files from a trash bin')
+
+	parser.add_argument('-t', '--test', action = 'store_true', help = 'test')
 
 	my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 1000, 300)
 	args = parser.parse_args()
@@ -61,6 +61,9 @@ def main():
 
 	if args.delete:
 	 	my_trash.remove_from_trash(args.delete)
+
+	if args.test:
+		my_trash.update()
 
 
 if __name__ == '__main__':
