@@ -4,6 +4,9 @@ class Trash:
     __metaclass__ = singleton.Singleton
 
     #TODO add max time to init
+    #TODO add checking for parent folders
+
+
     def __init__(self, path_of_trash, database, max_size, max_number):
         self.path_of_trash = path_of_trash
         self.arr_json_files = serialization.load_json(database)
@@ -181,6 +184,27 @@ class Trash:
                     os.remove(path_of_file)
                 self.arr_json_files.remove(file)
         serialization.push_json(self.arr_json_files, self.database)
+
+    def memory_update(self):
+        max = 0
+        index = 0
+        name = ''
+        if verification.check_memory(self.path_of_trash, self.max_size):
+            pass
+        else:
+            print 'Clear the largest file?'
+            if verification.yes_or_no():
+                for i, elem in enumerate(self.arr_json_files):
+                    if elem['size'] > max:
+                        max = elem['size']
+                        index = i
+                        name = str(elem['hash'])
+                try:
+                    shutil.rmtree(os.path.join(self.path_of_trash, name))
+                except OSError:
+                    os.remove(os.path.join(self.path_of_trash, name))
+                self.arr_json_files.remove(self.arr_json_files[index])
+
 
     def recover(self, list_of_files, force = True):
         """

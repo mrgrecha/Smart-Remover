@@ -44,7 +44,7 @@ def main():
 
 	parser.add_argument('-t', '--test', action = 'store_true', help = 'test')
 
-	my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 1000, 300)
+	my_trash = trash.Trash('/Users/Dima/.MyTrash', 'DB.txt', 10000, 300)
 	args = parser.parse_args()
 
 	if args.list:
@@ -63,7 +63,7 @@ def main():
 	 	my_trash.remove_from_trash(args.delete)
 
 	if args.test:
-		my_trash.time_update()
+		my_trash.memory_update()
 
 
 if __name__ == '__main__':

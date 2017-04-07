@@ -1,4 +1,4 @@
-import os, datetime, time
+import os, datetime, time, directory
 
 def check_for_files_and_links(list_of_files):
     """Return a list of only files in list that was given"""
@@ -61,12 +61,14 @@ def check_time(datebase, times):
         if time.time() - json_dicts['time_of_life'] >= times:
             print json_dicts['name']
             my_list.append(json_dicts)
-
     return my_list
 
 
-def check_memory(path_of_trash):
-    pass
+def check_memory(path_of_trash, size):
+    if directory.Folder.add_size(path_of_trash) > size:
+        print 'The size of folder is much than size in config. Please delete files.'
+    else:
+        return True
 
 
 def yes_or_no():
