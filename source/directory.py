@@ -7,10 +7,10 @@ class Folder(FileObject):
         super(Folder, self).__init__()
         self.num_of_obj = 0
 
-    def make_from_json(self, path, time, name, type, hash, state, size, num):
-        super(Folder, self).make_from_json(path, time, name, type, hash, state, size)
-        self.num_of_obj = num
-        self.type = 'Directory'
+    def make_from_dict(self, some_dict):
+        super(Folder, self).make_from_dict(some_dict)
+        self.num_of_obj = some_dict['num_of_obj']
+        self.size = some_dict['size']
 
 
     def make_objects(self, name):

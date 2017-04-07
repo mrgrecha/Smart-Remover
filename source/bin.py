@@ -4,7 +4,7 @@ import serialization, shutil
 import trash
 
 
-def update(): #to do automatic update, maybe do it in another file
+def update(): #TODO: automatic update, maybe do it in another file
 	files_in_trash = os.listdir('/Users/Dima/.MyTrash')
 	n = files_in_trash.__len__()
 	index = 0
@@ -59,8 +59,8 @@ def main():
 	if args.recover:
 		my_trash.recover(args.recover)
 
-	# if args.delete:
-	# 	my_trash.remove_from_trash(args.delete)
+	if args.delete:
+	 	my_trash.remove_from_trash(args.delete)
 
 
 if __name__ == '__main__':

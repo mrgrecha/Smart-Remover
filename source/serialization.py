@@ -13,11 +13,15 @@ def num_of_dicts():
 
 def load_json(file):
     """Return a list of dicts in JSON-file"""
-    with open(file, 'r') as db:
-        arr_json_files = []
-        for each_data in json.load(db):
-           arr_json_files.append(each_data)
-        return arr_json_files
+    try:
+        with open(file, 'r') as db:
+            arr_json_files = []
+            for each_data in json.load(db):
+               arr_json_files.append(each_data)
+            return arr_json_files
+    except:
+        print 'Error with database. Database is cleared.'
+        return []
 
 
 def push_json(list, file):

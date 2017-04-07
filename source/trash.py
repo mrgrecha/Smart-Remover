@@ -27,10 +27,10 @@ class Trash:
                 arr_files[index].make_object(each_file)
                 os.rename(each_file, str(arr_files[index].hash))
                 shutil.move(str(arr_files[index].hash), self.path_of_trash)
+                self.arr_json_files.append(arr_files[index].__dict__)
                 print 'Removing', arr_files[index].name, 'to trash'
                 index += 1
-            for i in xrange(0, n):
-                self.arr_json_files.append(arr_files[i].__dict__)
+
 
         except TypeError as e:
             print 'Error:', e
@@ -104,11 +104,27 @@ class Trash:
         :param list_of_files:
         :return:
         """
-        pass
+        count = 0
+        length = len(list_of_files)
+        for file in list_of_files:
+            for index, each_dict in enumerate(self.arr_json_files):
+                if each_dict['name'] == file:
+                    try:
+                        shutil.rmtree(os.path.join(self.path_of_trash, str(each_dict['hash'])))
+                    except OSError:
+                        os.remove(os.path.join(self.path_of_trash, str(each_dict['hash'])))
+                    self.arr_json_files.remove(self.arr_json_files[index])
+                    print 'Removing from trash %s' % each_dict['name']
+                    
+                else:
+                    count += 1
+        serialization.push_json(self.arr_json_files, self.database)
+
+        if length == count:
+            print 'There are no such files'
 
     def delete_for_regex(self, dir, regex):
 
-        #TODO add recursive
         """
         Removing for regular expression
         :param regex:
