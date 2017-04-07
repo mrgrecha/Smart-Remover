@@ -1,0 +1,29 @@
+[
+    {
+        "hash": 1776720285, 
+        "name": "rr", 
+        "IsInBin": true, 
+        "time_of_life": 1491591567.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/rr", 
+        "type": "File", 
+        "size": 0
+    }, 
+    {
+        "hash": 1767130092, 
+        "name": "12345", 
+        "IsInBin": true, 
+        "time_of_life": 1491597043.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/12345", 
+        "type": "File", 
+        "size": 6
+    }, 
+    {
+        "hash": 1777403788, 
+        "name": "123", 
+        "IsInBin": true, 
+        "time_of_life": 1491603833.0, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/123", 
+        "type": "File", 
+        "size": 0
+    }
+]
