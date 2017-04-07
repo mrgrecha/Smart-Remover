@@ -1,4 +1,4 @@
-import os
+import os, datetime, time
 
 def check_for_files_and_links(list_of_files):
     """Return a list of only files in list that was given"""
@@ -53,6 +53,21 @@ def check_for_trash_files(datebase, path_of_trash):
         raise ValueError(list(trash_set - datebase_set))
     elif trash_set < datebase_set:
         raise StandardError(list(datebase_set - trash_set))
+
+def check_time(datebase, times):
+    my_list = []
+    print 'These files are staying in the bin > %s' % datetime.datetime.fromtimestamp(times).strftime('%m month %d days %H hours %M minutes %S seconds')
+    for index, json_dicts in enumerate(datebase):
+        if time.time() - json_dicts['time_of_life'] >= times:
+            print json_dicts['name']
+            my_list.append(json_dicts)
+
+    return my_list
+
+
+def check_memory(path_of_trash):
+    pass
+
 
 def yes_or_no():
     answer = str(raw_input('Y/N?'))

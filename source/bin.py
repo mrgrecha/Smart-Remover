@@ -63,7 +63,7 @@ def main():
 	 	my_trash.remove_from_trash(args.delete)
 
 	if args.test:
-		my_trash.update()
+		my_trash.time_update()
 
 
 if __name__ == '__main__':

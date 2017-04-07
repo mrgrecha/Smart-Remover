@@ -3,6 +3,7 @@ import verification, file_object, os, shutil, serialization, directory, pydoc, d
 class Trash:
     __metaclass__ = singleton.Singleton
 
+    #TODO add max time to init
     def __init__(self, path_of_trash, database, max_size, max_number):
         self.path_of_trash = path_of_trash
         self.arr_json_files = serialization.load_json(database)
@@ -10,6 +11,8 @@ class Trash:
         self.max_size = max_size
         self.max_number = max_number
         self.max_list_height = 50
+        self.max_time = 100
+
 
 
     def delete_files(self, list_of_files):
@@ -146,10 +149,10 @@ class Trash:
             verification.check_for_trash_files(self.arr_json_files, self.path_of_trash)
         except ValueError as e:
             print '''Error: Unknown %s
-        Keep them there?
-        Y - keep them
-        N - delete them''' % (e)
-            if not verification.yes_or_no():
+        Delete them ?
+        Y - delete them
+        N - keep them''' % (e)
+            if  verification.yes_or_no():
                     for n in e[0]:
                         path_of_n = os.path.join(self.path_of_trash, n)
                         if os.path.isdir(path_of_n):
@@ -162,6 +165,21 @@ class Trash:
                 for index, json_dict in enumerate(self.arr_json_files):
                     if elem == str(json_dict['hash']):
                         self.arr_json_files.remove(self.arr_json_files[index])
+        serialization.push_json(self.arr_json_files, self.database)
+
+    def time_update(self):
+        list_of_time_files = verification.check_time(self.arr_json_files, self.max_time)
+        print list_of_time_files
+        print 'Delete them?'
+        if verification.yes_or_no():
+            for file in list_of_time_files:
+                print file
+                path_of_file = os.path.join(self.path_of_trash, str(file['hash']))
+                if os.path.isdir(path_of_file):
+                    shutil.rmtree(path_of_file)
+                else:
+                    os.remove(path_of_file)
+                self.arr_json_files.remove(file)
         serialization.push_json(self.arr_json_files, self.database)
 
     def recover(self, list_of_files, force = True):
