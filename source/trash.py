@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton, re, ConfigParser
 import logging
 class Trash:
@@ -70,7 +71,7 @@ class Trash:
                     arr_files[index].set_type('File')
                 arr_files[index].make_object(each_file)
                 os.rename(each_file, str(arr_files[index].hash))
-                shutil.move(str(arr_files[index].hash), self.path_of_trash)
+                shutil.move(arr_files[index].hash, self.path_of_trash)
                 self.arr_json_files.append(arr_files[index].__dict__)
                 self.rootLogger.info('Removing ' + str(arr_files[index].name) + ' to trash')
                 index += 1
@@ -120,7 +121,7 @@ class Trash:
             logging.info('No files in trash')
         full_show_string = ''
         for index, each_file in enumerate(self.arr_json_files):
-            full_show_string += '%d %s %s %d %s %d Bytes \n' % (
+            full_show_string += '%d %s %s %s %s %d Bytes \n' % (
             index + 1, each_file['name'], each_file['type'], each_file['hash'],
             datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'), each_file['size'])
 

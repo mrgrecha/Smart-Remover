@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, datetime, time, directory
 import logging
 logging.basicConfig(level=logging.DEBUG, filename = 'log.log')

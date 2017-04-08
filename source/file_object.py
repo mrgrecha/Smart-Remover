@@ -1,5 +1,6 @@
 
 # -*- coding: utf-8 -*-
+import uuid
 
 import os, random
 class FileObject(object):
@@ -18,7 +19,7 @@ class FileObject(object):
         self.path = os.path.abspath(name)
         self.time_of_life = os.path.getctime(name)
         self.size = os.path.getsize(name)
-        self.hash = self.__hash__()  + self.time_of_life.__hash__() + random.randint(0, 2312314)
+        self.hash = str(uuid.uuid4())
         self.IsInBin = True
 
 
