@@ -3,10 +3,9 @@ import logging
 class Trash:
     __metaclass__ = singleton.Singleton
 
-    #TODO add max time to init
+
     #TODO add checking for parent folders
     #TODO add checking for the same names in dict
-    #TODO add checkong for number of files
     #TODO Undo
     #TODO check codes for recover
 
@@ -20,10 +19,25 @@ class Trash:
         self.max_list_height = 50
         self.max_time = config.getint('Section_Custom', 'max_time')
         self.arr_json_files = serialization.load_json(self.database)
-        self.policy = config.get('Section_Custom', 'policy')
+        self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
         self.silent = config.getboolean('Section_Custom', 'silent')
         self.rootLogger = logging.getLogger()
         self.set_logger(self.silent)
+        self.update()
+        self.check_policy()
+
+
+    def check_policy(self):
+        if self.policy_for_trash == 'time':
+            self.time_update()
+        elif self.policy_for_trash == 'memory':
+            self.memory_update()
+        elif self.policy_for_trash == 'combo':
+            self.time_update()
+            self.memory_update()
+        elif self.path_of_trash == 'default':
+            pass
+
 
     def set_logger(self, silent):
         if self.silent:

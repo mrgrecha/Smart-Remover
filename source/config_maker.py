@@ -20,8 +20,10 @@ def main():
         json_dict['max_num'] = 1000
         config.set('Section_Custom', 'max_time', 999999999)
         json_dict['max_time'] = 999999999
-        config.set('Section_Custom', 'policy', 'default')
-        json_dict['policy'] = 'default'
+        config.set('Section_Custom', 'policy_for_program', 'soft')
+        json_dict['policy_for_program'] = 'soft'
+        config.set('Section_Custom', 'policy_for_trash', 'default')
+        json_dict['policy_for_trash'] = 'default'
         config.set('Section_Custom', 'silent', 'False')
         json_dict['silent'] = 'False'
         logging.info('Default config is made')
@@ -44,9 +46,12 @@ def main():
         max_num = raw_input('Enter a maximal number of trash bin files: ')
         config.set('Section_Custom', 'max_num', max_num)
         json_dict['max_num'] = max_num
-        policy = raw_input('Enter a policy for your trash bin (Number, Memory, Time, Combo, Default, Force): ')
-        config.set('Section_Custom', 'policy', policy)
-        json_dict['policy'] = policy
+        policy_for_trash = raw_input('Enter a policy for your trash bin (Number, Memory, Time, Combo, Default): ')
+        config.set('Section_Custom', 'policy_for_trash', policy_for_trash)
+        json_dict['policy_for_trash'] = policy_for_trash
+        policy_for_program = raw_input('Enter a policy for your trash bin (soft, force): ')
+        config.set('Section_Custom', 'policy_for_program', policy_for_program)
+        json_dict['policy_for_program'] = policy_for_program
         silent = raw_input('Enter True if you want to activate silent mode, False if you want print logs: ')
         config.set('Section_Custom', 'silent', silent)
         json_dict['silent'] = silent

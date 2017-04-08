@@ -1,0 +1,10 @@
+{
+    "silent": "False", 
+    "database": "DB.json", 
+    "policy_for_trash": "default", 
+    "max_time": 999999999, 
+    "policy_for_program": "soft", 
+    "path": "/Users/Dima/.MyTrash", 
+    "max_num": 1000, 
+    "max_size": 500000000
+}
