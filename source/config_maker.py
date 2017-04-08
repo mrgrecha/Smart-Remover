@@ -22,6 +22,8 @@ if args.default:
     json_dict['max_time'] = 999999999
     config.set('Section_Custom', 'policy', 'default')
     json_dict['policy'] = 'default'
+    config.set('Section_Custom', 'silent', 'False')
+    json_dict['silent'] = 'False'
     logging.info('Default config is made')
 
 if args.custom:
@@ -45,6 +47,9 @@ if args.custom:
     policy = raw_input('Enter a policy for your trash bin (Number, Memory, Time, Combo, Default, Force): ')
     config.set('Section_Custom', 'policy', policy)
     json_dict['policy'] = policy
+    silent = raw_input('Enter True if you want to activate silent mode, False if you want print logs: ')
+    config.set('Section_Custom', 'silent', silent)
+    json_dict['silent'] = silent
     logging.info('Custom config is made')
 
 with open('config.cfg', 'wb') as configfile:

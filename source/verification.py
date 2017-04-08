@@ -1,6 +1,6 @@
 import os, datetime, time, directory
 import logging
-logging.basicConfig(level=logging.DEBUG, filename = 'log.py')
+logging.basicConfig(level=logging.DEBUG, filename = 'log.log')
 def check_for_files_and_links(list_of_files):
     """Return a list of only files in list that was given"""
     list = []
@@ -12,7 +12,7 @@ def check_for_files_and_links(list_of_files):
             list.append(file)
         else:
             msg = '%s is not a file or link' % file
-            raise TypeError(msg)
+            raise SystemError(msg)
         if not os.access(file, os.W_OK):
             msg = 'You have not such permissions for %s' % file
             raise SystemError(msg)
@@ -30,7 +30,7 @@ def check_for_dir(list_of_dir):
             list.append(dir)
         else:
             msg = '%s is not a directory'%dir
-            raise TypeError(msg)
+            raise SError(msg)
         if not os.access(dir, os.W_OK):
             msg = 'You have not such permissions for %s' % dir
             raise SystemError(msg)

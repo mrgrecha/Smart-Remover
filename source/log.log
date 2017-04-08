@@ -2,3 +2,24 @@ INFO:root:1 rr File 1776720285 2017-04-07 21:59:27 0 Bytes
 2 12345 File 1767130092 2017-04-07 23:30:43 6 Bytes 
 3 123 File 1777403788 2017-04-08 01:23:53 0 Bytes 
 
+INFO:root:Removing 222 to trash
+INFO:root:Removing zzz to trash
+INFO:root:Removing w to trash
+INFO:root:Removing v to trash
+INFO:root:Removing f to trash
+INFO:root:Removing j to trash
+INFO:root:Removing v to trash
+INFO:root:Removing kk to trash
+INFO:root:Removing m to trash
+ERROR:root:Error:m is not exist
+INFO:root:Removing cc to trash
+INFO:root:Removing dima to trash
+2017-04-08 08:08:53,116 [MainThread  ] [INFO ]  Removing dima to trash
+INFO:root:Removing 123 to trash
+INFO:root:Removing mm to trash
+INFO:root:Removing vbv to trash
+INFO:root:Removing ww to trash
+2017-04-08 08:20:52,120[MainThread  ][INFO ] Removing ww to trash
+INFO:root:Removing mom to trash
+2017-04-08 08:52:44,850[MainThread  ][INFO ] Removing mom to trash
+INFO:root:Removing kok to trash

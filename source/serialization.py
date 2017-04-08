@@ -1,6 +1,6 @@
 import json
 import logging
-logging.basicConfig(level=logging.DEBUG, filename = 'log.py')
+
 def num_of_dicts():
     """Returns a number of dicts in file"""
     with open ('DB.json', 'r') as some_file:
