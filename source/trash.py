@@ -243,7 +243,7 @@ class Trash:
                         try:
                             os.renames(path_of_file, each_json_file['path'])
                             self.arr_json_files.remove(each_json_file)
-                            self.rootLogger.info('Recovering', each_json_file['name'], 'from bin')
+                            self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
                         except OSError as e:
                             self.rootLogger.error('Error: ', e)
                             return 3
@@ -254,9 +254,7 @@ class Trash:
                                 if verification.yes_or_no():
                                     os.rename(path_of_file, each_json_file['path'])
                                     self.arr_json_files.remove(each_json_file)
-                                    self.rootLogger.info('Recovering', each_json_file['name'], 'from bin')
-                                else:
-                                    pass
+                                    self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
 
                         except OSError as e:
                             logging.error( 'Error: ', e)
@@ -264,3 +262,9 @@ class Trash:
 
         serialization.push_json(self.arr_json_files, self.database)
         return 0
+
+    def get_names(self):
+        list_of_names = []
+        for items in self.arr_json_files:
+            list_of_names.append(items['name'])
+        return list_of_names
