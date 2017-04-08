@@ -13,7 +13,7 @@ def main():
 
 	parser.add_argument('-t', '--test', action = 'store_true', help = 'test')
 
-	my_trash = trash.Trash('config.cfg')
+	my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
 	args = parser.parse_args()
 
 	if args.list:

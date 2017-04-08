@@ -11,10 +11,9 @@ setup(
      entry_points={
         'console_scripts':
             [
-            'smart = source.main:main',
-            'bin = source.bin:main',
+            'trash = source.bin:main',
             'srm = source.remove:main',
-            'rec = source.recover:main'
+            'config = source.config_maker:main'
             ]
         },
        include_package_data=True

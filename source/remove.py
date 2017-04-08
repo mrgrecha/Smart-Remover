@@ -19,7 +19,8 @@ def main():
     parser.add_argument('-f', '--files', nargs='+', help = 'Remove files')
     parser.add_argument('--regular', help = 'Remove files for a regular expression')
 
-    my_trash = trash.Trash('config.cfg')
+    my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
+
     args = parser.parse_args()
 
     if args.files:

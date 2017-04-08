@@ -31,7 +31,7 @@ class Trash:
             silentHandler.setLevel(logging.CRITICAL)
             self.rootLogger.addHandler(silentHandler)
         else:
-            #logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
+            logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
             #
             # fileHandler = logging.FileHandler(filename='log.log')
             # fileHandler.setFormatter(logFormatter)
