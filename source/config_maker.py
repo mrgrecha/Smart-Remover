@@ -1,14 +1,19 @@
-import ConfigParser, argparse, json, logging
+import ConfigParser
+import argparse
+import json
+import logging
+
+
 def main():
     config = ConfigParser.RawConfigParser()
     parser = argparse.ArgumentParser(description='An utility for making configure files')
-    parser.add_argument('-d', '--default', action = 'store_true', help = 'Make a default config. Has only DateBase and path of trash bin')
-    parser.add_argument('-c', '--custom', action = 'store_true', help = 'Make a custom config with user input.')
+    parser.add_argument('-d', '--default', action='store_true', help='Make a default config.')
+    parser.add_argument('-c', '--custom', action='store_true', help='Make a custom config with user input.')
 
     args = parser.parse_args()
+    json_dict = {}
 
     if args.default:
-        json_dict = {}
         config.add_section('Section_Custom')
         config.set('Section_Custom', 'path', '/Users/Dima/.MyTrash')
         json_dict['path'] = '/Users/Dima/.MyTrash'
@@ -29,7 +34,6 @@ def main():
         logging.info('Default config is made')
 
     if args.custom:
-        json_dict = {}
         config.add_section('Section_Custom')
         path = raw_input('Enter a path of trash bin: ')
         config.set('Section_Custom', 'path',  path)

@@ -1,14 +1,31 @@
 # -*- coding: utf-8 -*-
-import verification, file_object, os, shutil, serialization, directory, pydoc, datetime, singleton, re, ConfigParser
+import verification
+import file_object
+import os
+import shutil
+import serialization
+import directory
+import pydoc
+import datetime
+import singleton
+import re
+import ConfigParser
 import logging
+
+
 class Trash:
     __metaclass__ = singleton.Singleton
-
-
-    #TODO add checking for parent folders
-    #TODO add checking for the same names in dict
-    #TODO Undo
-    #TODO check codes for recover
+    # TODO add checking for parent folders +
+    # TODO add checking for the same names in dict
+    # TODO Undo
+    # TODO check codes for recover
+    # TODO dry run
+    # TODO policy
+    # TODO yes to all
+    # TODO tests
+    # TODO refactor code
+    # TODO color terminal
+    # TODO checks
 
     def __init__(self, path_of_config):
         config = ConfigParser.RawConfigParser()
@@ -23,10 +40,9 @@ class Trash:
         self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
         self.silent = config.getboolean('Section_Custom', 'silent')
         self.rootLogger = logging.getLogger()
-        self.set_logger(self.silent)
+        self.set_logger()
         self.update()
         self.check_policy()
-
 
     def check_policy(self):
         if self.policy_for_trash == 'time':
@@ -39,8 +55,7 @@ class Trash:
         elif self.path_of_trash == 'default':
             pass
 
-
-    def set_logger(self, silent):
+    def set_logger(self):
         if self.silent:
             silentHandler = logging.StreamHandler()
             silentHandler.setLevel(logging.CRITICAL)
@@ -61,7 +76,7 @@ class Trash:
         """Delete a list of files with checking for folders"""
         try:
             checked_list = verification.check_for_files_and_links(list_of_files)
-            n = checked_list.__len__()
+            n = len(checked_list)
             arr_files = [file_object.FileObject() for i in xrange(0, n + 1)]
             index = 0
             for each_file in checked_list:
@@ -76,7 +91,6 @@ class Trash:
                 self.rootLogger.info('Removing ' + str(arr_files[index].name) + ' to trash')
                 index += 1
 
-
         except SystemError as e:
             logging.error('Error:' + str(e))
             return 1
@@ -86,7 +100,7 @@ class Trash:
 
     def delete_dir(self, list_of_dirs):
         """
-        Delete a list of directories with chechiing
+        Delete a list of directories with checking
         :param list_of_dirs:
         :return:
         """
@@ -105,10 +119,10 @@ class Trash:
             for i in xrange(0, n):
                 self.arr_json_files.append(arr_dirs[i].__dict__)
 
-
         except SystemError as e:
             self.rootLogger.error('Error:' + str(e))
-            return 1
+        except OSError as e:
+            self.rootLogger.error('Error:' + str(e) + 'can not delete a parent folder')
         serialization.push_json(self.arr_json_files, self.database)
         return 0
 
@@ -138,8 +152,8 @@ class Trash:
         """
         if serialization.num_of_dicts() == 0:
             logging.info('No files in trash')
-        for ind, file in enumerate(self.arr_json_files):
-            logging.info("{0}. {1}".format(ind + 1, file))
+        for ind, json_file in enumerate(self.arr_json_files):
+            logging.info("{0}. {1}".format(ind + 1, json_file))
         return 0
 
     def remove_from_trash(self, list_of_files):
@@ -150,9 +164,9 @@ class Trash:
         """
         count = 0
         length = len(list_of_files)
-        for file in list_of_files:
+        for path in list_of_files:
             for index, each_dict in enumerate(self.arr_json_files):
-                if each_dict['name'] == file:
+                if each_dict['name'] == path:
                     try:
                         shutil.rmtree(os.path.join(self.path_of_trash, str(each_dict['hash'])))
                     except OSError:
@@ -167,15 +181,16 @@ class Trash:
             self.rootLogger.info('There are no such files')
         return 0
 
-    def delete_for_regex(self, dir, regex):
+    def delete_for_regex(self, cur_dir, regex):
 
         """
         Removing for regular expression
         :param regex:
+        :param cur_dir: current directory from which starts removing
         :return:
          """
-        for name in os.listdir(dir):
-            path = os.path.join(dir, name)
+        for name in os.listdir(cur_dir):
+            path = os.path.join(cur_dir, name)
             if re.search(regex, name) and os.path.isfile(path):
                 self.delete_files([path])
             elif os.path.isdir(path) and re.search(regex, name):
@@ -183,8 +198,6 @@ class Trash:
             elif os.path.isdir(path) and not re.search(regex, name):
                 self.delete_for_regex(path, regex)
         return 0
-
-
 
     def update(self):
         try:
@@ -194,7 +207,7 @@ class Trash:
         Delete them ?
         Y - delete them
         N - keep them''' % (e))
-            if  verification.yes_or_no():
+            if verification.yes_or_no():
                     for n in e[0]:
                         path_of_n = os.path.join(self.path_of_trash, n)
                         if os.path.isdir(path_of_n):
@@ -214,17 +227,17 @@ class Trash:
         self.rootLogger.info(list_of_time_files)
         self.rootLogger.info('Delete them?')
         if verification.yes_or_no():
-            for file in list_of_time_files:
-                path_of_file = os.path.join(self.path_of_trash, str(file['hash']))
+            for path in list_of_time_files:
+                path_of_file = os.path.join(self.path_of_trash, str(path['hash']))
                 if os.path.isdir(path_of_file):
                     shutil.rmtree(path_of_file)
                 else:
                     os.remove(path_of_file)
-                self.arr_json_files.remove(file)
+                self.arr_json_files.remove(path)
         serialization.push_json(self.arr_json_files, self.database)
 
     def memory_update(self):
-        max = 0
+        max_size_elem = 0
         index = 0
         name = ''
         if verification.check_memory(self.path_of_trash, self.max_size):
@@ -233,8 +246,8 @@ class Trash:
             logging.info('Clear the largest file?')
             if verification.yes_or_no():
                 for i, elem in enumerate(self.arr_json_files):
-                    if elem['size'] > max:
-                        max = elem['size']
+                    if elem['size'] > max_size_elem:
+                        max_size_elem = elem['size']
                         index = i
                         name = str(elem['hash'])
                 try:
@@ -243,17 +256,17 @@ class Trash:
                     os.remove(os.path.join(self.path_of_trash, name))
                 self.arr_json_files.remove(self.arr_json_files[index])
 
-
-    def recover(self, list_of_files, force = True):
+    def recover(self, list_of_files, force=True):
         """
         Recover files from trash bin to their locations
         :param list_of_files:
+        :param force:
         :return:
         """
         for each_file in list_of_files:
             for each_json_file in self.arr_json_files:
                 if each_file == each_json_file['name']:
-                    path_of_file = self.path_of_trash +  '/' + str(each_json_file['hash'])
+                    path_of_file = self.path_of_trash+'/'+str(each_json_file['hash'])
                     if force:
                         try:
                             os.renames(path_of_file, each_json_file['path'])
@@ -272,13 +285,17 @@ class Trash:
                                     self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
 
                         except OSError as e:
-                            logging.error( 'Error: ', e)
+                            logging.error('Error: ', e)
                             return 3
 
         serialization.push_json(self.arr_json_files, self.database)
         return 0
 
     def get_names(self):
+        """
+
+        :return: list of names of files in Database
+        """
         list_of_names = []
         for items in self.arr_json_files:
             list_of_names.append(items['name'])

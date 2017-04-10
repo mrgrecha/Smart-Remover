@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import uuid, time
+import uuid
+import time
+import os
 
-import os, random
+
 class FileObject(object):
     """A class of file in Smart RM """
     def __init__(self):
@@ -11,7 +13,7 @@ class FileObject(object):
         self.type = ''
         self.hash = 0
         self.size = 0
-        self.IsInBin = False      #if bin has this file = true. else = false
+        self.IsInBin = False      # if bin has this file = true. else = false
 
     def make_object(self, name):
         self.name = name.split('/')[-1]
@@ -20,7 +22,6 @@ class FileObject(object):
         self.size = os.path.getsize(name)
         self.hash = str(uuid.uuid4())
         self.IsInBin = True
-
 
     def make_from_json(self, path, time, name, type, hash, state, size):
         self.path = path
@@ -31,8 +32,8 @@ class FileObject(object):
         self.IsInBin = state
         self.size = size
 
-    def set_type(self, type):
-        self.type = type
+    def set_type(self, kind):
+        self.type = kind
 
     # random for deleting files with the same cache of name that are deleting at the same time
 
@@ -54,16 +55,16 @@ class FileObject(object):
         self.IsInBin = some_dict['IsInBin']
         self.size = some_dict['size']
 
-        #ini-file ;для читаемости
+        # ini-file ;для читаемости
 
-        #наследовать от файла для см-линка, файла, папки
+        # наследовать от файла для см-линка, файла, папки
 
-        #dry-run? и silence
+        # dry-run? и silence
 
-        #системная папка
+        # системная папка
 
-        #обнаружение циклов?,
+        # обнаружение циклов?,
 
-        #для удаления по регулярке - как искать?
+        # для удаления по регулярке - как искать?
 
-        #отдельно показать допы?
+        # отдельно показать допы?

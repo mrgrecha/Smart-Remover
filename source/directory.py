@@ -1,5 +1,6 @@
-from file_object import FileObject
 import os
+from file_object import FileObject
+
 
 class Folder(FileObject):
     """Class for folders in Smart RM"""
@@ -11,7 +12,6 @@ class Folder(FileObject):
         super(Folder, self).make_from_dict(some_dict)
         self.num_of_obj = some_dict['num_of_obj']
         self.size = some_dict['size']
-
 
     def make_objects(self, name):
         super(Folder, self).make_object(name)
