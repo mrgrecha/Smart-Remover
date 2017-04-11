@@ -11,16 +11,15 @@ import singleton
 import re
 import ConfigParser
 import logging
+import termcolor
 from dry_run import dry_run
-
 
 class Trash:
     __metaclass__ = singleton.Singleton
     # TODO add checking for parent folders +
     # TODO add checking for the same names in dict
     # TODO Undo
-    # TODO check codes for recover
-    # TODO dry run
+    # TODO dry run + 21.49 / 11
     # TODO policy
     # TODO yes to all
     # TODO tests
@@ -30,22 +29,35 @@ class Trash:
     # TODO add default setting if config does not exist
 
     def __init__(self, path_of_config):
-        config = ConfigParser.RawConfigParser()
-        config.read(path_of_config)
-        self.path_of_trash = config.get('Section_Custom', 'path')
-        self.database = config.get('Section_Custom', 'database')
-        self.max_size = config.get('Section_Custom', 'max_size')
-        self.max_number = config.get('Section_Custom', 'max_num')
-        self.max_list_height = 50
-        self.max_time = config.getint('Section_Custom', 'max_time')
-        self.arr_json_files = serialization.load_json(self.database)
-        self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
-        self.silent = config.getboolean('Section_Custom', 'silent')
-        self.dried = config.getboolean('Section_Custom', 'dry_run')
+        if os.path.exists(path_of_config):
+            config = ConfigParser.RawConfigParser()
+            config.read(path_of_config)
+            self.path_of_trash = config.get('Section_Custom', 'path')
+            self.database = config.get('Section_Custom', 'database')
+            self.max_size = config.getint('Section_Custom', 'max_size')
+            self.max_number = config.getint('Section_Custom', 'max_num')
+            self.max_list_height = 50
+            self.max_time = config.getint('Section_Custom', 'max_time')
+            self.arr_json_files = serialization.load_json(self.database)
+            self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
+            self.silent = config.getboolean('Section_Custom', 'silent')
+            self.dried = config.getboolean('Section_Custom', 'dry_run')
+        else:
+            self.path_of_trash = '/Users/Dima/.MyTrash'
+            self.database = 'DB.json'
+            self.max_size = 500000000
+            self.max_number = 1000
+            self.max_list_height = 50
+            self.max_time = 1000
+            self.arr_json_files = serialization.load_json(self.database)
+            self.policy_for_trash = 'default'
+            self.silent = False
+            self.dried = False
         self.rootLogger = logging.getLogger()
         self.set_logger()
         self.update()
         self.check_policy()
+
 
     def check_policy(self):
         if self.policy_for_trash == 'time':
@@ -144,8 +156,8 @@ class Trash:
         full_show_string = ''
         for index, each_file in enumerate(self.arr_json_files):
             full_show_string += '%d %s %s %s %s %d Bytes \n' % (
-            index + 1, each_file['name'], each_file['type'], each_file['hash'],
-            datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'), each_file['size'])
+            index + 1, termcolor.colored(each_file['name'], 'red'), termcolor.colored(each_file['type'], 'green'), each_file['hash'],
+            termcolor.colored(datetime.datetime.fromtimestamp(each_file['time_of_life']).strftime('%Y-%m-%d %H:%M:%S'), 'blue'), each_file['size'])
 
         if len(self.arr_json_files) > self.max_list_height:
             pydoc.pager(full_show_string)
