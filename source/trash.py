@@ -11,6 +11,7 @@ import singleton
 import re
 import ConfigParser
 import logging
+from dry_run import dry_run
 
 
 class Trash:
@@ -23,9 +24,10 @@ class Trash:
     # TODO policy
     # TODO yes to all
     # TODO tests
-    # TODO refactor code
+    # TODO refactor code + 1.20 / 11
     # TODO color terminal
     # TODO checks
+    # TODO add default setting if config does not exist
 
     def __init__(self, path_of_config):
         config = ConfigParser.RawConfigParser()
@@ -39,6 +41,7 @@ class Trash:
         self.arr_json_files = serialization.load_json(self.database)
         self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
         self.silent = config.getboolean('Section_Custom', 'silent')
+        self.dried = config.getboolean('Section_Custom', 'dry_run')
         self.rootLogger = logging.getLogger()
         self.set_logger()
         self.update()
@@ -72,31 +75,45 @@ class Trash:
             consoleHandler.setLevel(logging.INFO)
             self.rootLogger.addHandler(consoleHandler)
 
+    @dry_run
+    def real_delete(self, files_to_delete, length):
+        arr_files = [file_object.FileObject() for i in xrange(0, length + 1)]
+        index = 0
+        for each_file in files_to_delete:
+            if os.path.islink(each_file[index]):
+                arr_files[index].set_type('Link')
+            else:
+                arr_files[index].set_type('File')
+            arr_files[index].make_object(each_file)
+            os.rename(each_file, str(arr_files[index].hash))
+            shutil.move(arr_files[index].hash, self.path_of_trash)
+            self.arr_json_files.append(arr_files[index].__dict__)
+            index += 1
+
     def delete_files(self, list_of_files):
         """Delete a list of files with checking for folders"""
         try:
             checked_list = verification.check_for_files_and_links(list_of_files)
-            n = len(checked_list)
-            arr_files = [file_object.FileObject() for i in xrange(0, n + 1)]
-            index = 0
-            for each_file in checked_list:
-                if os.path.islink(each_file[index]):
-                    arr_files[index].set_type('Link')
-                else:
-                    arr_files[index].set_type('File')
-                arr_files[index].make_object(each_file)
-                os.rename(each_file, str(arr_files[index].hash))
-                shutil.move(arr_files[index].hash, self.path_of_trash)
-                self.arr_json_files.append(arr_files[index].__dict__)
-                self.rootLogger.info('Removing ' + str(arr_files[index].name) + ' to trash')
-                index += 1
+            length = len(checked_list)
+            self.real_delete(checked_list, length)
+            for removing_file in checked_list:
+                self.rootLogger.info('Removing ' + removing_file + ' to trash')
 
         except SystemError as e:
             logging.error('Error:' + str(e))
-            return 1
 
         serialization.push_json(self.arr_json_files, self.database)
-        return 0
+
+    @dry_run
+    def real_delete_dir(self, dirs_to_delete, length):
+        arr_dirs = [directory.Folder() for i in xrange(0, length + 1)]
+        index = 0
+        for each_dir in dirs_to_delete:
+            directory.Folder.make_objects(arr_dirs[index], each_dir)
+            os.rename(each_dir, str(arr_dirs[index].hash))
+            shutil.move(str(arr_dirs[index].hash), self.path_of_trash)
+            self.arr_json_files.append(arr_dirs[index].__dict__)
+            index += 1
 
     def delete_dir(self, list_of_dirs):
         """
@@ -106,25 +123,16 @@ class Trash:
         """
         try:
             checked_list_of_dirs = verification.check_for_dir(list_of_dirs)
-            n = checked_list_of_dirs.__len__()
-            arr_dirs = [directory.Folder() for i in xrange(0, n + 1)]
-            index = 0
+            length = len(checked_list_of_dirs)
+            self.real_delete_dir(checked_list_of_dirs, length)
             for each_dir in checked_list_of_dirs:
-                directory.Folder.make_objects(arr_dirs[index], each_dir)
-                os.rename(each_dir, str(arr_dirs[index].hash))
-                shutil.move(str(arr_dirs[index].hash), self.path_of_trash)
-                self.rootLogger.info('Removing directory ' + arr_dirs[index].name + ' to trash')
-                index += 1
-
-            for i in xrange(0, n):
-                self.arr_json_files.append(arr_dirs[i].__dict__)
+                self.rootLogger.info('Removing directory ' + each_dir + ' to trash')
 
         except SystemError as e:
             self.rootLogger.error('Error:' + str(e))
         except OSError as e:
             self.rootLogger.error('Error:' + str(e) + 'can not delete a parent folder')
         serialization.push_json(self.arr_json_files, self.database)
-        return 0
 
     def full_show(self):
         """
@@ -143,7 +151,6 @@ class Trash:
             pydoc.pager(full_show_string)
         else:
             logging.info(full_show_string)
-        return 0
 
     def bin_show(self):
         """
@@ -154,7 +161,16 @@ class Trash:
             logging.info('No files in trash')
         for ind, json_file in enumerate(self.arr_json_files):
             logging.info("{0}. {1}".format(ind + 1, json_file))
-        return 0
+
+    @dry_run
+    def real_remove_from_trash(self, path):
+        for index, each_dict in enumerate(self.arr_json_files):
+            if each_dict['name'] == path:
+                try:
+                    shutil.rmtree(os.path.join(self.path_of_trash, str(each_dict['hash'])))
+                except OSError:
+                    os.remove(os.path.join(self.path_of_trash, str(each_dict['hash'])))
+                self.arr_json_files.remove(self.arr_json_files[index])
 
     def remove_from_trash(self, list_of_files):
         """
@@ -165,21 +181,14 @@ class Trash:
         count = 0
         length = len(list_of_files)
         for path in list_of_files:
-            for index, each_dict in enumerate(self.arr_json_files):
-                if each_dict['name'] == path:
-                    try:
-                        shutil.rmtree(os.path.join(self.path_of_trash, str(each_dict['hash'])))
-                    except OSError:
-                        os.remove(os.path.join(self.path_of_trash, str(each_dict['hash'])))
-                    self.arr_json_files.remove(self.arr_json_files[index])
-                    self.rootLogger.info('Removing from trash %s' % each_dict['name'])
+           self.real_remove_from_trash(path)
+           self.rootLogger.info('Removing from trash %s' % path)
 
         serialization.push_json(self.arr_json_files, self.database)
 
         print length, count
         if length == count:
             self.rootLogger.info('There are no such files')
-        return 0
 
     def delete_for_regex(self, cur_dir, regex):
 
@@ -197,7 +206,6 @@ class Trash:
                 self.delete_dir([path])
             elif os.path.isdir(path) and not re.search(regex, name):
                 self.delete_for_regex(path, regex)
-        return 0
 
     def update(self):
         try:
@@ -255,6 +263,16 @@ class Trash:
                 except OSError:
                     os.remove(os.path.join(self.path_of_trash, name))
                 self.arr_json_files.remove(self.arr_json_files[index])
+    @dry_run
+    def force_recover(self, path_of_file, each_json_file):
+        os.renames(path_of_file, each_json_file['path'])
+        self.arr_json_files.remove(each_json_file)
+
+    def soft_recover(self, path_of_file, each_json_file):
+        self.rootLogger.info('This file is exist. Would you like to replace it?')
+        if verification.yes_or_no():
+            os.rename(path_of_file, each_json_file['path'])
+            self.arr_json_files.remove(each_json_file)
 
     def recover(self, list_of_files, force=True):
         """
@@ -269,27 +287,20 @@ class Trash:
                     path_of_file = self.path_of_trash+'/'+str(each_json_file['hash'])
                     if force:
                         try:
-                            os.renames(path_of_file, each_json_file['path'])
-                            self.arr_json_files.remove(each_json_file)
+                            self.force_recover(path_of_file, each_json_file)
                             self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
                         except OSError as e:
                             self.rootLogger.error('Error: ', e)
-                            return 3
                     else:
                         try:
                             if os.path.exists(each_json_file['path']):
-                                self.rootLogger.info('This file is exist. Would you like to replace it?')
-                                if verification.yes_or_no():
-                                    os.rename(path_of_file, each_json_file['path'])
-                                    self.arr_json_files.remove(each_json_file)
-                                    self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
+                                self.soft_recover(path_of_file, each_json_file)
+                                self.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
 
                         except OSError as e:
                             logging.error('Error: ', e)
-                            return 3
 
         serialization.push_json(self.arr_json_files, self.database)
-        return 0
 
     def get_names(self):
         """

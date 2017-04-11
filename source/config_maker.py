@@ -31,6 +31,8 @@ def main():
         json_dict['policy_for_trash'] = 'default'
         config.set('Section_Custom', 'silent', 'False')
         json_dict['silent'] = 'False'
+        config.set('Section_Custom', 'dry_run', 'False')
+        json_dict['dry_run'] = 'False'
         logging.info('Default config is made')
 
     if args.custom:
@@ -59,6 +61,9 @@ def main():
         silent = raw_input('Enter True if you want to activate silent mode, False if you want print logs: ')
         config.set('Section_Custom', 'silent', silent)
         json_dict['silent'] = silent
+        dry_run = raw_input('Enter True if you want to activate dry run mode: ')
+        config.set('Section_Custom', 'dry_run', dry_run)
+        json_dict['dry_run'] = dry_run
         logging.info('Custom config is made')
 
     with open('config.cfg', 'wb') as configfile:

@@ -4,4 +4,4 @@ def dry_run(func):
             pass
         else:
             return func(self, *args, **kwargs)
-    return func_wrapper()
+    return func_wrapper
