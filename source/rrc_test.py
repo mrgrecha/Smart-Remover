@@ -23,7 +23,7 @@ class TestRRCommand(unittest.TestCase):
             with open(filepath[index], "w") as fi:
                 fi.write('123')
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RRCommand.execute(self.RRCcommand,self.path, 'dim', self.trash)
+        remove_command.RRCommand.execute(self.RRCcommand, self.path, 'dim', self.trash)
         for path in filepath:
             self.assertFalse(os.path.exists(path))
         self.assertTrue(number_of_files_in_trash + 10 == len(os.listdir(self.trash_path)))

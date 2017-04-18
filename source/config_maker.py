@@ -1,7 +1,6 @@
 import ConfigParser
 import argparse
 import json
-import logging
 
 
 def main():

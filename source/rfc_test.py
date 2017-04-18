@@ -6,7 +6,9 @@ import recover_command
 import remove_command
 import shutil
 
+
 class TestRFCommand(unittest.TestCase):
+
     def setUp(self):
         self.path = os.path.expanduser('~/Desktop/tests_for_srm')
         if not os.path.exists(self.path):
@@ -26,7 +28,7 @@ class TestRFCommand(unittest.TestCase):
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
         recover_command.RecCommand.execute(self.Rec, ['test44.txt'], self.trash)
         self.assertTrue(os.path.exists(filepath))
-        self.assertTrue(number_of_files_in_trash  == len(os.listdir(self.trash_path)))
+        self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
         os.remove(filepath)
 
     def test_normal_working_with_not_empty_file(self):
@@ -55,7 +57,6 @@ class TestRFCommand(unittest.TestCase):
         self.assertFalse(os.path.exists(filepath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
-
     def test_for_some_files(self):
         filepath = os.path.join(self.path, "test.txt")
 
@@ -70,7 +71,6 @@ class TestRFCommand(unittest.TestCase):
         self.assertFalse(os.path.exists(filepath1))
         self.assertTrue(number_of_files_in_trash + 2 == len(os.listdir(self.trash_path)))
 
-
     def test_for_folder(self):
         dirpath = os.path.join(self.path, 'test')
         os.makedirs(dirpath)
@@ -79,7 +79,6 @@ class TestRFCommand(unittest.TestCase):
         self.assertTrue(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
         shutil.rmtree(dirpath)
-
 
     # def tearDown(self):
     #     shutil.rmtree(self.path)

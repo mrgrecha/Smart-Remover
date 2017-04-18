@@ -1,5 +1,6 @@
 from command import Command
 
+
 class UndoCommand(Command):
     def execute(self, history, trash):
         try:
@@ -12,5 +13,8 @@ class UndoCommand(Command):
         except IndexError:
             print("ERROR: HISTORY is empty\n")
 
-    def name(self):
+    def name(self, my_list):
         return "undo"
+
+    def cancel(self):
+        pass

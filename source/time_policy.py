@@ -5,15 +5,17 @@ import os
 import user_input
 from policy import Policy
 
-class time_policy(Policy):
+
+class TimePolicy(Policy):
     def run(self, trash):
 
         # print ('These files are staying in the bin > %s' %
-        #              datetime.datetime.fromtimestamp(trash.max_time).strftime('%m month %d days %H hours %M minutes %S seconds'))
+        #              datetime.datetime.fromtimestamp(trash.max_time).strftime
+        # ('%m month %d days %H hours %M minutes %S seconds'))
         #
         # print('These files are staying in the bin > %s' %
         #              datetime.datetime.fromtimestamp(20).strftime('%m month %d days %H hours %M minutes %S seconds'))
-        self.time_update(trash)
+        self.update(trash)
 
     def update(self, trash):
         answer = user_input.UserInput()

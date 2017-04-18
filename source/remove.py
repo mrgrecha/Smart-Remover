@@ -4,6 +4,7 @@ import os
 import undo_command
 import remove_command
 
+
 def main():
     parser = argparse.ArgumentParser(description='Smart remove')
     parser.add_argument('-d', '--directory', nargs='+', help='Remove a directory')
@@ -26,17 +27,17 @@ def main():
             # for item in args.files:
             #     history.append(item)
 
-            #my_trash.delete_files(args.files)
+            # my_trash.delete_files(args.files)
 
         if args.directory:
-            #my_trash.delete_dir(args.directory)
+            # my_trash.delete_dir(args.directory)
             my_rdc_command.execute(args.directory, my_trash)
             # history.append(my_rfc_command.name())
             # for item in args.directory:
             #     history.append(item)
 
         if args.regular:
-            #my_trash.delete_for_regex(os.path.abspath(os.curdir), args.regular)
+            # my_trash.delete_for_regex(os.path.abspath(os.curdir), args.regular)
             my_rrc_command.execute(os.path.abspath(os.curdir), args.regular, my_trash)
 
         if args.undo:
@@ -44,7 +45,7 @@ def main():
 
     with open('History.txt', 'w') as my_history:
         for item in history:
-             my_history.writelines(str((item) + ' '))
+            my_history.writelines(str((item) + ' '))
         my_history.writelines('\n')
 
 if __name__ == '__main__':

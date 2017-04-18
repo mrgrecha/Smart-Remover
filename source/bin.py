@@ -19,7 +19,6 @@ def main():
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
     my_rec_command = recover_command.RecCommand()
     my_dft_command = remove_command.DFTComand()
-    my_undo_command = undo_command.UndoCommand()
     history = []
     stack = []
     args = parser.parse_args()
@@ -29,7 +28,7 @@ def main():
             my_trash.bin_show()
 
         if args.clear:
-            my_dft_command.execut(my_trash.get_names(), my_trash)
+            my_dft_command.execute(my_trash.get_names(), my_trash)
 
         if args.full:
             my_trash.full_show()
@@ -44,6 +43,7 @@ def main():
             my_rec_command.execute(my_trash.get_names(), my_trash)
 
         if args.undo:
+            my_undo_command = undo_command.UndoCommand()
             my_undo_command.execute(history, stack)
             print history
             # for item in history:
@@ -51,7 +51,6 @@ def main():
 
         if args.test:
             print my_trash.get_names()
-
 
 if __name__ == '__main__':
     main()

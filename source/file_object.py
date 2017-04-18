@@ -35,8 +35,6 @@ class FileObject(object):
     def set_type(self, kind):
         self.type = kind
 
-    # random for deleting files with the same cache of name that are deleting at the same time
-
     def show_all(self):
         print 'Name:', self.name
         print 'Path:', self.path

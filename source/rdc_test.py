@@ -50,7 +50,6 @@ class TestRDCommand(unittest.TestCase):
         self.assertFalse(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
-
     def test_for_some_dirs(self):
         dirpath = os.path.join(self.path, 'test')
         dirpath1 = os.path.join(self.path, 'test1')
@@ -61,7 +60,6 @@ class TestRDCommand(unittest.TestCase):
         self.assertFalse(os.path.exists(dirpath))
         self.assertFalse(os.path.exists(dirpath1))
         self.assertTrue(number_of_files_in_trash + 2 == len(os.listdir(self.trash_path)))
-
 
     def test_for_file(self):
         filepath = os.path.join(self.path, 'test.txt')
@@ -74,6 +72,6 @@ class TestRDCommand(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(self.path)
-        
+
 if __name__ == "__main__":
     unittest.main()

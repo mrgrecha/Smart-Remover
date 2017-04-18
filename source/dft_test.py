@@ -3,9 +3,10 @@ import unittest
 from trash import Trash
 import os
 import remove_command
-import shutil
+
 
 class TestDFTommand(unittest.TestCase):
+
     def setUp(self):
         self.path = os.path.expanduser('~/Desktop/tests_for_srm')
         if not os.path.exists(self.path):
@@ -24,8 +25,8 @@ class TestDFTommand(unittest.TestCase):
         remove_command.RFCommand.execute(self.RFCcommand, [filepath], self.trash)
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
         remove_command.DFTComand.execute(self.DFTcommand, [filepath], self.trash)
-        if os.path.exists(os.path.join(self.trash_path,'.DS_Store')):
-            self.assertTrue(number_of_files_in_trash  == len(os.listdir(self.trash_path))- 1)
+        if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
+            self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)) - 1)
         else:
             self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
@@ -46,13 +47,10 @@ class TestDFTommand(unittest.TestCase):
         remove_command.RDCommand.execute(self.RDCcommand, [dirpath], self.trash)
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
         remove_command.DFTComand.execute(self.DFTcommand, '123', self.trash)
-        if os.path.exists(os.path.join(self.trash_path,'.DS_Store')):
-            self.assertTrue(number_of_files_in_trash  == len(os.listdir(self.trash_path))- 1)
+        if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
+            self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)) - 1)
         else:
             self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
-
-
-
 
 if __name__ == "__main__":
     unittest.main()

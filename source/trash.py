@@ -27,8 +27,9 @@ class Trash(object):
     # TODO checks
     # TODO maybe add removing for index +(when in system)
     # TODO add check for sets when there both exceptions
-    # TODO own exception class
+    # TODO own exception class +
     # TODO Refactor policy
+    # TODO Add __init__ in commands
 
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
@@ -60,10 +61,9 @@ class Trash(object):
         self.update()
         self.check_policy()
 
-
     def check_policy(self):
-        time_policy_instance = time_policy.time_policy()
-        memory_policy_instance = memory_policy.memory_policy()
+        time_policy_instance = time_policy.TimePolicy()
+        memory_policy_instance = memory_policy.MemoryPolicy()
         if self.policy_for_trash == 'time':
             time_policy_instance.run(self)
         elif self.policy_for_trash == 'memory':
@@ -80,7 +80,8 @@ class Trash(object):
             silentHandler.setLevel(logging.CRITICAL)
             self.rootLogger.addHandler(silentHandler)
         else:
-            logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
+            pass
+            # logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
             #
             # fileHandler = logging.FileHandler(filename='log.log')
             # fileHandler.setFormatter(logFormatter)
@@ -90,7 +91,6 @@ class Trash(object):
             consoleHandler = logging.StreamHandler()
             consoleHandler.setLevel(logging.INFO)
             self.rootLogger.addHandler(consoleHandler)
-
 
     def full_show(self):
         """
@@ -156,7 +156,6 @@ class Trash(object):
                     if elem == str(json_dict['hash']):
                         self.arr_json_files.remove(self.arr_json_files[index])
         serialization.push_json(self.arr_json_files, self.database)
-
 
     def get_names(self):
         """

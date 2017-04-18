@@ -2,12 +2,14 @@ from command import Command
 from dry_run import dry_run
 import file_object
 import os
+import sys
 import shutil
 import verification
 import serialization
 import logging
 import directory
 import re
+import my_exceptions
 
 class RFCommand(Command):
 
@@ -44,8 +46,17 @@ class RFCommand(Command):
             for removing_file in checked_list:
                 my_trash.rootLogger.info('Removing ' + removing_file + ' to trash')
 
-        except SystemError as e:
+        except my_exceptions.NotSuchFileError as e:
             logging.error('Error:' + str(e))
+            sys.exit(1)
+
+        except my_exceptions.PermissionError as e:
+            logging.error('Error:' + str(e))
+            sys.exit(2)
+
+        except my_exceptions.NotFileError as e:
+            logging.error('Error:' + str(e))
+            sys.exit(3)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
@@ -63,14 +74,12 @@ class RDCommand(Command):
 
     @dry_run
     def real_delete_dir(self, dirs_to_delete, length, my_trash):
-        arr_dirs = [directory.Folder() for i in xrange(0, length + 1)]
-        index = 0
-        for each_dir in dirs_to_delete:
+        arr_dirs = [directory.Folder() for i in xrange(0, length)]
+        for index, each_dir in enumerate(dirs_to_delete):
             directory.Folder.make_objects(arr_dirs[index], each_dir)
             os.rename(each_dir, str(arr_dirs[index].hash))
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
-            index += 1
 
     def delete_dir(self, list_of_dirs, my_trash):
         """
@@ -79,16 +88,28 @@ class RDCommand(Command):
         :return:
         """
         try:
-            checked_list_of_dirs = verification.check_for_dir(list_of_dirs)
+            checked_list_of_dirs = verification.check_for_dir(list_of_dirs, my_trash.path_of_trash)
             length = len(checked_list_of_dirs)
             self.real_delete_dir(checked_list_of_dirs, length, my_trash)
             for each_dir in checked_list_of_dirs:
                 my_trash.rootLogger.info('Removing directory ' + each_dir + ' to trash')
 
-        except SystemError as e:
-            my_trash.rootLogger.error('Error:' + str(e))
-        except OSError as e:
-            my_trash.rootLogger.error('Error:' + str(e) + 'can not delete a parent folder')
+        except my_exceptions.NotSuchFileError as e:
+            logging.error('Error:' + str(e))
+            sys.exit(1)
+
+        except my_exceptions.PermissionError as e:
+            logging.error('Error:' + str(e))
+            sys.exit(2)
+
+        except my_exceptions.NotFileError as e:
+            logging.error('Error:' + str(e))
+            sys.exit(3)
+
+        except my_exceptions.RemoveError as e:
+            logging.error('Error:' + str(e) + '. It is a trash folder.')
+            sys.exit(4)
+
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
 class RRCommand(Command):
@@ -157,7 +178,5 @@ class DFTComand(Command):
            my_trash.rootLogger.info('Removing from trash %s' % path)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
-
-        print length, count
         if length == count:
             my_trash.rootLogger.info('There are no such files')

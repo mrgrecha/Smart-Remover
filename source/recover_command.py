@@ -1,34 +1,59 @@
 from command import Command
 from dry_run import dry_run
-import file_object
 import os
 import user_input
-import shutil
-import verification
 import serialization
 import logging
-import directory
-import re
+
 
 class RecCommand(Command):
 
-    def name(self):
+    def name(self, my_list):
+        """
+        Get name of operation
+        :param my_list:
+        :return:
+        """
         return 'Recover Files'
 
     def execute(self, list_of_files, my_trash):
+        """
+        Do this operation
+        :param list_of_files:
+        :param my_trash:
+        :return:
+        """
         self.dried = my_trash.dried
         self.recover(list_of_files, my_trash)
 
     def cancel(self):
+        """
+        Cancel last operation
+        :return:
+        """
         print 'cancel for rec'
 
     @dry_run
     def force_recover(self, path_of_file, each_json_file, my_trash):
+        """
+        Force recovering
+        :param path_of_file:
+        :param each_json_file:
+        :param my_trash:
+        :return:
+        """
         os.renames(path_of_file, each_json_file['path'])
         my_trash.arr_json_files.remove(each_json_file)
 
     @dry_run
     def soft_recover(self, path_of_file, each_json_file, my_trash):
+        """
+        Soft recovering
+        :param path_of_file:
+        :param each_json_file:
+        :param my_trash:
+        :return:
+        """
         answer = user_input.UserInput()
         my_trash.rootLogger.info('This file is exist. Would you like to replace it?')
         answer.ask_yes_or_no()
@@ -42,6 +67,7 @@ class RecCommand(Command):
         """
         Recover files from trash bin to their locations
         :param list_of_files:
+        :param my_trash:
         :param force:
         :return:
         """
