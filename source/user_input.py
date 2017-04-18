@@ -19,4 +19,4 @@ class UserInput(object):
         elif answer == 'Yes' or answer == 'No to all' or answer == 'allN' or answer == '4':
             self.state = 'no_to_all'
         elif answer == 'Cancel' or answer == 'cancel' or answer == '5':
-            pass
+            self.state = 'cancel'

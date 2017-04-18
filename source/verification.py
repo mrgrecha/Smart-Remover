@@ -57,7 +57,8 @@ def check_for_trash_files(database, path_of_trash):
         database_set.add(str(data['hash']))
     for path in os.listdir(path_of_trash):
         trash_set.add(path)
-    trash_set.remove('.DS_Store')
+    if os.listdir(path_of_trash).count('.DS_Store'):
+        trash_set.remove('.DS_Store')
     if trash_set == database_set:
         return True
     elif trash_set > database_set:

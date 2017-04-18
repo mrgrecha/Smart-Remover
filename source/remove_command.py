@@ -24,10 +24,9 @@ class RFCommand(Command):
 
     @dry_run
     def real_delete(self, files_to_delete, length, my_trash):
-        arr_files = [file_object.FileObject() for i in xrange(0, length + 1)]
-        index = 0
-        for each_file in files_to_delete:
-            if os.path.islink(each_file[index]):
+        arr_files = [file_object.FileObject() for i in xrange(0, length)]
+        for index, each_file in enumerate(files_to_delete):
+            if os.path.islink(each_file):
                 arr_files[index].set_type('Link')
             else:
                 arr_files[index].set_type('File')
@@ -35,7 +34,6 @@ class RFCommand(Command):
             os.rename(each_file, str(arr_files[index].hash))
             shutil.move(arr_files[index].hash, my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_files[index].__dict__)
-            index += 1
 
     def delete_files(self, list_of_files, my_trash):
         """Delete a list of files with checking for folders"""
@@ -93,7 +91,7 @@ class RDCommand(Command):
             my_trash.rootLogger.error('Error:' + str(e) + 'can not delete a parent folder')
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
-class RRComand(Command):
+class RRCommand(Command):
 
     def name(self):
         return 'Remove RegEx'
@@ -122,7 +120,7 @@ class RRComand(Command):
             elif os.path.isdir(path) and re.search(regex, name):
                 rdc.execute([path], my_trash)
             elif os.path.isdir(path) and not re.search(regex, name):
-                self.delete_for_regex(path, regex)
+                self.delete_for_regex(path, regex, my_trash)
 
 class DFTComand(Command):
 

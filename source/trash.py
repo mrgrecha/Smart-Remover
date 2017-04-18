@@ -11,6 +11,8 @@ import logging
 import termcolor
 import memory_policy
 import time_policy
+import user_input
+import termcolor
 
 class Trash(object):
     __metaclass__ = singleton.Singleton
@@ -18,11 +20,13 @@ class Trash(object):
     # TODO add checking for the same names in dict +/-
     # TODO Undo
     # TODO policy +/-
-    # TODO yes to all
+    # TODO yes to all(class)
     # TODO tests
     # TODO checks
-    # TODO maybe add removing for index
+    # TODO maybe add removing for index +(when in system)
     # TODO add check for sets when there both exceptions
+    # TODO own exception class
+    # TODO Refactor policy
 
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
@@ -35,7 +39,7 @@ class Trash(object):
             self.max_list_height = 50
             self.max_time = config.getint('Section_Custom', 'max_time')
             self.arr_json_files = serialization.load_json(self.database)
-            self.policy_for_trash = config.get('Section_Custom', 'policy_for_trash')
+            self.policy_for_trash = config.get('Section_Custom', 'policies')
             self.silent = config.getboolean('Section_Custom', 'silent')
             self.dried = config.getboolean('Section_Custom', 'dry_run')
         else:
@@ -88,8 +92,7 @@ class Trash(object):
 
     def full_show(self):
         """
-        Demonstrating a list of files with full description
-        :return:
+        Demonstrating a list of files with full description in color format
         """
         if serialization.num_of_dicts() == 0:
             logging.info('No files in trash')
@@ -107,29 +110,41 @@ class Trash(object):
     def bin_show(self):
         """
         Demonstrating a list of files in trash bin
-        :return:
         """
         if serialization.num_of_dicts() == 0:
             logging.info('No files in trash')
         for ind, json_file in enumerate(self.arr_json_files):
             logging.info("{0}. {1}".format(ind + 1, json_file))
 
+    def delete_for_name_from_trash(self, elems):
+        for elem in elems:
+            path_of_elem = os.path.join(self.path_of_trash, elem)
+            if os.path.isdir(path_of_elem):
+                shutil.rmtree(path_of_elem)
+            else:
+                os.remove(path_of_elem)
 
     def update(self):
         try:
             verification.check_for_trash_files(self.arr_json_files, self.path_of_trash)
         except ValueError as e:
-            self.rootLogger.error('''Error: Unknown %s
-        Delete them ?
-        Y - delete them
-        N - keep them''' % (e))
-            if verification.yes_or_no():
-                    for n in e[0]:
-                        path_of_n = os.path.join(self.path_of_trash, n)
-                        if os.path.isdir(path_of_n):
-                            shutil.rmtree(path_of_n)
-                        else:
-                            os.remove(path_of_n)
+            self.rootLogger.error('Error: Unknown %s' % termcolor.colored(e, 'green'))
+            answer = user_input.UserInput()
+            for elem in e[0][:]:
+                self.rootLogger.error('Delete %s?' % termcolor.colored(elem, 'red'))
+                answer.ask()
+                if answer.state == 'yes':
+                    self.delete_for_name_from_trash([elem])
+                    e[0].remove(elem)
+                elif answer.state == 'no':
+                    e[0].remove(elem)
+                elif answer.state == 'yes_to_all':
+                    self.delete_for_name_from_trash(e[0])
+                    break
+                elif answer.state == 'no_to_all':
+                    break
+                elif answer.state == 'cancel':
+                    break
 
         except StandardError as e:
             for elem in e[0]:
@@ -141,7 +156,7 @@ class Trash(object):
 
     def get_names(self):
         """
-
+        A function to get names of files in the database
         :return: list of names of files in Database
         """
         list_of_names = []

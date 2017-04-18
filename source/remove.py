@@ -14,13 +14,12 @@ def main():
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
     my_rfc_command = remove_command.RFCommand()
     my_rdc_command = remove_command.RDCommand()
-    my_rrc_command = remove_command.RRComand()
+    my_rrc_command = remove_command.RRCommand()
     my_undo_command = undo_command.UndoCommand()
     stack = []
     args = parser.parse_args()
     with open('History.txt', 'r') as my_history:
         history = list(my_history.readlines())
-        print history
         if args.files:
             my_rfc_command.execute(args.files, my_trash)
             history.append(my_rfc_command.name(args.files))
