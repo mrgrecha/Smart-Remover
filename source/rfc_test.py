@@ -2,7 +2,9 @@
 import unittest
 from trash import Trash
 import os
+import recover_command
 import remove_command
+import shutil
 
 class TestRFCommand(unittest.TestCase):
     def setUp(self):
@@ -11,16 +13,21 @@ class TestRFCommand(unittest.TestCase):
             os.makedirs(self.path)
         self.trash = Trash('')
         self.RFCcommand = remove_command.RFCommand()
+        self.Rec = recover_command.RecCommand()
         self.trash_path = self.trash.path_of_trash
 
     def test_normal_working_with_empty_file(self):
-        filepath = os.path.join(self.path, "test.txt")
+        filepath = os.path.join(self.path, "test44.txt")
         with open(filepath, "w"):
             pass
         number_of_files_in_trash = len(os.listdir(self.trash_path))
         remove_command.RFCommand.execute(self.RFCcommand, [filepath], self.trash)
         self.assertFalse(os.path.exists(filepath))
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
+        recover_command.RecCommand.execute(self.Rec, ['test44.txt'], self.trash)
+        self.assertTrue(os.path.exists(filepath))
+        self.assertTrue(number_of_files_in_trash  == len(os.listdir(self.trash_path)))
+        os.remove(filepath)
 
     def test_normal_working_with_not_empty_file(self):
         filepath = os.path.join(self.path, "test.txt")
@@ -65,12 +72,17 @@ class TestRFCommand(unittest.TestCase):
 
 
     def test_for_folder(self):
-        filepath = os.path.join(self.path, 'test')
-        os.makedirs(filepath)
+        dirpath = os.path.join(self.path, 'test')
+        os.makedirs(dirpath)
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RFCommand.execute(self.RFCcommand, [filepath], self.trash)
-        self.assertTrue(os.path.exists(filepath))
+        remove_command.RFCommand.execute(self.RFCcommand, [dirpath], self.trash)
+        self.assertTrue(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
+        shutil.rmtree(dirpath)
+
+
+    # def tearDown(self):
+    #     shutil.rmtree(self.path)
 
 if __name__ == "__main__":
     unittest.main()

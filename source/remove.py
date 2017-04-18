@@ -22,18 +22,18 @@ def main():
         history = list(my_history.readlines())
         if args.files:
             my_rfc_command.execute(args.files, my_trash)
-            history.append(my_rfc_command.name(args.files))
-            for item in args.files:
-                history.append(item)
+            # history.append(my_rfc_command.name(args.files))
+            # for item in args.files:
+            #     history.append(item)
 
             #my_trash.delete_files(args.files)
 
         if args.directory:
             #my_trash.delete_dir(args.directory)
             my_rdc_command.execute(args.directory, my_trash)
-            history.append(my_rfc_command.name())
-            for item in args.directory:
-                history.append(item)
+            # history.append(my_rfc_command.name())
+            # for item in args.directory:
+            #     history.append(item)
 
         if args.regular:
             #my_trash.delete_for_regex(os.path.abspath(os.curdir), args.regular)

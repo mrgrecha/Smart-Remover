@@ -2,6 +2,7 @@ from command import Command
 from dry_run import dry_run
 import file_object
 import os
+import user_input
 import shutil
 import verification
 import serialization
@@ -28,10 +29,14 @@ class RecCommand(Command):
 
     @dry_run
     def soft_recover(self, path_of_file, each_json_file, my_trash):
+        answer = user_input.UserInput()
         my_trash.rootLogger.info('This file is exist. Would you like to replace it?')
-        if verification.yes_or_no():
+        answer.ask_yes_or_no()
+        if answer.state == 'yes':
             os.rename(path_of_file, each_json_file['path'])
             my_trash.arr_json_files.remove(each_json_file)
+        else:
+            pass
 
     def recover(self, list_of_files, my_trash, force=True):
         """

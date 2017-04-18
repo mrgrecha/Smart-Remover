@@ -9,6 +9,7 @@ import singleton
 import ConfigParser
 import logging
 import termcolor
+import my_exceptions
 import memory_policy
 import time_policy
 import user_input
@@ -18,9 +19,10 @@ class Trash(object):
     __metaclass__ = singleton.Singleton
     # TODO add checking for parent folders +/-
     # TODO add checking for the same names in dict +/-
-    # TODO Undo
+    # TODO Undo in json
+    # TODO Redo
     # TODO policy +/-
-    # TODO yes to all(class)
+    # TODO yes to all(class) +
     # TODO tests
     # TODO checks
     # TODO maybe add removing for index +(when in system)
@@ -127,27 +129,29 @@ class Trash(object):
     def update(self):
         try:
             verification.check_for_trash_files(self.arr_json_files, self.path_of_trash)
-        except ValueError as e:
-            self.rootLogger.error('Error: Unknown %s' % termcolor.colored(e, 'green'))
+        except my_exceptions.TrashSetError as e:
+            self.rootLogger.error('Error: Unknown %s' % termcolor.colored(e.get_list(), 'green'))
             answer = user_input.UserInput()
-            for elem in e[0][:]:
+            list_of_elems = e.get_list()
+            for elem in list_of_elems[:]:
                 self.rootLogger.error('Delete %s?' % termcolor.colored(elem, 'red'))
                 answer.ask()
                 if answer.state == 'yes':
                     self.delete_for_name_from_trash([elem])
-                    e[0].remove(elem)
+                    list_of_elems.remove(elem)
                 elif answer.state == 'no':
-                    e[0].remove(elem)
+                    list_of_elems.remove(elem)
                 elif answer.state == 'yes_to_all':
-                    self.delete_for_name_from_trash(e[0])
+                    self.delete_for_name_from_trash(list_of_elems)
                     break
                 elif answer.state == 'no_to_all':
                     break
                 elif answer.state == 'cancel':
                     break
 
-        except StandardError as e:
-            for elem in e[0]:
+        except my_exceptions.DatabaseSetError as e:
+            list_of_elems = e.get_list()
+            for elem in list_of_elems:
                 for index, json_dict in enumerate(self.arr_json_files):
                     if elem == str(json_dict['hash']):
                         self.arr_json_files.remove(self.arr_json_files[index])

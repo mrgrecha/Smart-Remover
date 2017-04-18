@@ -29,8 +29,6 @@ class TestDFTommand(unittest.TestCase):
         else:
             self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
-
-
     def test_no_file(self):
         filepath = os.path.join(self.path, "test123.txt")
         number_of_files_in_trash = len(os.listdir(self.trash_path))
