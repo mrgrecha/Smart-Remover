@@ -15,22 +15,27 @@ import time_policy
 import user_input
 import termcolor
 
+
 class Trash(object):
+
     __metaclass__ = singleton.Singleton
-    # TODO add checking for parent folders +/-
-    # TODO add checking for the same names in dict +/-
+    # TODO yes to all(class) +
+    # TODO maybe add removing for index (when in system) +
+
+    # TODO add check for sets when there both exceptions +
+    # TODO own exception class +
+
+    # TODO Refactor policy
+
+    # TODO Add __init__ in commands
     # TODO Undo in json
     # TODO Redo
-    # TODO policy +/-
-    # TODO yes to all(class) +
+
     # TODO tests
     # TODO checks
-    # TODO maybe add removing for index +(when in system)
-    # TODO add check for sets when there both exceptions
-    # TODO own exception class +
-    # TODO Refactor policy
-    # TODO Add __init__ in commands
 
+    # TODO Refactor for folders
+    # TODO add checking for parent folders +/-
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
             config = ConfigParser.RawConfigParser()
@@ -56,6 +61,8 @@ class Trash(object):
             self.policy_for_trash = 'default'
             self.silent = False
             self.dried = False
+        if not os.path.exists(self.path_of_trash):
+            os.mkdir(self.path_of_trash)
         self.rootLogger = logging.getLogger()
         self.set_logger()
         self.update()

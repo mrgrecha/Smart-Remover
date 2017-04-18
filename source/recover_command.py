@@ -63,7 +63,7 @@ class RecCommand(Command):
         else:
             pass
 
-    def recover(self, list_of_files, my_trash, force=True):
+    def recover(self, list_of_files, my_trash, force=False):
         """
         Recover files from trash bin to their locations
         :param list_of_files:
@@ -85,7 +85,6 @@ class RecCommand(Command):
                         try:
                             if os.path.exists(each_json_file['path']):
                                 self.soft_recover(path_of_file, each_json_file, my_trash)
-                                my_trash.rootLogger.info('Recovering ' + each_json_file['name'] + ' from bin')
 
                         except OSError as e:
                             logging.error('Error: ', e)

@@ -14,22 +14,28 @@ class MemoryPolicy(Policy):
         max_size_elem = 0
         index = 0
         name = ''
+        path = ''
         answer = user_input.UserInput()
         if verification.check_memory(trash.path_of_trash, trash.max_size):
             pass
         else:
-            logging.info('Clear the largest file?')
+            logging.error('Clear the largest file?')
             answer.ask_yes_or_no()
             if answer.state == 'yes':
                 for i, elem in enumerate(trash.arr_json_files):
                     if elem['size'] > max_size_elem:
                         max_size_elem = elem['size']
                         index = i
-                        name = str(elem['hash'])
+                        path = str(elem['hash'])
+                        name = elem['name']
+
                 try:
-                    shutil.rmtree(os.path.join(trash.path_of_trash, name))
+                    shutil.rmtree(os.path.join(trash.path_of_trash, path))
                 except OSError:
-                    os.remove(os.path.join(trash.path_of_trash, name))
+                    os.remove(os.path.join(trash.path_of_trash, path))
+                logging.info('Removing ' + name + ' ' + str(max_size_elem) + ' bytes')
                 trash.arr_json_files.remove(trash.arr_json_files[index])
+                self.update(trash)
+
             elif answer.state == 'no':
                 pass

@@ -15,7 +15,8 @@ class TimePolicy(Policy):
         #
         # print('These files are staying in the bin > %s' %
         #              datetime.datetime.fromtimestamp(20).strftime('%m month %d days %H hours %M minutes %S seconds'))
-        self.update(trash)
+        list_of_files = self.update(trash)
+        return list_of_files
 
     def update(self, trash):
         answer = user_input.UserInput()
@@ -27,11 +28,6 @@ class TimePolicy(Policy):
         trash.rootLogger.info('Delete them?')
         answer.ask_yes_or_no()
         if answer.state == 'yes':
-            for path in list_of_time_files:
-                path_of_file = os.path.join(trash.path_of_trash, str(path['hash']))
-                if os.path.isdir(path_of_file):
-                    shutil.rmtree(path_of_file)
-                else:
-                    os.remove(path_of_file)
-                trash.arr_json_files.remove(path)
-        serialization.push_json(trash.arr_json_files, trash.database)
+            return list_of_time_files
+        elif answer.state == 'no':
+            pass

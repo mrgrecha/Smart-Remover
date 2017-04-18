@@ -24,13 +24,13 @@ class Folder(FileObject):
         print 'Number of objects: ', self.num_of_obj
 
     @staticmethod
-    def add_size(path):
-        size = os.path.getsize(path)
-        if os.path.isdir(path):
-            for item in os.listdir(path):
-                subpath = os.path.join(path, item)
-                size += Folder.add_size(subpath)
-        return size
+    def add_size(start_path):
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(start_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+        return total_size
 
     @staticmethod
     def add_number_of_objects(path):
