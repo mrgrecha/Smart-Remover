@@ -138,9 +138,9 @@ class RRCommand(Command):
             path = os.path.join(cur_dir, name)
             if re.search(regex, name) and os.path.isfile(path):
                 rfc.execute([path], my_trash)
-            elif os.path.isdir(path) and re.search(regex, name):
+            elif os.path.isdir(path) and re.match(regex, name):
                 rdc.execute([path], my_trash)
-            elif os.path.isdir(path) and not re.search(regex, name):
+            elif os.path.isdir(path) and not re.match(regex, name):
                 self.delete_for_regex(path, regex, my_trash)
 
 class DFTComand(Command):

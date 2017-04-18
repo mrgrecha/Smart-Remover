@@ -6,7 +6,7 @@ import user_input
 from policy import Policy
 
 
-class memory_policy(Policy):
+class MemoryPolicy(Policy):
     def run(self, trash):
         self.update(trash)
 

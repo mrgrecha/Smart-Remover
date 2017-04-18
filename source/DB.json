@@ -16,5 +16,158 @@
         "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/1123", 
         "type": "File", 
         "size": 0
+    }, 
+    {
+        "hash": "5e3aa719-f4d7-4f58-99f3-0555576ee3b0", 
+        "name": "__init__.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.957751, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/__init__.pyc", 
+        "type": "File", 
+        "size": 192
+    }, 
+    {
+        "hash": "28aa3bf8-6f81-4854-9455-5b67f79d8b98", 
+        "name": "command.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.959998, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/command.pyc", 
+        "type": "File", 
+        "size": 1003
+    }, 
+    {
+        "hash": "52bc7b41-7c35-4d5c-895c-300c892a2ef6", 
+        "name": "directory.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.96098, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/directory.pyc", 
+        "type": "File", 
+        "size": 2398
+    }, 
+    {
+        "hash": "d9fc31d7-3ee3-4440-b6d2-0b3173c4adac", 
+        "name": "dry_run.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.962062, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/dry_run.pyc", 
+        "type": "File", 
+        "size": 600
+    }, 
+    {
+        "hash": "48382a8c-36bd-4707-bd0d-cad4929b92ff", 
+        "name": "file_object.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.963473, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/file_object.pyc", 
+        "type": "File", 
+        "size": 2598
+    }, 
+    {
+        "hash": "1e495879-c9d8-49a6-976d-85d61b2539b6", 
+        "name": "memory_policy.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.964536, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/memory_policy.pyc", 
+        "type": "File", 
+        "size": 1673
+    }, 
+    {
+        "hash": "b80ff3df-da0c-42cb-bb27-ee602e8b2c78", 
+        "name": "my_exceptions.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.965438, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/my_exceptions.pyc", 
+        "type": "File", 
+        "size": 4563
+    }, 
+    {
+        "hash": "763b2c43-b753-41d4-bf9c-9900fc4c6a4d", 
+        "name": "policy.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.966321, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/policy.pyc", 
+        "type": "File", 
+        "size": 793
+    }, 
+    {
+        "hash": "9c51dcb3-a4ca-4d17-8ae9-4da67826d464", 
+        "name": "recover_command.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.967277, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/recover_command.pyc", 
+        "type": "File", 
+        "size": 3175
+    }, 
+    {
+        "hash": "51fdee09-ae47-4992-b2de-a9fcd93d0904", 
+        "name": "remove_command.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.968518, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/remove_command.pyc", 
+        "type": "File", 
+        "size": 8980
+    }, 
+    {
+        "hash": "85c669c8-7c85-40b2-94f0-f44748f3b6ba", 
+        "name": "serialization.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.969446, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/serialization.pyc", 
+        "type": "File", 
+        "size": 1450
+    }, 
+    {
+        "hash": "f67b59ff-7cb1-4902-a3a6-b5e3938f79dc", 
+        "name": "singleton.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.97082, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/singleton.pyc", 
+        "type": "File", 
+        "size": 703
+    }, 
+    {
+        "hash": "14e7665e-1ad6-4541-baaa-45b0c3c0a7d1", 
+        "name": "time_policy.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.971828, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/time_policy.pyc", 
+        "type": "File", 
+        "size": 1647
+    }, 
+    {
+        "hash": "4338d6f7-86a6-4564-9c8f-eaece0303843", 
+        "name": "trash.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.973849, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/trash.pyc", 
+        "type": "File", 
+        "size": 6059
+    }, 
+    {
+        "hash": "4c38c4ad-81b3-4cfe-9bef-fdedc2180027", 
+        "name": "undo_command.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.97507, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/undo_command.pyc", 
+        "type": "File", 
+        "size": 1158
+    }, 
+    {
+        "hash": "8e4c05b3-92d6-4989-943a-0f51d0a099c9", 
+        "name": "user_input.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.976064, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/user_input.pyc", 
+        "type": "File", 
+        "size": 1963
+    }, 
+    {
+        "hash": "8f609300-43ad-433f-8562-fe8e0a5d702e", 
+        "name": "verification.pyc", 
+        "IsInBin": true, 
+        "time_of_life": 1492516065.977056, 
+        "path": "/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/verification.pyc", 
+        "type": "File", 
+        "size": 3543
     }
 ]
