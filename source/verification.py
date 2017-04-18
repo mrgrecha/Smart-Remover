@@ -5,8 +5,6 @@ import time
 import directory
 import logging
 
-YES_TO_ALL = 1
-
 logging.basicConfig(level=logging.DEBUG, filename='log.log')
 
 
@@ -17,6 +15,7 @@ def check_for_files_and_links(list_of_files):
         if not os.path.exists(unchecked_file):
             msg = '%s is not exist' % unchecked_file
             raise SystemError(msg)
+
         if not os.access(unchecked_file, os.W_OK):
             msg = 'You have not such permissions for %s' % unchecked_file
             raise SystemError(msg)
@@ -28,12 +27,15 @@ def check_for_files_and_links(list_of_files):
     return checked_list
 
 
-def check_for_dir(list_of_dir):
+def check_for_dir(list_of_dir, path_of_trash):
     """Return a list of only directories"""
     checked_list = []
     for unchecked_dir in list_of_dir:
         if not os.path.exists(unchecked_dir):
             msg = '%s is not exist' % unchecked_dir
+            raise SystemError(msg)
+        if os.path.abspath(unchecked_dir) == os.path.abspath(path_of_trash):
+            msg = 'Trying to remove trash'
             raise SystemError(msg)
         if os.path.isdir(unchecked_dir):
             checked_list.append(unchecked_dir)
@@ -95,36 +97,3 @@ def check_memory(path_of_trash, size):
         logging.info('The size of folder is much than size in config. Please delete files.')
     else:
         return True
-
-
-def yes_to_all():
-    """
-    Help function for mode Yes to All
-    :return:
-    """
-    print 'Yes to all? '
-    answer = str(raw_input('Yes/No '))
-    if answer == 'Yes' or answer == 'yes' or answer == 'Y' or answer == 'y':
-        return YES_TO_ALL
-    elif answer == 'No' or answer == 'no' or answer == 'N'or answer == 'n':
-        return True
-    else:
-        logging.error('Error. Try again!')
-        yes_to_all()
-
-
-def yes_or_no():
-    """
-    User input
-    if yes - returns True
-    if no - returns False
-    :return:
-    """
-    answer = str(raw_input('Yes/No? '))
-    if answer == 'Yes' or answer == 'yes' or answer == 'Y':
-        return yes_to_all()
-    elif answer == 'No' or answer == 'no' or answer == 'N':
-        return False
-    else:
-        logging.error('Error. Try again!')
-        yes_or_no()
