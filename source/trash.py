@@ -28,7 +28,11 @@ class Trash(object):
 
     # TODO Refactor policy +
 
-    # TODO add dry/silent to args
+    # TODO add dry/silent to args +
+
+    # TODO interactive
+    # TODO Force/soft
+
 
     # TODO mkdir or mkdirs?
 
@@ -39,11 +43,13 @@ class Trash(object):
     # TODO tests
     # TODO checks
     # TODO add link + hardlink
+
     # TODO make logs better
     # TODO make docstrings
 
     # TODO Refactor all code to folders
     # TODO add checking for parent folders +/-
+
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
             config = ConfigParser.RawConfigParser()
@@ -58,6 +64,7 @@ class Trash(object):
             self.policies = config.get('Section_Custom', 'policies')
             self.silent = config.getboolean('Section_Custom', 'silent')
             self.dried = config.getboolean('Section_Custom', 'dry_run')
+            self.interactive = config.getboolean('Section_Custom', 'interactive')
         else:
             self.path_of_trash = '/Users/Dima/.MyTrash'
             self.database = 'DB.json'
@@ -69,6 +76,7 @@ class Trash(object):
             self.policies = 'default'
             self.silent = False
             self.dried = False
+            self.interactive = False
         if not os.path.exists(self.path_of_trash):
             os.mkdir(self.path_of_trash)
         self.rootLogger = logging.getLogger()
@@ -82,6 +90,9 @@ class Trash(object):
     def go_silent_mode(self):
         self.silent = True
         self.rootLogger.setLevel(logging.CRITICAL)
+
+    def go_interactive_mode(self):
+        self.interactive = True
 
     def check_policy(self):
         list_of_removing_files_by_policies = set()

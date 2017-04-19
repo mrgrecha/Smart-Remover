@@ -13,6 +13,8 @@ def main():
     parser.add_argument('-u', '--undo', action='store_true', help='Undo function')
     parser.add_argument('-dr', '--dryrun', action='store_true', help='Dry run mode on')
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
+    parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
+
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
     my_rfc_command = remove_command.RFCommand()
@@ -25,6 +27,9 @@ def main():
 
     if args.dryrun:
         my_trash.go_dry_run()
+
+    if args.interactive:
+        my_trash.go_interactive_mode()
 
     if args.files:
         my_rfc_command.execute(args.files, my_trash)

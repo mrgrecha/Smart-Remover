@@ -1,5 +1,6 @@
 from command import Command
 from dry_run import dry_run
+from interactive import interactive
 import os
 import user_input
 import serialization
@@ -24,6 +25,7 @@ class RecCommand(Command):
         :return:
         """
         self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
         self.recover(list_of_files, my_trash)
 
     def cancel(self):
@@ -63,6 +65,7 @@ class RecCommand(Command):
         else:
             pass
 
+    @interactive
     def recover(self, list_of_files, my_trash, force=False):
         """
         Recover files from trash bin to their locations

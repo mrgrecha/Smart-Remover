@@ -1,5 +1,6 @@
 from command import Command
 from dry_run import dry_run
+from interactive import interactive
 import file_object
 import os
 import sys
@@ -19,6 +20,7 @@ class RFCommand(Command):
 
     def execute(self, list_of_files, my_trash):
         self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
         self.delete_files(list_of_files, my_trash)
 
     def cancel(self):
@@ -37,6 +39,7 @@ class RFCommand(Command):
             shutil.move(arr_files[index].hash, my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_files[index].__dict__)
 
+    @interactive
     def delete_files(self, list_of_files, my_trash):
         """Delete a list of files with checking for folders"""
         try:
@@ -67,6 +70,7 @@ class RDCommand(Command):
 
     def execute(self, list_of_dirs, my_trash):
         self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
         self.delete_dir(list_of_dirs, my_trash)
 
     def cancel(self):
@@ -81,6 +85,7 @@ class RDCommand(Command):
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
 
+    @interactive
     def delete_dir(self, list_of_dirs, my_trash):
         """
         Delete a list of directories with checking
@@ -119,10 +124,12 @@ class RRCommand(Command):
 
     def execute(self, cur_dir, regex, my_trash):
         self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
         self.delete_for_regex(cur_dir, regex, my_trash)
 
     def cancel(self):
         pass
+
 
     def delete_for_regex(self, cur_dir, regex, my_trash):
 
@@ -150,6 +157,7 @@ class DFTComand(Command):
 
     def execute(self, list_of_files, my_trash):
         self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
         self.remove_from_trash(list_of_files, my_trash)
 
     def cancel(self):
@@ -165,6 +173,7 @@ class DFTComand(Command):
                     os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
                 my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
 
+    @interactive
     def remove_from_trash(self, list_of_files, my_trash):
         """
         Remove a file from trash
