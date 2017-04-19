@@ -9,6 +9,7 @@ import singleton
 import ConfigParser
 import logging
 import termcolor
+import count_policy
 import my_exceptions
 import memory_policy
 import time_policy
@@ -27,6 +28,8 @@ class Trash(object):
 
     # TODO Refactor policy
 
+    # TODO add dry/silent to args
+
     # TODO Add __init__ in commands
     # TODO Undo in json
     # TODO Redo
@@ -34,7 +37,7 @@ class Trash(object):
     # TODO tests
     # TODO checks
 
-    # TODO Refactor for folders
+    # TODO Refactor all code to folders
     # TODO add checking for parent folders +/-
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
@@ -47,7 +50,7 @@ class Trash(object):
             self.max_list_height = 50
             self.max_time = config.getint('Section_Custom', 'max_time')
             self.arr_json_files = serialization.load_json(self.database)
-            self.policy_for_trash = config.get('Section_Custom', 'policies')
+            self.policies = config.get('Section_Custom', 'policies')
             self.silent = config.getboolean('Section_Custom', 'silent')
             self.dried = config.getboolean('Section_Custom', 'dry_run')
         else:
@@ -58,28 +61,40 @@ class Trash(object):
             self.max_list_height = 50
             self.max_time = 1000
             self.arr_json_files = serialization.load_json(self.database)
-            self.policy_for_trash = 'default'
+            self.policies = 'default'
             self.silent = False
             self.dried = False
         if not os.path.exists(self.path_of_trash):
             os.mkdir(self.path_of_trash)
+        print self.policies
         self.rootLogger = logging.getLogger()
         self.set_logger()
-        self.update()
         self.check_policy()
+        self.update()
 
     def check_policy(self):
-        time_policy_instance = time_policy.TimePolicy()
-        memory_policy_instance = memory_policy.MemoryPolicy()
-        if self.policy_for_trash == 'time':
-            time_policy_instance.run(self)
-        elif self.policy_for_trash == 'memory':
+        list_of_removing_files_by_policies = set()
+        if self.policies.count('time'):
+            time_policy_instance = time_policy.TimePolicy()
+            list_of_removing_files_by_policies = list_of_removing_files_by_policies.union(time_policy_instance.run(self))
+        if self.policies.count('memory'):
+            memory_policy_instance = memory_policy.MemoryPolicy()
             memory_policy_instance.run(self)
-        elif self.policy_for_trash == 'combo':
-            time_policy_instance.run(self)
-            memory_policy_instance.run(self)
-        elif self.path_of_trash == 'default':
+        if self.policies.count('count'):
+            count_policy_instance = count_policy.CountPolicy()
+            list_of_removing_files_by_policies = list_of_removing_files_by_policies.union(count_policy_instance.run(self))
+        if self.policies.count('default'):
             pass
+        print list_of_removing_files_by_policies
+        self.remove_for_hash(list_of_removing_files_by_policies)
+
+    def remove_for_hash(self, list_of_hashes):
+        for item in list(list_of_hashes):
+            path_of_item = os.path.join(self.path_of_trash, item)
+            try:
+                os.remove(path_of_item)
+            except OSError:
+                shutil.rmtree(path_of_item)
 
     def set_logger(self):
         if self.silent:
