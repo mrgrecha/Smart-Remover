@@ -26,9 +26,11 @@ class Trash(object):
     # TODO add check for sets when there both exceptions +
     # TODO own exception class +
 
-    # TODO Refactor policy
+    # TODO Refactor policy +
 
     # TODO add dry/silent to args
+
+    # TODO mkdir or mkdirs?
 
     # TODO Add __init__ in commands
     # TODO Undo in json
@@ -36,6 +38,9 @@ class Trash(object):
 
     # TODO tests
     # TODO checks
+    # TODO add link + hardlink
+    # TODO make logs better
+    # TODO make docstrings
 
     # TODO Refactor all code to folders
     # TODO add checking for parent folders +/-
@@ -66,11 +71,17 @@ class Trash(object):
             self.dried = False
         if not os.path.exists(self.path_of_trash):
             os.mkdir(self.path_of_trash)
-        print self.policies
         self.rootLogger = logging.getLogger()
         self.set_logger()
-        self.check_policy()
         self.update()
+        self.check_policy()
+
+    def go_dry_run(self):
+        self.dried = True
+
+    def go_silent_mode(self):
+        self.silent = True
+        self.rootLogger.setLevel(logging.CRITICAL)
 
     def check_policy(self):
         list_of_removing_files_by_policies = set()
@@ -85,7 +96,6 @@ class Trash(object):
             list_of_removing_files_by_policies = list_of_removing_files_by_policies.union(count_policy_instance.run(self))
         if self.policies.count('default'):
             pass
-        print list_of_removing_files_by_policies
         self.remove_for_hash(list_of_removing_files_by_policies)
 
     def remove_for_hash(self, list_of_hashes):
@@ -102,14 +112,12 @@ class Trash(object):
             silentHandler.setLevel(logging.CRITICAL)
             self.rootLogger.addHandler(silentHandler)
         else:
-            pass
             # logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
             #
             # fileHandler = logging.FileHandler(filename='log.log')
             # fileHandler.setFormatter(logFormatter)
             # fileHandler.setLevel(logging.DEBUG)
             # self.rootLogger.addHandler(fileHandler)
-
             consoleHandler = logging.StreamHandler()
             consoleHandler.setLevel(logging.INFO)
             self.rootLogger.addHandler(consoleHandler)

@@ -79,8 +79,6 @@ def check_time(database, times):
     :return:
     """
     my_list = []
-    logging.info('These files are staying in the bin > %s' %
-                 datetime.datetime.fromtimestamp(times).strftime('%m month %d days %H hours %M minutes %S seconds'))
     for index, json_dicts in enumerate(database):
         if time.time() - json_dicts['time_of_life'] >= times:
             logging.info(json_dicts['name'])
@@ -97,5 +95,6 @@ def check_memory(path_of_trash, size):
     """
     if directory.Folder.add_size(path_of_trash) > size:
         logging.info('The size of folder is much than size in config. Please delete files.')
+        return False
     else:
         return True
