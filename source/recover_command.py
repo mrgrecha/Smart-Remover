@@ -76,8 +76,8 @@ class RecCommand(Command):
         """
         for each_file in list_of_files:
             for each_json_file in my_trash.arr_json_files:
-                if each_file == each_json_file['name'] or each_file == each_json_file['hash']:
-                    path_of_file = my_trash.path_of_trash+'/'+str(each_json_file['hash'])
+                if each_file == each_json_file['hash']:
+                    path_of_file = os.path.join(my_trash.path_of_trash, str(each_json_file['hash']))
                     if force:
                         try:
                             self.force_recover(path_of_file, each_json_file, my_trash)
@@ -88,7 +88,11 @@ class RecCommand(Command):
                         try:
                             if os.path.exists(each_json_file['path']):
                                 self.soft_recover(path_of_file, each_json_file, my_trash)
-
+                                logging.info('Recovering' + each_json_file['name'] + ' from bin')
+                            else:
+                                os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
+                                my_trash.arr_json_files.remove(each_json_file)
+                                logging.info('Recovering' + each_json_file['name'] + ' from bin')
                         except OSError as e:
                             logging.error('Error: ', e)
 
