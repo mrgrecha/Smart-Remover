@@ -9,6 +9,11 @@ import logging
 
 class RecCommand(Command):
 
+    def __init__(self, my_trash):
+        super(Command, self).__init__()
+        self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
+
     def name(self, my_list):
         """
         Get name of operation
@@ -24,8 +29,6 @@ class RecCommand(Command):
         :param my_trash:
         :return:
         """
-        self.dried = my_trash.dried
-        self.interactive = my_trash.interactive
         self.recover(list_of_files, my_trash)
 
     def cancel(self):

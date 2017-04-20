@@ -33,7 +33,7 @@ class Trash(object):
     # TODO interactive +
     # TODO mkdir or mkdirs? +
 
-    # TODO Force/soft
+    # TODO Force/soft +/-
 
     # TODO Add __init__ in commands
     # TODO Undo in json

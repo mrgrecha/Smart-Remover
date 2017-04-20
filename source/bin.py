@@ -20,8 +20,8 @@ def main():
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
-    my_rec_command = recover_command.RecCommand()
-    my_dft_command = remove_command.DFTComand()
+    my_rec_command = recover_command.RecCommand(my_trash)
+    my_dft_command = remove_command.DFTComand(my_trash)
     args = parser.parse_args()
     if args.silent:
         my_trash.go_silent_mode()

@@ -14,13 +14,16 @@ import my_exceptions
 
 class RFCommand(Command):
 
+    def __init__(self, my_trash):
+        super(Command, self).__init__()
+        self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
+
     def name(self, list_of_files):
         return_list = ' '.join([str(item) for item in list_of_files])
         return 'Remove Files' + return_list
 
     def execute(self, list_of_files, my_trash):
-        self.dried = my_trash.dried
-        self.interactive = my_trash.interactive
         self.delete_files(list_of_files, my_trash)
 
     def cancel(self):
@@ -65,12 +68,16 @@ class RFCommand(Command):
 
 
 class RDCommand(Command):
-    def name(self):
+
+    def __init__(self, my_trash):
+        super(Command, self).__init__()
+        self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
+
+    def name(self, list_of_args):
         return 'Remove Directories'
 
     def execute(self, list_of_dirs, my_trash):
-        self.dried = my_trash.dried
-        self.interactive = my_trash.interactive
         self.delete_dir(list_of_dirs, my_trash)
 
     def cancel(self):
@@ -119,13 +126,17 @@ class RDCommand(Command):
 
 class RRCommand(Command):
 
-    def name(self):
-        return 'Remove RegEx'
-
-    def execute(self, cur_dir, regex, my_trash):
+    def __init__(self, my_trash):
+        super(Command, self).__init__()
+        self.cur_dir = os.path.curdir
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
-        self.delete_for_regex(cur_dir, regex, my_trash)
+
+    def name(self, list_of_args):
+        return 'Remove RegEx'
+
+    def execute(self, regex, my_trash):
+        self.delete_for_regex(self.cur_dir, regex, my_trash)
 
     def cancel(self):
         pass
@@ -151,13 +162,14 @@ class RRCommand(Command):
                 self.delete_for_regex(path, regex, my_trash)
 
 class DFTComand(Command):
+    def __int__(self, my_trash):
+        self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
 
-    def name(self):
+    def name(self, list_of_args):
         return 'Delete from trash'
 
     def execute(self, list_of_files, my_trash):
-        self.dried = my_trash.dried
-        self.interactive = my_trash.interactive
         self.remove_from_trash(list_of_files, my_trash)
 
     def cancel(self):

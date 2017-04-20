@@ -17,9 +17,9 @@ def main():
 
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
-    my_rfc_command = remove_command.RFCommand()
-    my_rdc_command = remove_command.RDCommand()
-    my_rrc_command = remove_command.RRCommand()
+    my_rfc_command = remove_command.RFCommand(my_trash)
+    my_rdc_command = remove_command.RDCommand(my_trash)
+    my_rrc_command = remove_command.RRCommand(my_trash)
     args = parser.parse_args()
 
     if args.silent:
@@ -39,7 +39,7 @@ def main():
 
 
     if args.regular:
-        my_rrc_command.execute(os.path.abspath(os.curdir), args.regular, my_trash)
+        my_rrc_command.execute(args.regular, my_trash)
 
 
 
