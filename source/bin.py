@@ -57,5 +57,7 @@ def main():
     if args.test:
         print my_trash.get_names()
 
+
+    recover_command.save_command()
 if __name__ == '__main__':
     main()

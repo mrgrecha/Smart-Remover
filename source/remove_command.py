@@ -10,7 +10,10 @@ import serialization
 import logging
 import directory
 import re
+import command_object
 import my_exceptions
+
+my_command = command_object.CommandObject()
 
 class RFCommand(Command):
 
@@ -41,6 +44,7 @@ class RFCommand(Command):
             os.rename(each_file, str(arr_files[index].hash))
             shutil.move(arr_files[index].hash, my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_files[index].__dict__)
+        my_command.remove_files(files_to_delete)
 
     @interactive
     def delete_files(self, list_of_files, my_trash):
@@ -91,6 +95,7 @@ class RDCommand(Command):
             os.rename(each_dir, str(arr_dirs[index].hash))
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
+        my_command.remove_dirs(dirs_to_delete)
 
     @interactive
     def delete_dir(self, list_of_dirs, my_trash):
@@ -150,8 +155,8 @@ class RRCommand(Command):
         :param cur_dir: current directory from which starts removing
         :return:
          """
-        rfc = RFCommand()
-        rdc = RDCommand()
+        rfc = RFCommand(my_trash)
+        rdc = RDCommand(my_trash)
         for name in os.listdir(cur_dir):
             path = os.path.join(cur_dir, name)
             if re.search(regex, name) and os.path.isfile(path):
@@ -178,12 +183,13 @@ class DFTComand(Command):
     @dry_run
     def real_remove_from_trash(self, path, my_trash):
         for index, each_dict in enumerate(my_trash.arr_json_files):
-            if each_dict['name'] == path or each_dict['hash'] == path:
+            if each_dict['hash'] == path:
                 try:
                     shutil.rmtree(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
                 except OSError:
                     os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
                 my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
+                my_command.remove_from_trash(path)
 
     @interactive
     def remove_from_trash(self, list_of_files, my_trash):
@@ -201,3 +207,6 @@ class DFTComand(Command):
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
         if length == count:
             my_trash.rootLogger.info('There are no such files')
+
+def save_command():
+    my_command.save()

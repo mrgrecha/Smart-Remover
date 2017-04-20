@@ -35,7 +35,8 @@ class Trash(object):
 
     # TODO Force/soft +/-
 
-    # TODO Add __init__ in commands
+    # TODO Add __init__ in commands  +
+
     # TODO Undo in json
     # TODO Redo
 
@@ -198,6 +199,7 @@ class Trash(object):
                 for index, json_dict in enumerate(self.arr_json_files):
                     if elem == str(json_dict['hash']):
                         self.arr_json_files.remove(self.arr_json_files[index])
+
         serialization.push_json(self.arr_json_files, self.database)
 
     def get_names(self):

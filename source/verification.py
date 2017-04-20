@@ -66,9 +66,7 @@ def check_for_trash_files(database, path_of_trash):
         raise my_exceptions.TrashSetError(list(trash_set - database_set))
     elif trash_set < database_set:
         raise my_exceptions.DatabaseSetError(list(database_set - trash_set))
-    else:
-        raise my_exceptions.TrashSetError(list(trash_set - database_set))
-        raise my_exceptions.DatabaseSetError(list(database_set - trash_set))
+
 
 
 def check_time(database, times):

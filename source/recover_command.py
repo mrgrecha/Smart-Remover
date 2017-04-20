@@ -5,7 +5,10 @@ import os
 import user_input
 import serialization
 import logging
+import command_object
 
+
+my_command = command_object.CommandObject()
 
 class RecCommand(Command):
 
@@ -49,6 +52,7 @@ class RecCommand(Command):
         """
         os.renames(path_of_file, each_json_file['path'])
         my_trash.arr_json_files.remove(each_json_file)
+        my_command.recover_items(each_json_file['name'])
 
     @dry_run
     def soft_recover(self, path_of_file, each_json_file, my_trash):
@@ -66,6 +70,7 @@ class RecCommand(Command):
             os.rename(path_of_file, each_json_file['path'])
             my_trash.arr_json_files.remove(each_json_file)
             logging.info('Recovering ' + each_json_file['name'] + ' from bin')
+            my_command.recover_items(each_json_file['name'])
         else:
             pass
 
@@ -95,8 +100,12 @@ class RecCommand(Command):
                             else:
                                 os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
                                 my_trash.arr_json_files.remove(each_json_file)
-                                logging.info('Recovering' + each_json_file['name'] + ' from bin')
+                                logging.info('Recovering ' + each_json_file['name'] + ' from bin')
+                                my_command.recover_items(each_json_file['name'])
                         except OSError as e:
                             logging.error('Error: ', e)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
+
+def save_command():
+    my_command.save()

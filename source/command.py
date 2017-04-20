@@ -1,7 +1,7 @@
 class Command(object):
 
     def __init__(self, my_trash):
-        raise NotImplementedError()
+        pass
 
     def execute(self, my_list, my_trash):
         raise NotImplementedError()
