@@ -17,6 +17,7 @@ def main():
     parser.add_argument('-u', '--undo', action='store_true', help='Undo last operatin')
     parser.add_argument('-dr', '--dryrun', action='store_true', help='Dry run mode on')
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
+    parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
     my_rec_command = recover_command.RecCommand()
@@ -27,6 +28,9 @@ def main():
 
     if args.dryrun:
         my_trash.go_dry_run()
+
+    if args.interactive:
+        my_trash.go_interactive_mode()
 
     if args.list:
         my_trash.bin_show()

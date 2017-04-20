@@ -16,6 +16,7 @@ def main():
     parser.add_argument('-po', '--policies', help='Input diffrent policies.')
     parser.add_argument('-l', '--list', action='store_true', help='Show a config settings')
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on.')
+    parser.add_argument('-f', '--force', action='store_true', help='Force mode on.')
 
     args = parser.parse_args()
     json_dict = {}
@@ -79,6 +80,12 @@ def main():
         else:
             config.set('Section_Custom', 'interactive', 'False')
             json_dict['interactive'] = 'False'
+        if args.force:
+            config.set('Section_Custom', 'force', args.force)
+            json_dict['force'] = args.force
+        else:
+            config.set('Section_Custom', 'force', 'False')
+            json_dict['force'] = 'False'
 
         print 'Config is made'
 

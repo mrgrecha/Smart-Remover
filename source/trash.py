@@ -30,11 +30,10 @@ class Trash(object):
 
     # TODO add dry/silent to args +
 
-    # TODO interactive
+    # TODO interactive +
+    # TODO mkdir or mkdirs? +
+
     # TODO Force/soft
-
-
-    # TODO mkdir or mkdirs?
 
     # TODO Add __init__ in commands
     # TODO Undo in json
@@ -65,6 +64,7 @@ class Trash(object):
             self.silent = config.getboolean('Section_Custom', 'silent')
             self.dried = config.getboolean('Section_Custom', 'dry_run')
             self.interactive = config.getboolean('Section_Custom', 'interactive')
+            self.force = config.getboolean('Section_Custom', 'force')
         else:
             self.path_of_trash = '/Users/Dima/.MyTrash'
             self.database = 'DB.json'
@@ -77,8 +77,10 @@ class Trash(object):
             self.silent = False
             self.dried = False
             self.interactive = False
+            self.force = False
+
         if not os.path.exists(self.path_of_trash):
-            os.mkdir(self.path_of_trash)
+            os.makedirs(self.path_of_trash)
         self.rootLogger = logging.getLogger()
         self.set_logger()
         self.update()
