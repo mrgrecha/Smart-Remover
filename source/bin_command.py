@@ -4,6 +4,7 @@ from interactive import interactive
 import os
 import user_input
 import serialization
+import shutil
 import logging
 import command_object
 
@@ -106,6 +107,50 @@ class RecCommand(Command):
                             logging.error('Error: ', e)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
+
+
+class DFTCommand(Command):
+    def __init__(self, my_trash):
+        super(Command, self).__init__()
+        self.dried = my_trash.dried
+        self.interactive = my_trash.interactive
+
+    def name(self, list_of_args):
+        return 'Delete from trash'
+
+    def execute(self, list_of_files, my_trash):
+        self.remove_from_trash(list_of_files, my_trash)
+
+    def cancel(self):
+        print 'Delete from trash can not be undo'
+
+    @dry_run
+    def real_remove_from_trash(self, path, my_trash):
+        for index, each_dict in enumerate(my_trash.arr_json_files):
+            if each_dict['hash'] == path:
+                try:
+                    shutil.rmtree(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
+                except OSError:
+                    os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
+                my_command.remove_from_trash(my_trash.arr_json_files[index]['name'])
+                my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
+
+    @interactive
+    def remove_from_trash(self, list_of_files, my_trash):
+        """
+        Remove a file from trash
+        :param list_of_files:
+        :return:
+        """
+        count = 0
+        length = len(list_of_files)
+        for path in list_of_files:
+           self.real_remove_from_trash(path, my_trash)
+           my_trash.rootLogger.info('Removing from trash %s' % path)
+
+        serialization.push_json(my_trash.arr_json_files, my_trash.database)
+        if length == count:
+            my_trash.rootLogger.info('There are no such files')
 
 def save_command():
     my_command.save()

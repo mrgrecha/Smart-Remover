@@ -37,7 +37,9 @@ class Trash(object):
 
     # TODO Add __init__ in commands  +
 
-    # TODO Undo in json
+    # TODo JSON for undo/redo +
+
+    # TODO Undo
     # TODO Redo
 
     # TODO tests

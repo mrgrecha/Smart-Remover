@@ -2,7 +2,7 @@
 import trash
 import argparse
 import remove_command
-import recover_command
+import bin_command
 import undo_command
 
 def main():
@@ -20,8 +20,8 @@ def main():
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
-    my_rec_command = recover_command.RecCommand(my_trash)
-    my_dft_command = remove_command.DFTComand(my_trash)
+    my_rec_command = bin_command.RecCommand(my_trash)
+    my_dft_command = bin_command.DFTCommand(my_trash)
     args = parser.parse_args()
     if args.silent:
         my_trash.go_silent_mode()
@@ -57,7 +57,7 @@ def main():
     if args.test:
         print my_trash.get_names()
 
+    bin_command.save_command()
 
-    recover_command.save_command()
 if __name__ == '__main__':
     main()
