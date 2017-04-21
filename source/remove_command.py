@@ -12,6 +12,7 @@ import directory
 import re
 import command_object
 import my_exceptions
+import bin_command
 
 my_command = command_object.CommandObject()
 
@@ -21,6 +22,7 @@ class RFCommand(Command):
         super(Command, self).__init__()
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
+        self.trash = my_trash
 
     def name(self, list_of_files):
         return_list = ' '.join([str(item) for item in list_of_files])
@@ -29,8 +31,11 @@ class RFCommand(Command):
     def execute(self, list_of_files, my_trash):
         self.delete_files(list_of_files, my_trash)
 
-    def cancel(self):
-        print 'cancel for rfc'
+    def cancel(self, list_of_files):
+        print 'Cancel for rfc'
+        temp_recover_command = bin_command.RecCommand(self.trash)
+        temp_recover_command.execute(list_of_files, self.trash)
+        print 'OK'
 
     @dry_run
     def real_delete(self, files_to_delete, length, my_trash):
@@ -77,6 +82,7 @@ class RDCommand(Command):
         super(Command, self).__init__()
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
+        self.trash = my_trash
 
     def name(self, list_of_args):
         return 'Remove Directories'
@@ -84,8 +90,11 @@ class RDCommand(Command):
     def execute(self, list_of_dirs, my_trash):
         self.delete_dir(list_of_dirs, my_trash)
 
-    def cancel(self):
-        print 'cancel for rdc'
+    def cancel(self, list_of_files):
+        print 'Cancel for rdc'
+        temp_recover_command = bin_command.RecCommand(self.trash)
+        temp_recover_command.execute(list_of_files, self.trash)
+        print 'OK'
 
     @dry_run
     def real_delete_dir(self, dirs_to_delete, length, my_trash):
@@ -143,7 +152,7 @@ class RRCommand(Command):
     def execute(self, regex, my_trash):
         self.delete_for_regex(self.cur_dir, regex, my_trash)
 
-    def cancel(self):
+    def cancel(self, list_of_something):
         pass
 
 

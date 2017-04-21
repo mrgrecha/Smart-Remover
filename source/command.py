@@ -6,7 +6,7 @@ class Command(object):
     def execute(self, my_list, my_trash):
         raise NotImplementedError()
 
-    def cancel(self):
+    def cancel(self, some_list):
         raise NotImplementedError()
 
     def name(self, list_of_args):

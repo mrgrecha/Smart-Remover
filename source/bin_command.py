@@ -7,6 +7,7 @@ import serialization
 import shutil
 import logging
 import command_object
+import remove_command
 
 
 my_command = command_object.CommandObject()
@@ -17,6 +18,7 @@ class RecCommand(Command):
         super(Command, self).__init__()
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
+        self.trash = my_trash
 
     def name(self, my_list):
         """
@@ -35,12 +37,26 @@ class RecCommand(Command):
         """
         self.recover(list_of_files, my_trash)
 
-    def cancel(self):
+    def cancel(self, list_of_files):
         """
         Cancel last operation
         :return:
         """
+        temp_remove_files_command = remove_command.RFCommand(self.trash)
+        temp_remove_dirs_command = remove_command.RDCommand(self.trash)
         print 'cancel for rec'
+        for each_file in list_of_files:
+            if os.path.isdir(each_file):
+                temp_remove_dirs_command.execute([each_file], self.trash)
+            elif os.path.isfile(each_file) or os.path.islink(each_file):
+                temp_remove_files_command.execute([each_file], self.trash)
+        # else:
+        #     for each_file in list_of_files:
+        #         if os.path.isdir(each_file):
+        #             temp_remove_dirs_command.execute([each_file], self.trash)
+        #         elif os.path.isfile(each_file) or os.path.islink(each_file):
+        #             temp_remove_files_command.execute([each_file], self.trash)
+
 
     @dry_run
     def force_recover(self, path_of_file, each_json_file, my_trash):
@@ -84,6 +100,7 @@ class RecCommand(Command):
         :param force:
         :return:
         """
+        temp_list = []
         for each_file in list_of_files:
             for each_json_file in my_trash.arr_json_files:
                 if each_file == each_json_file['hash']:
@@ -102,9 +119,10 @@ class RecCommand(Command):
                                 os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
                                 my_trash.arr_json_files.remove(each_json_file)
                                 logging.info('Recovering ' + each_json_file['name'] + ' from bin')
-                                my_command.recover_items(each_json_file['path'])
+                                temp_list.append(each_json_file['path'])
                         except OSError as e:
                             logging.error('Error: ', e)
+        my_command.recover_items(temp_list)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
@@ -121,7 +139,7 @@ class DFTCommand(Command):
     def execute(self, list_of_files, my_trash):
         self.remove_from_trash(list_of_files, my_trash)
 
-    def cancel(self):
+    def cancel(self, list_of_files):
         print 'Delete from trash can not be undo'
 
     @dry_run

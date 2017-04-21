@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import trash
 import argparse
-import remove_command
 import bin_command
-import undo_command
 
 def main():
     parser = argparse.ArgumentParser(description='Bin utility')
@@ -14,7 +12,6 @@ def main():
     parser.add_argument('-r', '--recover', nargs='+', help='Recover files from a trash bin')
     parser.add_argument('-a', '--all', action='store_true', help='Recover all elements')
     parser.add_argument('-t', '--test', action='store_true', help='test')
-    parser.add_argument('-u', '--undo', action='store_true', help='Undo last operatin')
     parser.add_argument('-dr', '--dryrun', action='store_true', help='Dry run mode on')
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
@@ -50,12 +47,6 @@ def main():
     if args.all:
         my_rec_command.execute(my_trash.get_names(), my_trash)
 
-    if args.undo:
-        my_undo_command = undo_command.UndoCommand()
-
-
-    if args.test:
-        print my_trash.get_names()
 
     bin_command.save_command()
 

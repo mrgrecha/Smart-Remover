@@ -11,7 +11,6 @@ def main():
     parser.add_argument('-d', '--directory', nargs='+', help='Remove a directory')
     parser.add_argument('-f', '--files', nargs='+', help='Remove files')
     parser.add_argument('--regular', help='Remove files for a regular expression')
-    parser.add_argument('-u', '--undo', action='store_true', help='Undo function')
     parser.add_argument('-dr', '--dryrun', action='store_true', help='Dry run mode on')
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
@@ -42,8 +41,6 @@ def main():
         my_rrc_command = remove_command.RRCommand(my_trash)
         my_rrc_command.execute(args.regular, my_trash)
 
-    if args.test:
-        pass
 
     remove_command.save_command()
 if __name__ == '__main__':
