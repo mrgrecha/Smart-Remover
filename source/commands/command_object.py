@@ -1,9 +1,10 @@
-import serialization
+import source.src.serialization
+import os
 
 class CommandObject(object):
     def __init__(self):
         self.my_dict = {}
-        self.all_operations = serialization.load_json('history.json')
+        self.all_operations = source.src.serialization.load_json(os.path.expanduser('~/history.json'))
         self.check_for_empty_dicts()
         self.index = len(self.all_operations)
 
@@ -27,4 +28,4 @@ class CommandObject(object):
     def save(self):
         self.my_dict['index'] = self.index
         self.all_operations.append(self.my_dict)
-        serialization.push_json(self.all_operations, 'history.json')
+        source.src.serialization.push_json(self.all_operations, os.path.expanduser('~/history.json'))

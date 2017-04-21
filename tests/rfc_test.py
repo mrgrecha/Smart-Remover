@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import unittest
-from trash import Trash
 import os
-import recover_command
-import remove_command
 import shutil
+import unittest
+
+import recover_command
+
+from source.commands import remove_command
+from source.src.trash import Trash
 
 
 class TestRFCommand(unittest.TestCase):

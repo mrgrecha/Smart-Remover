@@ -1,8 +1,10 @@
-import verification
 import logging
 import os
 import shutil
-import user_input
+
+import source.src.verification
+
+import source.src.user_input
 from policy import Policy
 
 
@@ -15,8 +17,8 @@ class MemoryPolicy(Policy):
         index = 0
         name = ''
         path = ''
-        answer = user_input.UserInput()
-        if verification.check_memory(trash.path_of_trash, trash.max_size):
+        answer = source.src.user_input.UserInput()
+        if source.src.verification.check_memory(trash.path_of_trash, trash.max_size):
             pass
         else:
             logging.error('Clear the largest file?')

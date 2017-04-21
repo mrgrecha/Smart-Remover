@@ -3,13 +3,13 @@ if [[ $ZSH_NAME == "zsh" ]]; then
     bashcompinit
 fi
 
-_my_autocomple()
+_my_autocomplete()
 {
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
 
-    subcommands_1="delete clear list full recover"
+    subcommands_1="--delete --clear --list --full --recover"
 
     if [[ ${COMP_CWORD} == 1 ]] ; then
         COMPREPLY=( $(compgen -W "${subcommands_1}" -- ${cur}) )
@@ -19,11 +19,11 @@ _my_autocomple()
     subcmd_1="${COMP_WORDS[1]}"
 
     case "${subcmd_1}" in
-    delete )
+    --delete )
         COMPREPLY=( $(compgen -W "`ls ${HOME}/.MyTrash`" -- ${cur}) )
         return 0 ;;
 
-    recover )
+    --recover )
         COMPREPLY=( $(compgen -W "`ls ${HOME}/.MyTrash`" -- ${cur}) )
         return 0 ;;
 

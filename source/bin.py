@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import trash
 import argparse
-import bin_command
+import source.src.trash
+from commands import bin_command
+import os
+
 
 def main():
     parser = argparse.ArgumentParser(description='Bin utility')
@@ -16,7 +18,7 @@ def main():
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
-    my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
+    my_trash = source.src.trash.Trash(os.path.join(os.path.expanduser('~/'), 'config.cfg'))
 
     my_rec_command = bin_command.RecCommand(my_trash)
     my_dft_command = bin_command.DFTCommand(my_trash)

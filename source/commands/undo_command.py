@@ -1,19 +1,21 @@
-from command import Command
-import remove_command
 import bin_command
-import serialization
+import remove_command
+import source.src.serialization
+import os
+from command import Command
+
 
 class UndoCommand(Command):
     def __init__(self, my_trash):
         super(Command, self).__init__()
-        self.all_operations = serialization.load_json('history.json')
+        self.all_operations = source.src.serialization.load_json(os.path.expanduser('~/history.json'))
         self.trash = my_trash
 
     def execute(self, history):
         if len(self.all_operations) >= 1:
             current_operation = self.all_operations[-1]
             self.all_operations.remove(current_operation)
-            serialization.push_json(self.all_operations, 'history.json')
+            source.src.serialization.push_json(self.all_operations, os.path.expanduser('~/history.json'))
             for sub_operation in current_operation:
                 if sub_operation == 'remove_files':
                     my_remove_command = remove_command.RFCommand(self.trash)

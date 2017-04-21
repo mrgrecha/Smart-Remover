@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-import unittest
-from trash import Trash
 import os
-import remove_command
 import shutil
+import unittest
+
+from source.commands import remove_command
+from source.src.trash import Trash
+
 
 class TestRRCommand(unittest.TestCase):
     def setUp(self):

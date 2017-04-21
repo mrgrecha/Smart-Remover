@@ -12,7 +12,8 @@ setup(
             [
             'trash = source.bin:main',
             'srm = source.remove:main',
-            'config = source.config_maker:main'
+            'config = source.config_maker:main',
+            'undo = source.undo:main'
             ]
         },
        include_package_data=True

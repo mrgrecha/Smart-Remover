@@ -1,9 +1,8 @@
 import argparse
-import trash
 import os
-import undo_command
-import remove_command
-import command_object
+import commands.remove_command as remove_command
+
+from source.src import trash
 
 
 def main():
@@ -17,7 +16,7 @@ def main():
 
     parser.add_argument('-t', '--test', nargs='+', help='test files')
 
-    my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
+    my_trash = trash.Trash(os.path.expanduser('~/config.cfg'))
     args = parser.parse_args()
 
     if args.silent:
@@ -41,7 +40,9 @@ def main():
         my_rrc_command = remove_command.RRCommand(my_trash)
         my_rrc_command.execute(args.regular)
 
-
+    if args.test:
+        print os.path.abspath(my_trash.database)
+        print os.path.abspath(my_trash.path_of_trash)
     remove_command.save_command()
 if __name__ == '__main__':
     main()

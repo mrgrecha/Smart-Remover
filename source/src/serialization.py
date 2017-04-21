@@ -2,15 +2,6 @@ import json
 import logging
 
 
-def num_of_dicts():
-    """Returns a number of dicts in file"""
-    with open('DB.json', 'r') as some_file:
-        i = 0
-        for each_data in json.load(some_file):
-            i += 1
-        return i
-
-
 def load_json(path):
     """Return a list of dicts in JSON-file"""
     try:

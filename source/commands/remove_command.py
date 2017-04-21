@@ -1,18 +1,20 @@
-from command import Command
-from dry_run import dry_run
-from interactive import interactive
-import file_object
-import os
-import sys
-import shutil
-import verification
-import serialization
 import logging
-import directory
+import os
 import re
-import command_object
-import my_exceptions
+import shutil
+import sys
+
+import source.src.directory
+import source.src.my_exceptions
+import source.src.serialization
+import source.src.verification
+from source.src.dry_run import dry_run
+from source.src.interactive import interactive
+
 import bin_command
+import command_object
+import source.src.file_object
+from command import Command
 
 my_command = command_object.CommandObject()
 
@@ -35,7 +37,7 @@ class RFCommand(Command):
 
     @dry_run
     def real_delete(self, files_to_delete, length, my_trash):
-        arr_files = [file_object.FileObject() for i in xrange(0, length)]
+        arr_files = [source.src.file_object.FileObject() for i in xrange(0, length)]
         for index, each_file in enumerate(files_to_delete):
             if os.path.islink(each_file):
                 arr_files[index].set_type('Link')
@@ -51,25 +53,25 @@ class RFCommand(Command):
     def delete_files(self, list_of_files, my_trash):
         """Delete a list of files with checking for folders"""
         try:
-            checked_list = verification.check_for_files_and_links(list_of_files)
+            checked_list = source.src.verification.check_for_files_and_links(list_of_files)
             length = len(checked_list)
             self.real_delete(checked_list, length, my_trash)
             for removing_file in checked_list:
                 my_trash.rootLogger.info('Removing ' + removing_file + ' to trash')
 
-        except my_exceptions.NotSuchFileError as e:
+        except source.src.my_exceptions.NotSuchFileError as e:
             logging.error('Error:' + str(e))
             sys.exit(1)
 
-        except my_exceptions.PermissionError as e:
+        except source.src.my_exceptions.PermissionError as e:
             logging.error('Error:' + str(e))
             sys.exit(2)
 
-        except my_exceptions.NotFileError as e:
+        except source.src.my_exceptions.NotFileError as e:
             logging.error('Error:' + str(e))
             sys.exit(3)
 
-        serialization.push_json(my_trash.arr_json_files, my_trash.database)
+        source.src.serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
 
 class RDCommand(Command):
@@ -94,9 +96,9 @@ class RDCommand(Command):
 
     @dry_run
     def real_delete_dir(self, dirs_to_delete, length, my_trash):
-        arr_dirs = [directory.Folder() for i in xrange(0, length)]
+        arr_dirs = [source.src.directory.Folder() for i in xrange(0, length)]
         for index, each_dir in enumerate(dirs_to_delete):
-            directory.Folder.make_objects(arr_dirs[index], each_dir)
+            source.src.directory.Folder.make_objects(arr_dirs[index], each_dir)
             os.rename(each_dir, str(arr_dirs[index].hash))
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
@@ -110,29 +112,29 @@ class RDCommand(Command):
         :return:
         """
         try:
-            checked_list_of_dirs = verification.check_for_dir(list_of_dirs, my_trash.path_of_trash)
+            checked_list_of_dirs = source.src.verification.check_for_dir(list_of_dirs, my_trash.path_of_trash)
             length = len(checked_list_of_dirs)
             self.real_delete_dir(checked_list_of_dirs, length, my_trash)
             for each_dir in checked_list_of_dirs:
                 my_trash.rootLogger.info('Removing directory ' + each_dir + ' to trash')
 
-        except my_exceptions.NotSuchFileError as e:
+        except source.src.my_exceptions.NotSuchFileError as e:
             logging.error('Error:' + str(e))
             sys.exit(1)
 
-        except my_exceptions.PermissionError as e:
+        except source.src.my_exceptions.PermissionError as e:
             logging.error('Error:' + str(e))
             sys.exit(2)
 
-        except my_exceptions.NotFileError as e:
+        except source.src.my_exceptions.NotFileError as e:
             logging.error('Error:' + str(e))
             sys.exit(3)
 
-        except my_exceptions.RemoveError as e:
+        except source.src.my_exceptions.RemoveError as e:
             logging.error('Error:' + str(e) + '. It is a trash folder.')
             sys.exit(4)
 
-        serialization.push_json(my_trash.arr_json_files, my_trash.database)
+        source.src.serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
 class RRCommand(Command):
 

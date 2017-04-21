@@ -1,14 +1,15 @@
-from command import Command
-from dry_run import dry_run
-from interactive import interactive
-import os
-import user_input
-import serialization
-import shutil
 import logging
+import os
+import shutil
+
+import source.src.serialization
+import source.src.user_input
+from source.src.dry_run import dry_run
+
 import command_object
 import remove_command
-
+from command import Command
+from source.src.interactive import interactive
 
 my_command = command_object.CommandObject()
 
@@ -72,7 +73,7 @@ class RecCommand(Command):
         :param my_trash:
         :return:
         """
-        answer = user_input.UserInput()
+        answer = source.src.user_input.UserInput()
         my_trash.rootLogger.info('This file is exist. Would you like to replace it?')
         answer.ask_yes_or_no()
         if answer.state == 'yes':
@@ -116,7 +117,7 @@ class RecCommand(Command):
                             logging.error('Error: ', e)
         my_command.recover_items(temp_list)
 
-        serialization.push_json(my_trash.arr_json_files, my_trash.database)
+        source.src.serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
 
 class DFTCommand(Command):
@@ -155,7 +156,7 @@ class DFTCommand(Command):
         length = len(list_of_files)
         self.real_remove_from_trash(list_of_files, my_trash)
 
-        serialization.push_json(my_trash.arr_json_files, my_trash.database)
+        source.src.serialization.push_json(my_trash.arr_json_files, my_trash.database)
         if length == count:
             my_trash.rootLogger.info('There are no such files')
 

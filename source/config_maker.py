@@ -1,6 +1,7 @@
 import ConfigParser
 import argparse
 import json
+import os
 
 
 def main():
@@ -18,10 +19,13 @@ def main():
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on.')
     parser.add_argument('-f', '--force', action='store_true', help='Force mode on.')
 
+
     args = parser.parse_args()
+
     json_dict = {}
+    file_path = '~'
     if args.list:
-        with open('config.cfg', 'r+') as configfile:
+        with open(os.path.join(os.path.expanduser(file_path), 'config.cfg'), 'r+') as configfile:
             for line in configfile.readlines():
                 print line
     else:
@@ -30,14 +34,14 @@ def main():
             config.set('Section_Custom', 'path', args.path)
             json_dict['path'] = args.path
         else:
-            config.set('Section_Custom', 'path', '/Users/Dima/.MyTrash')
-            json_dict['path'] = '/Users/Dima/.MyTrash'
+            config.set('Section_Custom', 'path', '~/.MyTrash')
+            json_dict['path'] = '~/.MyTrash'
         if args.database:
             config.set('Section_Custom', 'database', args.database)
             json_dict['database'] = args.database
         else:
-            config.set('Section_Custom', 'database', 'DB.json')
-            json_dict['database'] = 'DB.json'
+            config.set('Section_Custom', 'database', '~/.DB.json')
+            json_dict['database'] = '~/.DB.json'
         if args.maxsize:
             config.set('Section_Custom', 'max_size', args.maxsize)
             json_dict['max_size'] = args.maxsize
@@ -89,9 +93,9 @@ def main():
 
         print 'Config is made'
 
-        with open('config.cfg', 'wb') as configfile:
+        with open(os.path.join(os.path.expanduser(file_path), 'config.cfg'), 'wb') as configfile:
             config.write(configfile)
-        with open('config.json', 'wb') as config_json:
+        with open(os.path.join(os.path.expanduser(file_path),'config.json'), 'wb') as config_json:
             json.dump(json_dict, config_json, indent=4)
 
 if __name__ == '__main__':

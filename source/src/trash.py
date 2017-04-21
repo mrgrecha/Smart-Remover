@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
-import verification
-import os
-import shutil
-import serialization
-import pydoc
-import datetime
-import singleton
 import ConfigParser
+import datetime
 import logging
+import os
+import pydoc
+import shutil
+import source.policies.count_policy as count_policy
+import source.policies.memory_policy as memory_policy
+import source.policies.time_policy as time_policy
 import termcolor
-import count_policy
 import my_exceptions
-import memory_policy
-import time_policy
+import serialization
+import singleton
 import user_input
-import termcolor
+import verification
 
 
 class Trash(object):
@@ -37,10 +36,9 @@ class Trash(object):
 
     # TODO Add __init__ in commands  +
 
-    # TODo JSON for undo/redo +
+    # TODO JSON for undo/redo +
 
-    # TODO Undo
-    # TODO Redo
+    # TODO Undo +
 
     # TODO tests
     # TODO checks
@@ -49,15 +47,15 @@ class Trash(object):
     # TODO make logs better
     # TODO make docstrings
 
-    # TODO Refactor all code to folders
+    # TODO Refactor all code to folders +
     # TODO add checking for parent folders +/-
 
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
             config = ConfigParser.RawConfigParser()
             config.read(path_of_config)
-            self.path_of_trash = config.get('Section_Custom', 'path')
-            self.database = config.get('Section_Custom', 'database')
+            self.path_of_trash = os.path.expanduser(config.get('Section_Custom', 'path'))
+            self.database = os.path.expanduser(config.get('Section_Custom', 'database'))
             self.max_size = config.getint('Section_Custom', 'max_size')
             self.max_number = config.getint('Section_Custom', 'max_num')
             self.max_list_height = 50
@@ -69,8 +67,8 @@ class Trash(object):
             self.interactive = config.getboolean('Section_Custom', 'interactive')
             self.force = config.getboolean('Section_Custom', 'force')
         else:
-            self.path_of_trash = '/Users/Dima/.MyTrash'
-            self.database = 'DB.json'
+            self.path_of_trash = os.path.expanduser('~/.MyTrash')
+            self.database = os.path.expanduser('~/.DB.json')
             self.max_size = 500000000
             self.max_number = 1000
             self.max_list_height = 50
@@ -142,7 +140,7 @@ class Trash(object):
         """
         Demonstrating a list of files with full description in color format
         """
-        if serialization.num_of_dicts() == 0:
+        if len(self.arr_json_files) == 0:
             logging.info('No files in trash')
         full_show_string = ''
         for index, each_file in enumerate(self.arr_json_files):
@@ -159,7 +157,7 @@ class Trash(object):
         """
         Demonstrating a list of files in trash bin
         """
-        if serialization.num_of_dicts() == 0:
+        if len(self.arr_json_files) == 0:
             logging.info('No files in trash')
         for ind, json_file in enumerate(self.arr_json_files):
             logging.info("{0}. {1}".format(ind + 1, json_file))

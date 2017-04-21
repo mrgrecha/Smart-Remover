@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-import os
-import datetime
-import time
-import directory
 import logging
+import os
+import time
+
+import directory
 import my_exceptions
 
 logging.basicConfig(level=logging.DEBUG, filename='log.log')
