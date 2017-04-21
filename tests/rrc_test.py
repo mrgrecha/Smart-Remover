@@ -13,19 +13,22 @@ class TestRRCommand(unittest.TestCase):
         if not os.path.exists(self.path):
             os.makedirs(self.path)
         self.trash = Trash('')
-        self.RRCcommand = remove_command.RRCommand()
+        self.RRCommand = remove_command.RRCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
 
     def test_normal_working(self):
         filepath = []
         dirpath = os.path.join(self.path, 'test')
-        os.makedirs(dirpath)
+        if os.path.exists(dirpath):
+            pass
+        else:os.makedirs(dirpath)
         for index in xrange(10):
-            filepath.append(os.path.join(dirpath, "dima.txt" + str(index)))
+            filepath.append(os.path.join(dirpath, "some" + str(index)))
             with open(filepath[index], "w") as fi:
                 fi.write('123')
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RRCommand.execute(self.RRCcommand, self.path, 'dim', self.trash)
+        os.chdir(dirpath)
+        self.RRCommand.execute("some")
         for path in filepath:
             self.assertFalse(os.path.exists(path))
         self.assertTrue(number_of_files_in_trash + 10 == len(os.listdir(self.trash_path)))
