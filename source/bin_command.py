@@ -53,7 +53,7 @@ class RecCommand(Command):
         """
         os.renames(path_of_file, each_json_file['path'])
         my_trash.arr_json_files.remove(each_json_file)
-        my_command.recover_items(each_json_file['name'])
+        my_command.recover_items(each_json_file['path'])
 
     @dry_run
     def soft_recover(self, path_of_file, each_json_file, my_trash):
@@ -71,7 +71,7 @@ class RecCommand(Command):
             os.rename(path_of_file, each_json_file['path'])
             my_trash.arr_json_files.remove(each_json_file)
             logging.info('Recovering ' + each_json_file['name'] + ' from bin')
-            my_command.recover_items(each_json_file['name'])
+            my_command.recover_items(each_json_file['path'])
         else:
             pass
 
@@ -102,7 +102,7 @@ class RecCommand(Command):
                                 os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
                                 my_trash.arr_json_files.remove(each_json_file)
                                 logging.info('Recovering ' + each_json_file['name'] + ' from bin')
-                                my_command.recover_items(each_json_file['name'])
+                                my_command.recover_items(each_json_file['path'])
                         except OSError as e:
                             logging.error('Error: ', e)
 
@@ -125,15 +125,17 @@ class DFTCommand(Command):
         print 'Delete from trash can not be undo'
 
     @dry_run
-    def real_remove_from_trash(self, path, my_trash):
+    def real_remove_from_trash(self, list_of_files, my_trash):
         for index, each_dict in enumerate(my_trash.arr_json_files):
-            if each_dict['hash'] == path:
-                try:
-                    shutil.rmtree(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
-                except OSError:
-                    os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
-                my_command.remove_from_trash(my_trash.arr_json_files[index]['name'])
-                my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
+            for path in list_of_files:
+                if each_dict['hash'] == path:
+                    try:
+                        shutil.rmtree(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
+                    except OSError:
+                        os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
+                    my_command.remove_from_trash([my_trash.arr_json_files[index]['name']] )
+                    my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
+                    my_trash.rootLogger.info('Removing from trash %s' % path)
 
     @interactive
     def remove_from_trash(self, list_of_files, my_trash):
@@ -144,9 +146,7 @@ class DFTCommand(Command):
         """
         count = 0
         length = len(list_of_files)
-        for path in list_of_files:
-           self.real_remove_from_trash(path, my_trash)
-           my_trash.rootLogger.info('Removing from trash %s' % path)
+        self.real_remove_from_trash(list_of_files, my_trash)
 
         serialization.push_json(my_trash.arr_json_files, my_trash.database)
         if length == count:

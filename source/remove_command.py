@@ -44,7 +44,7 @@ class RFCommand(Command):
             os.rename(each_file, str(arr_files[index].hash))
             shutil.move(arr_files[index].hash, my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_files[index].__dict__)
-        my_command.remove_files(files_to_delete)
+        my_command.remove_files([arr_files[ind].hash for ind in xrange(0, length)])
 
     @interactive
     def delete_files(self, list_of_files, my_trash):
@@ -95,7 +95,7 @@ class RDCommand(Command):
             os.rename(each_dir, str(arr_dirs[index].hash))
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
-        my_command.remove_dirs(dirs_to_delete)
+        my_command.remove_dirs([arr_dirs[ind].hash for ind in xrange(0, length)])
 
     @interactive
     def delete_dir(self, list_of_dirs, my_trash):
