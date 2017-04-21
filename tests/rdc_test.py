@@ -13,25 +13,25 @@ class TestRDCommand(unittest.TestCase):
         if not os.path.exists(self.path):
             os.makedirs(self.path)
         self.trash = Trash('')
-        self.RDCcommand = remove_command.RDCommand()
+        self.RDCommand = remove_command.RDCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
 
     def test_normal_working_with_empty_dir(self):
-        dirpath = os.path.join(self.path, 'testdir')
+        dirpath = os.path.join(self.path, 'testdir1')
         os.makedirs(dirpath)
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RDCommand.execute(self.RDCcommand, [dirpath], self.trash)
+        remove_command.RDCommand.execute(self.RDCommand, [dirpath])
         self.assertFalse(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
 
     def test_normal_working_with_not_empty_dir(self):
-        dirpath = os.path.join(self.path, 'testdir')
+        dirpath = os.path.join(self.path, 'testdir2')
         os.makedirs(dirpath)
-        filepath = os.path.join(dirpath, 'test.txt')
+        filepath = os.path.join(dirpath, '1.txt')
         with open(filepath, "w") as fi:
             fi.write('it is testing')
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RDCommand.execute(self.RDCcommand, [dirpath], self.trash)
+        remove_command.RDCommand.execute(self.RDCommand, [dirpath])
         self.assertFalse(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
 
@@ -45,20 +45,23 @@ class TestRDCommand(unittest.TestCase):
     # #     self.assertTrue(os.path.exists(filepath))
     # #     self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
     #
-    def test_no_file(self):
-        dirpath = os.path.join(self.path, 'test12')
+    def test_no_dir(self):
+        dirpath = os.path.join(self.path, 'testdir3')
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RDCommand.execute(self.RDCcommand, [dirpath], self.trash)
+        try:
+            remove_command.RDCommand.execute(self.RDCommand, [dirpath])
+        except:
+            pass
         self.assertFalse(os.path.exists(dirpath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
     def test_for_some_dirs(self):
-        dirpath = os.path.join(self.path, 'test')
-        dirpath1 = os.path.join(self.path, 'test1')
+        dirpath = os.path.join(self.path, 'testdir4')
+        dirpath1 = os.path.join(self.path, 'testdir5')
         os.makedirs(dirpath)
         os.makedirs(dirpath1)
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RDCommand.execute(self.RDCcommand, [dirpath, dirpath1], self.trash)
+        remove_command.RDCommand.execute(self.RDCommand, [dirpath, dirpath1])
         self.assertFalse(os.path.exists(dirpath))
         self.assertFalse(os.path.exists(dirpath1))
         self.assertTrue(number_of_files_in_trash + 2 == len(os.listdir(self.trash_path)))
@@ -68,7 +71,10 @@ class TestRDCommand(unittest.TestCase):
         with open(filepath, 'w'):
             pass
         number_of_files_in_trash = len(os.listdir(self.trash_path))
-        remove_command.RDCommand.execute(self.RDCcommand, [filepath], self.trash)
+        try:
+            remove_command.RDCommand.execute(self.RDCcmmand, [filepath])
+        except:
+            pass
         self.assertTrue(os.path.exists(filepath))
         self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
 
