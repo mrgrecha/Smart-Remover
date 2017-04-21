@@ -15,6 +15,8 @@ class TestRRCommand(unittest.TestCase):
         self.trash = Trash('')
         self.RRCommand = remove_command.RRCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
+        if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
+            os.remove(os.path.join(self.trash_path, '.DS_Store'))
 
     def test_normal_working(self):
         filepath = []
@@ -35,5 +37,6 @@ class TestRRCommand(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(self.path)
+
 if __name__ == "__main__":
     unittest.main()
