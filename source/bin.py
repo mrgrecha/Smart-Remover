@@ -17,9 +17,11 @@ def main():
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
     my_trash = trash.Trash('/Users/Dima/Documents/Python/Lab_2.Smart_RM/python_lab_2/source/config.cfg')
+
     my_rec_command = bin_command.RecCommand(my_trash)
     my_dft_command = bin_command.DFTCommand(my_trash)
     args = parser.parse_args()
+
     if args.silent:
         my_trash.go_silent_mode()
 
@@ -33,7 +35,7 @@ def main():
         my_trash.bin_show()
 
     if args.clear:
-        my_dft_command.execute(my_trash.get_names())
+        my_dft_command.execute(my_trash.get_hashes())
 
     if args.full:
         my_trash.full_show()

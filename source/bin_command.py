@@ -134,17 +134,16 @@ class DFTCommand(Command):
 
     @dry_run
     def real_remove_from_trash(self, list_of_files, my_trash):
-        for index, each_dict in enumerate(my_trash.arr_json_files):
-            for path in list_of_files:
+        for path in list_of_files:
+            for index, each_dict in enumerate(my_trash.arr_json_files):
                 if each_dict['hash'] == path:
                     try:
                         shutil.rmtree(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
                     except OSError:
                         os.remove(os.path.join(my_trash.path_of_trash, str(each_dict['hash'])))
                     my_command.remove_from_trash([my_trash.arr_json_files[index]['name']] )
+                    my_trash.rootLogger.info('Removing from trash %s' % my_trash.arr_json_files[index]['name'])
                     my_trash.arr_json_files.remove(my_trash.arr_json_files[index])
-                    my_trash.rootLogger.info('Removing from trash %s' % path)
-
     @interactive
     def remove_from_trash(self, list_of_files, my_trash):
         """

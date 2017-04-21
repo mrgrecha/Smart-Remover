@@ -204,12 +204,12 @@ class Trash(object):
 
         serialization.push_json(self.arr_json_files, self.database)
 
-    def get_names(self):
+    def get_hashes(self):
         """
         A function to get names of files in the database
         :return: list of names of files in Database
         """
-        list_of_names = []
+        list_of_hashes = []
         for items in self.arr_json_files:
-            list_of_names.append(items['name'])
-        return list_of_names
+            list_of_hashes.append(items['hash'])
+        return list_of_hashes
