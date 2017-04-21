@@ -3,11 +3,9 @@ class Command(object):
     def __init__(self, my_trash):
         pass
 
-    def execute(self, my_list, my_trash):
+    def execute(self, list_of_files):
         raise NotImplementedError()
 
-    def cancel(self, some_list):
+    def cancel(self, list_of_files):
         raise NotImplementedError()
 
-    def name(self, list_of_args):
-        raise NotImplementedError()

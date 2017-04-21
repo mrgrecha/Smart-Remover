@@ -33,19 +33,19 @@ def main():
         my_trash.bin_show()
 
     if args.clear:
-        my_dft_command.execute(my_trash.get_names(), my_trash)
+        my_dft_command.execute(my_trash.get_names())
 
     if args.full:
         my_trash.full_show()
 
     if args.recover:
-        my_rec_command.execute(args.recover, my_trash)
+        my_rec_command.execute(args.recover)
 
     if args.delete:
-        my_dft_command.execute(args.delete, my_trash)
+        my_dft_command.execute(args.delete)
 
     if args.all:
-        my_rec_command.execute(my_trash.get_names(), my_trash)
+        my_rec_command.execute(my_trash.get_names())
 
 
     bin_command.save_command()

@@ -15,7 +15,7 @@ def main():
 
     if args.undo:
         my_undo_command = undo_command.UndoCommand(my_trash)
-        my_undo_command.execute('1', my_trash)
+        my_undo_command.execute('1')
 
 if __name__ == '__main__':
     main()

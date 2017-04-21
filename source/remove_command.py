@@ -24,17 +24,13 @@ class RFCommand(Command):
         self.interactive = my_trash.interactive
         self.trash = my_trash
 
-    def name(self, list_of_files):
-        return_list = ' '.join([str(item) for item in list_of_files])
-        return 'Remove Files' + return_list
-
-    def execute(self, list_of_files, my_trash):
-        self.delete_files(list_of_files, my_trash)
+    def execute(self, list_of_files):
+        self.delete_files(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
         print 'Cancel for rfc'
         temp_recover_command = bin_command.RecCommand(self.trash)
-        temp_recover_command.execute(list_of_files, self.trash)
+        temp_recover_command.execute(list_of_files)
         print 'OK'
 
     @dry_run
@@ -87,13 +83,13 @@ class RDCommand(Command):
     def name(self, list_of_args):
         return 'Remove Directories'
 
-    def execute(self, list_of_dirs, my_trash):
-        self.delete_dir(list_of_dirs, my_trash)
+    def execute(self, list_of_dirs):
+        self.delete_dir(list_of_dirs, self.trash)
 
     def cancel(self, list_of_files):
         print 'Cancel for rdc'
         temp_recover_command = bin_command.RecCommand(self.trash)
-        temp_recover_command.execute(list_of_files, self.trash)
+        temp_recover_command.execute(list_of_files)
         print 'OK'
 
     @dry_run
@@ -145,12 +141,10 @@ class RRCommand(Command):
         self.cur_dir = os.path.curdir
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
+        self.trash = my_trash
 
-    def name(self, list_of_args):
-        return 'Remove RegEx'
-
-    def execute(self, regex, my_trash):
-        self.delete_for_regex(self.cur_dir, regex, my_trash)
+    def execute(self, regex):
+        self.delete_for_regex(self.cur_dir, regex, self.trash)
 
     def cancel(self, list_of_something):
         pass
@@ -169,11 +163,11 @@ class RRCommand(Command):
         for name in os.listdir(cur_dir):
             path = os.path.join(cur_dir, name)
             if re.search(regex, name) and os.path.isfile(path):
-                rfc.execute([path], my_trash)
+                rfc.execute([path])
             elif os.path.isdir(path) and re.match(regex, name):
-                rdc.execute([path], my_trash)
+                rdc.execute([path])
             elif os.path.isdir(path) and not re.match(regex, name):
-                self.delete_for_regex(path, regex, my_trash)
+                self.delete_for_regex(path, regex)
 
 def save_command():
     my_command.save()

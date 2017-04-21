@@ -31,15 +31,15 @@ def main():
 
     if args.files:
         my_rfc_command = remove_command.RFCommand(my_trash)
-        my_rfc_command.execute(args.files, my_trash)
+        my_rfc_command.execute(args.files)
 
     if args.directory:
         my_rdc_command = remove_command.RDCommand(my_trash)
-        my_rdc_command.execute(args.directory, my_trash)
+        my_rdc_command.execute(args.directory)
 
     if args.regular:
         my_rrc_command = remove_command.RRCommand(my_trash)
-        my_rrc_command.execute(args.regular, my_trash)
+        my_rrc_command.execute(args.regular)
 
 
     remove_command.save_command()

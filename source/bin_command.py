@@ -20,22 +20,14 @@ class RecCommand(Command):
         self.interactive = my_trash.interactive
         self.trash = my_trash
 
-    def name(self, my_list):
-        """
-        Get name of operation
-        :param my_list:
-        :return:
-        """
-        return 'Recover Files'
-
-    def execute(self, list_of_files, my_trash):
+    def execute(self, list_of_files):
         """
         Do this operation
         :param list_of_files:
         :param my_trash:
         :return:
         """
-        self.recover(list_of_files, my_trash)
+        self.recover(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
         """
@@ -47,9 +39,9 @@ class RecCommand(Command):
         print 'cancel for rec'
         for each_file in list_of_files:
             if os.path.isdir(each_file):
-                temp_remove_dirs_command.execute([each_file], self.trash)
+                temp_remove_dirs_command.execute([each_file])
             elif os.path.isfile(each_file) or os.path.islink(each_file):
-                temp_remove_files_command.execute([each_file], self.trash)
+                temp_remove_files_command.execute([each_file])
         # else:
         #     for each_file in list_of_files:
         #         if os.path.isdir(each_file):
@@ -132,12 +124,10 @@ class DFTCommand(Command):
         super(Command, self).__init__()
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
+        self.trash = my_trash
 
-    def name(self, list_of_args):
-        return 'Delete from trash'
-
-    def execute(self, list_of_files, my_trash):
-        self.remove_from_trash(list_of_files, my_trash)
+    def execute(self, list_of_files):
+        self.remove_from_trash(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
         print 'Delete from trash can not be undo'
