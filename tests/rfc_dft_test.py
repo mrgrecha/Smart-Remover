@@ -5,6 +5,7 @@ import unittest
 
 from source.commands import remove_command
 from source.src.trash import Trash
+from source.commands import bin_command
 
 def test():
     unittest.main()
@@ -16,6 +17,7 @@ class TestRFCommand(unittest.TestCase):
         if not os.path.exists(self.path):
             os.makedirs(self.path)
         self.trash = Trash('')
+        self.DFTCommand = bin_command.DFTCommand(self.trash)
         self.RFCommand = remove_command.RFCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
         if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
@@ -29,6 +31,9 @@ class TestRFCommand(unittest.TestCase):
         remove_command.RFCommand.execute(self.RFCommand, [filepath])
         self.assertFalse(os.path.exists(filepath))
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
+        self.DFTCommand.execute([self.trash.arr_json_files[-1]['hash']])
+        self.assertTrue(number_of_files_in_trash  == len(os.listdir(self.trash_path)))
+        self.assertFalse(os.path.exists(filepath))
 
     def test_normal_working_with_not_empty_file(self):
         filepath = os.path.join(self.path, "test2.txt")
@@ -38,17 +43,20 @@ class TestRFCommand(unittest.TestCase):
         remove_command.RFCommand.execute(self.RFCommand, [filepath])
         self.assertFalse(os.path.exists(filepath))
         self.assertTrue(number_of_files_in_trash + 1 == len(os.listdir(self.trash_path)))
-    #
-    # # def test_normal_working_with_not_permissions_file(self):
-    # #     filepath = os.path.join(self.path, "test.txt")
-    # #     with open(filepath, "w") as fi:
-    # #         fi.write('it is testing')
-    # #     os.chmod(filepath, 0o777)
-    # #     number_of_files_in_trash = len(os.listdir(self.trash_path))
-    # #     #remove_command.RFCommand.execute(self.RFCcommand, [filepath], self.trash)
-    # #     self.assertTrue(os.path.exists(filepath))
-    # #     self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
-    #
+        self.DFTCommand.execute([self.trash.arr_json_files[-1]['hash']])
+        self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
+        self.assertFalse(os.path.exists(filepath))
+    # #
+    # # # def test_normal_working_with_not_permissions_file(self):
+    # # #     filepath = os.path.join(self.path, "test.txt")
+    # # #     with open(filepath, "w") as fi:
+    # # #         fi.write('it is testing')
+    # # #     os.chmod(filepath, 0o777)
+    # # #     number_of_files_in_trash = len(os.listdir(self.trash_path))
+    # # #     #remove_command.RFCommand.execute(self.RFCcommand, [filepath], self.trash)
+    # # #     self.assertTrue(os.path.exists(filepath))
+    # # #     self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
+    # #
     def test_no_file(self):
         filepath = os.path.join(self.path, "test3.txt")
         number_of_files_in_trash = len(os.listdir(self.trash_path))
@@ -72,6 +80,9 @@ class TestRFCommand(unittest.TestCase):
         self.assertFalse(os.path.exists(filepath))
         self.assertFalse(os.path.exists(filepath1))
         self.assertTrue(number_of_files_in_trash + 2 == len(os.listdir(self.trash_path)))
+        self.DFTCommand.execute([self.trash.arr_json_files[-1]['hash'], self.trash.arr_json_files[-2]['hash']])
+        self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
+        self.assertFalse(os.path.exists(filepath))
 
     def test_for_folder(self):
         dirpath = os.path.join(self.path, 'test')
