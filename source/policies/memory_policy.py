@@ -13,6 +13,11 @@ class MemoryPolicy(Policy):
         self.update(trash)
 
     def update(self, trash):
+        """
+               Update info by policy
+               :param trash: the instance of trash
+               :return:
+               """
         max_size_elem = 0
         index = 0
         name = ''

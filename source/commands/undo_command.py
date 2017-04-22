@@ -12,6 +12,11 @@ class UndoCommand(Command):
         self.trash = my_trash
 
     def execute(self, history):
+        """
+        Cancel last operation
+        :param history:
+        :return:
+        """
         if len(self.all_operations) >= 1:
             current_operation = self.all_operations[-1]
             self.all_operations.remove(current_operation)

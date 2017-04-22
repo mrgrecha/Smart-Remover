@@ -85,6 +85,12 @@ class RecCommand(Command):
 
     @dry_run
     def simple_recover(self,each_json_file, my_trash):
+        """
+        Recover of element with no exceptions
+        :param each_json_file: dict of file
+        :param my_trash: the instance of trash
+        :return:
+        """
         os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
         my_trash.arr_json_files.remove(each_json_file)
 
@@ -132,13 +138,29 @@ class DFTCommand(Command):
         self.trash = my_trash
 
     def execute(self, list_of_files):
+        """
+        Deleting from trash function
+        :param list_of_files: Files to delete
+        :return:
+        """
         self.remove_from_trash(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
+        """
+        Cancel last operation
+        :param list_of_files:
+        :return:
+        """
         self.trash.rootLogger.info('Delete from trash can not be undo')
 
     @dry_run
     def real_remove_from_trash(self, list_of_files, my_trash):
+        """
+        Remobing prepared files from trash
+        :param list_of_files: files to remove
+        :param my_trash: the instance of trash
+        :return:
+        """
         for path in list_of_files:
             for index, each_dict in enumerate(my_trash.arr_json_files):
                 if each_dict['hash'] == path:
@@ -153,7 +175,7 @@ class DFTCommand(Command):
     def remove_from_trash(self, list_of_files, my_trash):
         """
         Remove a file from trash
-        :param list_of_files:
+        :param list_of_files: list of files to remove
         :return:
         """
         count = 0

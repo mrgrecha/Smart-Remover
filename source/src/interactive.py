@@ -1,6 +1,11 @@
 import user_input
 
 def interactive(func):
+    """
+    Interactive decorator
+    :param func:
+    :return:
+    """
     def func_wrapper(self, *args, **kwargs):
         answer = user_input.UserInput()
         if self.interactive:

@@ -19,39 +19,6 @@ import verification
 class Trash(object):
 
     __metaclass__ = singleton.Singleton
-    # TODO yes to all(class) +
-    # TODO maybe add removing for index (when in system) +
-
-    # TODO add check for sets when there both exceptions +
-    # TODO own exception class +
-
-    # TODO Refactor policy +
-
-    # TODO add dry/silent to args +
-
-    # TODO interactive +
-    # TODO mkdir or mkdirs? +
-
-    # TODO Force/soft +/-
-
-    # TODO Add __init__ in commands  +
-
-    # TODO JSON for undo/redo +
-
-    # TODO Undo +
-
-    # TODO Undo for regular  !!!
-
-    # TODO tests
-
-    # TODO checks
-    # TODO add link + hardlink
-
-    # TODO make logs better
-    # TODO make docstrings
-
-    # TODO Refactor all code to folders +
-    # TODO add checking for parent folders +/-
 
     def __init__(self, path_of_config):
         if os.path.exists(path_of_config):
@@ -91,16 +58,32 @@ class Trash(object):
         self.check_policy()
 
     def go_dry_run(self):
+        """
+        Dry run mode on
+        :return:
+        """
         self.dried = True
 
     def go_silent_mode(self):
+        """
+        Silent mode on
+        :return:
+        """
         self.silent = True
         self.rootLogger.setLevel(logging.CRITICAL)
 
     def go_interactive_mode(self):
+        """
+        Interactive mode on
+        :return:
+        """
         self.interactive = True
 
     def check_policy(self):
+        """
+        Choose policies for removing files
+        :return:
+        """
         list_of_removing_files_by_policies = set()
         if self.policies.count('time'):
             time_policy_instance = time_policy.TimePolicy()
@@ -116,6 +99,11 @@ class Trash(object):
         self.remove_for_hash(list_of_removing_files_by_policies)
 
     def remove_for_hash(self, list_of_hashes):
+        """
+        Remove files for list of hashes
+        :param list_of_hashes: list of file hashes
+        :return:
+        """
         for item in list(list_of_hashes):
             path_of_item = os.path.join(self.path_of_trash, item)
             try:
@@ -124,6 +112,10 @@ class Trash(object):
                 shutil.rmtree(path_of_item)
 
     def set_logger(self):
+        """
+        Set logger in case of silent mode
+        :return:
+        """
         if self.silent:
             silentHandler = logging.StreamHandler()
             silentHandler.setLevel(logging.CRITICAL)
@@ -166,6 +158,11 @@ class Trash(object):
             logging.info("{0}. {1}".format(ind + 1, json_file))
 
     def delete_for_name_from_trash(self, elems):
+        """
+        Remove files for their filenames
+        :param elems: filename
+        :return:
+        """
         for elem in elems:
             path_of_elem = os.path.join(self.path_of_trash, elem)
             if os.path.isdir(path_of_elem):
@@ -174,6 +171,10 @@ class Trash(object):
                 os.remove(path_of_elem)
 
     def update(self):
+        """
+        Update info about database and current items in trash
+        :return:
+        """
         try:
             verification.check_for_trash_files(self.arr_json_files, self.path_of_trash)
         except my_exceptions.TrashSetError as e:

@@ -1,4 +1,7 @@
 class Singleton(type):
+    """
+    Pattern singleton for trash instance
+    """
     _instances = {}
 
     def __call__(cls, *args, **kwargs):

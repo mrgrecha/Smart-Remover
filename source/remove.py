@@ -1,7 +1,6 @@
 import argparse
 import os
 import commands.remove_command as remove_command
-import commands.command_object
 from source.src import trash
 
 
@@ -13,8 +12,6 @@ def main():
     parser.add_argument('-dr', '--dryrun', action='store_true', help='Dry run mode on')
     parser.add_argument('-s', '--silent', action='store_true', help='Silent mode on')
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
-
-    parser.add_argument('-t', '--test', nargs='+', help='test files')
 
     my_trash = trash.Trash(os.path.expanduser('~/config.cfg'))
     args = parser.parse_args()
@@ -41,8 +38,6 @@ def main():
         my_rrc_command.execute(args.regular)
         my_rrc_command.real_regex()
 
-    if args.test:
-        my_command = commands.command_object.CommandObject()
 
     remove_command.save_command()
 if __name__ == '__main__':

@@ -3,6 +3,10 @@ class UserInput(object):
         self.state = None
 
     def ask(self):
+        """
+        Ask full list of questions
+        :return:
+        """
         answer = raw_input('''
 Enter number of operation or name of it
 1. Yes (Y/y)
@@ -23,6 +27,10 @@ Enter number of operation or name of it
             self.state = 'cancel'
 
     def ask_yes_or_no(self):
+        """
+        Ask only Yes or No
+        :return:
+        """
         answer = raw_input('''
 Enter number of operation or name of it
 1. Yes (Y/y)

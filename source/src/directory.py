@@ -18,8 +18,14 @@ class Folder(FileObject):
         self.num_of_obj = self.add_number_of_objects(self.path)
         self.size = self.add_size(self.path)
         self.type = 'Directory'
+
     @staticmethod
     def add_size(start_path):
+        """
+        Calculate the size of folders
+        :param start_path: path of folder
+        :return: size of this folder
+        """
         total_size = 0
         for dirpath, dirnames, filenames in os.walk(start_path):
             for f in filenames:
@@ -29,6 +35,11 @@ class Folder(FileObject):
 
     @staticmethod
     def add_number_of_objects(path):
+        """
+              Calculate the number of objects in folder
+              :param start_path: path of folder
+              :return: count of files in this folder
+        """
         num = 0
         for abs_path, sub_path, files in os.walk(path):
             num += len(files)
