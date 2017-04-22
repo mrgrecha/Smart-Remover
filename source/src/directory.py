@@ -18,11 +18,6 @@ class Folder(FileObject):
         self.num_of_obj = self.add_number_of_objects(self.path)
         self.size = self.add_size(self.path)
         self.type = 'Directory'
-
-    def show_all(self):
-        super(Folder, self).show_all()
-        print 'Number of objects: ', self.num_of_obj
-
     @staticmethod
     def add_size(start_path):
         total_size = 0

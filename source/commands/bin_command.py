@@ -37,7 +37,7 @@ class RecCommand(Command):
         """
         temp_remove_files_command = remove_command.RFCommand(self.trash)
         temp_remove_dirs_command = remove_command.RDCommand(self.trash)
-        print 'cancel for rec'
+        self.trash.rootLogger.info('cancel for rec')
         for each_file in list_of_files:
             if os.path.isdir(each_file):
                 temp_remove_dirs_command.execute([each_file])
@@ -79,10 +79,14 @@ class RecCommand(Command):
         if answer.state == 'yes':
             os.rename(path_of_file, each_json_file['path'])
             my_trash.arr_json_files.remove(each_json_file)
-            logging.info('Recovering ' + each_json_file['name'] + ' from bin')
             my_command.recover_items(each_json_file['path'])
         else:
             pass
+
+    @dry_run
+    def simple_recover(self,each_json_file, my_trash):
+        os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
+        my_trash.arr_json_files.remove(each_json_file)
 
     @interactive
     def recover(self, list_of_files, my_trash):
@@ -108,9 +112,9 @@ class RecCommand(Command):
                         try:
                             if os.path.exists(each_json_file['path']):
                                 self.soft_recover(path_of_file, each_json_file, my_trash)
+                                logging.info('Recovering ' + each_json_file['name'] + ' from bin')
                             else:
-                                os.rename(os.path.join(my_trash.path_of_trash, each_json_file['hash']), each_json_file['path'])
-                                my_trash.arr_json_files.remove(each_json_file)
+                                self.simple_recover(each_json_file, my_trash)
                                 logging.info('Recovering ' + each_json_file['name'] + ' from bin')
                                 temp_list.append(each_json_file['path'])
                         except OSError as e:
@@ -131,7 +135,7 @@ class DFTCommand(Command):
         self.remove_from_trash(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
-        print 'Delete from trash can not be undo'
+        self.trash.rootLogger.info('Delete from trash can not be undo')
 
     @dry_run
     def real_remove_from_trash(self, list_of_files, my_trash):

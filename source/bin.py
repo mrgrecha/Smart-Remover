@@ -20,8 +20,6 @@ def main():
 
     my_trash = source.src.trash.Trash(os.path.join(os.path.expanduser('~/'), 'config.cfg'))
 
-    my_rec_command = bin_command.RecCommand(my_trash)
-    my_dft_command = bin_command.DFTCommand(my_trash)
     args = parser.parse_args()
 
     if args.silent:
@@ -37,18 +35,22 @@ def main():
         my_trash.bin_show()
 
     if args.clear:
+        my_dft_command = bin_command.DFTCommand(my_trash)
         my_dft_command.execute(my_trash.get_hashes())
 
     if args.full:
         my_trash.full_show()
 
     if args.recover:
+        my_rec_command = bin_command.RecCommand(my_trash)
         my_rec_command.execute(args.recover)
 
     if args.delete:
+        my_dft_command = bin_command.DFTCommand(my_trash)
         my_dft_command.execute(args.delete)
 
     if args.all:
+        my_rec_command = bin_command.RecCommand(my_trash)
         my_rec_command.execute(my_trash.get_names())
 
 

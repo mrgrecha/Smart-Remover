@@ -30,10 +30,9 @@ class RFCommand(Command):
         self.delete_files(list_of_files, self.trash)
 
     def cancel(self, list_of_files):
-        print 'Cancel for rfc'
+        self.trash.rootLogger.info('Cancel for rfc')
         temp_recover_command = bin_command.RecCommand(self.trash)
         temp_recover_command.execute(list_of_files)
-        print 'OK'
 
     @dry_run
     def real_delete(self, files_to_delete, length, my_trash):
@@ -89,10 +88,9 @@ class RDCommand(Command):
         self.delete_dir(list_of_dirs, self.trash)
 
     def cancel(self, list_of_files):
-        print 'Cancel for rdc'
+        self.trash.rootLogger.info('Cancel for rdc')
         temp_recover_command = bin_command.RecCommand(self.trash)
         temp_recover_command.execute(list_of_files)
-        print 'OK'
 
     @dry_run
     def real_delete_dir(self, dirs_to_delete, length, my_trash):
@@ -169,7 +167,7 @@ class RRCommand(Command):
             elif os.path.isdir(path) and re.match(regex, name):
                 rdc.execute([path])
             elif os.path.isdir(path) and not re.match(regex, name):
-                self.delete_for_regex(path, regex)
+                self.delete_for_regex(path, regex, self.trash)
 
 def save_command():
     my_command.save()

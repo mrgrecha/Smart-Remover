@@ -40,7 +40,10 @@ class Trash(object):
 
     # TODO Undo +
 
+    # TODO Undo for regular  !!!
+
     # TODO tests
+
     # TODO checks
     # TODO add link + hardlink
 

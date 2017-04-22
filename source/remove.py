@@ -43,6 +43,7 @@ def main():
     if args.test:
         print os.path.abspath(my_trash.database)
         print os.path.abspath(my_trash.path_of_trash)
+
     remove_command.save_command()
 if __name__ == '__main__':
     main()
