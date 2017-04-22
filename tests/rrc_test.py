@@ -36,9 +36,10 @@ class TestRRCommand(unittest.TestCase):
         for path in filepath:
             self.assertFalse(os.path.exists(path))
         self.assertTrue(number_of_files_in_trash + 10 == len(os.listdir(self.trash_path)))
+        list_of_hashes = []
         for i in xrange(-10, 0):
-            print self.trash.arr_json_files[i]['hash']
-            self.DFTCommand.execute([self.trash.arr_json_files[i]['hash']])
+            list_of_hashes.append(self.trash.arr_json_files[i]['hash'])
+        self.DFTCommand.execute(list_of_hashes)
 
     def tearDown(self):
         shutil.rmtree(self.path)

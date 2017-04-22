@@ -17,6 +17,7 @@ import source.src.file_object
 from command import Command
 
 my_command = command_object.CommandObject()
+temp_list = []
 
 class RFCommand(Command):
 
@@ -142,6 +143,8 @@ class RRCommand(Command):
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
         self.trash = my_trash
+        self.files_to_remove = []
+        self.dirs_to_remove = []
 
     def execute(self, regex):
         self.delete_for_regex(self.cur_dir, regex, self.trash)
@@ -158,16 +161,20 @@ class RRCommand(Command):
         :param cur_dir: current directory from which starts removing
         :return:
          """
-        rfc = RFCommand(my_trash)
-        rdc = RDCommand(my_trash)
         for name in os.listdir(cur_dir):
             path = os.path.join(cur_dir, name)
             if re.search(regex, name) and os.path.isfile(path):
-                rfc.execute([path])
+                self.files_to_remove.append(path)
             elif os.path.isdir(path) and re.match(regex, name):
-                rdc.execute([path])
+                self.dirs_to_remove.append(path)
             elif os.path.isdir(path) and not re.match(regex, name):
                 self.delete_for_regex(path, regex, self.trash)
+
+    def real_regex(self):
+        rfc = RFCommand(self.trash)
+        rdc = RDCommand(self.trash)
+        rdc.execute(self.dirs_to_remove)
+        rfc.execute(self.files_to_remove)
 
 def save_command():
     my_command.save()

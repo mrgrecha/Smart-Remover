@@ -4,6 +4,9 @@ import os
 class CommandObject(object):
     def __init__(self):
         self.my_dict = {}
+        if not os.path.exists(os.path.expanduser('~/history.json')):
+            with open(os.path.expanduser('~/history.json'), 'r') as fi:
+                pass
         self.all_operations = source.src.serialization.load_json(os.path.expanduser('~/history.json'))
         self.check_for_empty_dicts()
         self.index = len(self.all_operations)

@@ -1,7 +1,7 @@
 import argparse
 import os
 import commands.remove_command as remove_command
-
+import commands.command_object
 from source.src import trash
 
 
@@ -39,10 +39,10 @@ def main():
     if args.regular:
         my_rrc_command = remove_command.RRCommand(my_trash)
         my_rrc_command.execute(args.regular)
+        my_rrc_command.real_regex()
 
     if args.test:
-        print os.path.abspath(my_trash.database)
-        print os.path.abspath(my_trash.path_of_trash)
+        my_command = commands.command_object.CommandObject()
 
     remove_command.save_command()
 if __name__ == '__main__':
