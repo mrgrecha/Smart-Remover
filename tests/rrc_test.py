@@ -5,6 +5,7 @@ import unittest
 
 from source.commands import remove_command
 from source.src.trash import Trash
+from source.commands.bin_command import DFTCommand
 
 
 class TestRRCommand(unittest.TestCase):
@@ -14,6 +15,7 @@ class TestRRCommand(unittest.TestCase):
             os.makedirs(self.path)
         self.trash = Trash('')
         self.RRCommand = remove_command.RRCommand(self.trash)
+        self.DFTCommand = DFTCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
         if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
             os.remove(os.path.join(self.trash_path, '.DS_Store'))
@@ -34,6 +36,9 @@ class TestRRCommand(unittest.TestCase):
         for path in filepath:
             self.assertFalse(os.path.exists(path))
         self.assertTrue(number_of_files_in_trash + 10 == len(os.listdir(self.trash_path)))
+        for i in xrange(-10, 0):
+            print self.trash.arr_json_files[i]['hash']
+            self.DFTCommand.execute([self.trash.arr_json_files[i]['hash']])
 
     def tearDown(self):
         shutil.rmtree(self.path)

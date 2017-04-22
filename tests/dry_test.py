@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
-import stat
 import unittest
 from source.commands import remove_command
 from source.src.trash import Trash
@@ -50,6 +49,7 @@ class TestDryRun(unittest.TestCase):
             self.Rec.execute([self.trash.arr_json_files[-1]['hash']])
             self.assertTrue(number_of_files_in_trash == len(os.listdir(self.trash_path)))
             self.assertTrue(os.path.exists(filepath))
+
 
     def tearDown(self):
         shutil.rmtree(self.path)

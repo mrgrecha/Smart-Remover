@@ -6,6 +6,7 @@ import unittest
 from source.commands import remove_command
 from source.src.trash import Trash
 from source.commands import bin_command
+from source.commands import command_object
 
 def test():
     unittest.main()
@@ -20,6 +21,7 @@ class TestRFCommand(unittest.TestCase):
         self.DFTCommand = bin_command.DFTCommand(self.trash)
         self.RFCommand = remove_command.RFCommand(self.trash)
         self.trash_path = self.trash.path_of_trash
+        self.my_command = command_object.CommandObject()
         if os.path.exists(os.path.join(self.trash_path, '.DS_Store')):
             os.remove(os.path.join(self.trash_path, '.DS_Store'))
 
