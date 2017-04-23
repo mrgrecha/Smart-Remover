@@ -37,7 +37,7 @@ class Folder(FileObject):
     def add_number_of_objects(path):
         """
               Calculate the number of objects in folder
-              :param start_path: path of folder
+              :param path: path of folder
               :return: count of files in this folder
         """
         num = 0

@@ -3,21 +3,16 @@ import os
 import re
 import shutil
 import sys
-
 import source.src.directory
 import source.src.my_exceptions
 import source.src.serialization
 import source.src.verification
-from source.src.dry_run import dry_run
-from source.src.interactive import interactive
-
 import bin_command
 import command_object
 import source.src.file_object
 from command import Command
-
-my_command = command_object.CommandObject()
-temp_list = []
+from source.src.dry_run import dry_run
+from source.src.interactive import interactive
 
 class RFCommand(Command):
 
@@ -26,9 +21,11 @@ class RFCommand(Command):
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
         self.trash = my_trash
+        self.files_to_return = []
 
     def execute(self, list_of_files):
         self.delete_files(list_of_files, self.trash)
+        return self.files_to_return
 
     def cancel(self, list_of_files):
         self.trash.rootLogger.info('Cancel for rfc')
@@ -38,6 +35,7 @@ class RFCommand(Command):
     @dry_run
     def real_delete(self, files_to_delete, length, my_trash):
         arr_files = [source.src.file_object.FileObject() for i in xrange(0, length)]
+
         for index, each_file in enumerate(files_to_delete):
             if os.path.islink(each_file):
                 arr_files[index].set_type('Link')
@@ -47,7 +45,8 @@ class RFCommand(Command):
             os.rename(each_file, str(arr_files[index].hash))
             shutil.move(arr_files[index].hash, my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_files[index].__dict__)
-        my_command.remove_files([arr_files[ind].hash for ind in xrange(0, length)])
+            for ind in xrange(0, length):
+                self.files_to_return.append(arr_files[ind].hash)
 
     @interactive
     def delete_files(self, list_of_files, my_trash):
@@ -71,6 +70,9 @@ class RFCommand(Command):
             logging.error('Error:' + str(e))
             sys.exit(3)
 
+        except OSError as e:
+            logging.error('Error' + str(e))
+
         source.src.serialization.push_json(my_trash.arr_json_files, my_trash.database)
 
 
@@ -81,12 +83,14 @@ class RDCommand(Command):
         self.dried = my_trash.dried
         self.interactive = my_trash.interactive
         self.trash = my_trash
+        self.dirs_to_return = []
 
     def name(self, list_of_args):
         return 'Remove Directories'
 
     def execute(self, list_of_dirs):
         self.delete_dir(list_of_dirs, self.trash)
+        return self.dirs_to_return
 
     def cancel(self, list_of_files):
         self.trash.rootLogger.info('Cancel for rdc')
@@ -101,7 +105,8 @@ class RDCommand(Command):
             os.rename(each_dir, str(arr_dirs[index].hash))
             shutil.move(str(arr_dirs[index].hash), my_trash.path_of_trash)
             my_trash.arr_json_files.append(arr_dirs[index].__dict__)
-        my_command.remove_dirs([arr_dirs[ind].hash for ind in xrange(0, length)])
+        for ind in xrange(0, length):
+            self.dirs_to_return.append(arr_dirs[ind].hash)
 
     @interactive
     def delete_dir(self, list_of_dirs, my_trash):
@@ -148,6 +153,8 @@ class RRCommand(Command):
 
     def execute(self, regex):
         self.delete_for_regex(self.cur_dir, regex, self.trash)
+        self.real_regex()
+        return [self.files_to_remove, self.dirs_to_remove]
 
     def cancel(self, list_of_something):
         pass
@@ -173,8 +180,6 @@ class RRCommand(Command):
     def real_regex(self):
         rfc = RFCommand(self.trash)
         rdc = RDCommand(self.trash)
-        rdc.execute(self.dirs_to_remove)
-        rfc.execute(self.files_to_remove)
+        self.dirs_to_remove = rdc.execute(self.dirs_to_remove)
+        self.files_to_remove = rfc.execute(self.files_to_remove)
 
-def save_command():
-    my_command.save()

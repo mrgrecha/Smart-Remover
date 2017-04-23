@@ -2,6 +2,7 @@
 import argparse
 import source.src.trash
 from commands import bin_command
+import commands.command_object as command_object
 import os
 
 
@@ -19,7 +20,7 @@ def main():
     parser.add_argument('-i', '--interactive', action='store_true', help='Interactive mode on')
 
     my_trash = source.src.trash.Trash(os.path.join(os.path.expanduser('~/'), 'config.cfg'))
-
+    my_command = command_object.CommandObject()
     args = parser.parse_args()
 
     if args.silent:
@@ -43,18 +44,18 @@ def main():
 
     if args.recover:
         my_rec_command = bin_command.RecCommand(my_trash)
-        my_rec_command.execute(args.recover)
+        files_to_return = my_rec_command.execute(args.recover)
+        my_command.recover_items(files_to_return)
 
     if args.delete:
         my_dft_command = bin_command.DFTCommand(my_trash)
-        my_dft_command.execute(args.delete)
+        files_to_return = my_dft_command.execute(args.delete)
+        my_command.remove_from_trash(files_to_return)
 
     if args.all:
         my_rec_command = bin_command.RecCommand(my_trash)
         my_rec_command.execute(my_trash.get_names())
 
-
-    bin_command.save_command()
-
+    my_command.save()
 if __name__ == '__main__':
     main()

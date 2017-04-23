@@ -121,12 +121,6 @@ class Trash(object):
             silentHandler.setLevel(logging.CRITICAL)
             self.rootLogger.addHandler(silentHandler)
         else:
-            # logFormatter = logging.Formatter("%(asctime)s[%(threadName)-12.12s][%(levelname)-5.5s] %(message)s")
-            #
-            # fileHandler = logging.FileHandler(filename='log.log')
-            # fileHandler.setFormatter(logFormatter)
-            # fileHandler.setLevel(logging.DEBUG)
-            # self.rootLogger.addHandler(fileHandler)
             consoleHandler = logging.StreamHandler()
             consoleHandler.setLevel(logging.INFO)
             self.rootLogger.addHandler(consoleHandler)

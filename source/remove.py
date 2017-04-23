@@ -2,6 +2,7 @@ import argparse
 import os
 import commands.remove_command as remove_command
 from source.src import trash
+import commands.command_object as command_object
 
 
 def main():
@@ -15,6 +16,7 @@ def main():
 
     my_trash = trash.Trash(os.path.expanduser('~/config.cfg'))
     args = parser.parse_args()
+    my_command = command_object.CommandObject()
 
     if args.silent:
         my_trash.go_silent_mode()
@@ -27,18 +29,22 @@ def main():
 
     if args.files:
         my_rfc_command = remove_command.RFCommand(my_trash)
-        my_rfc_command.execute(args.files)
+        files_to_remove = my_rfc_command.execute(args.files)
+        my_command.remove_files(files_to_remove)
 
     if args.directory:
         my_rdc_command = remove_command.RDCommand(my_trash)
-        my_rdc_command.execute(args.directory)
+        dirs_to_remove = my_rdc_command.execute(args.directory)
+        my_command.remove_dirs(dirs_to_remove)
 
     if args.regular:
         my_rrc_command = remove_command.RRCommand(my_trash)
-        my_rrc_command.execute(args.regular)
-        my_rrc_command.real_regex()
+        files, dirs = my_rrc_command.execute(args.regular)
+        my_command.remove_files(files)
+        my_command.remove_dirs(dirs)
 
 
-    remove_command.save_command()
+
+    my_command.save()
 if __name__ == '__main__':
     main()
