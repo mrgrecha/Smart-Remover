@@ -21,4 +21,4 @@
 
 
 
-Made by Dima Grechko. Group 553504.
+Made by Dima Grechko.
